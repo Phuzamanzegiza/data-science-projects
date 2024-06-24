@@ -1,5 +1,5 @@
 ---
-title: "Hierarchical Clustering"
+title: "Hierarchical Clustering for Organic Products Store "
 author: "Francis Ngema"
 date: "2024-06-07"
 output: 
@@ -27,7 +27,9 @@ h6 {font-size: 12px;}
 </style>
 ```{r include=FALSE}
 # Load necessary libraries
-
+library(dplyr)
+library(tidyr)
+library(readr)
 library(cluster)
 library(fpc)
 library(fastcluster)
@@ -78,12 +80,14 @@ The dataset "organics_cleaned.csv"(https://raw.githubusercontent.com/amusasuxes/
 # Load the dataset
 data <- read_csv("organics_cleaned.csv")
 
-# Summary statistics for key numerical variables
-summary_stats <- data %>% 
-  select(Affl, Age, LTime, Spend) %>% 
-  summary()
+# Select key numerical variables
+selected_data <- dplyr::select(data, Affl, Age, LTime, Spend)
 
-summary_stats
+
+# Calculate and display summary statistics
+summary_stats <- summary(selected_data)
+print(summary_stats)
+
 ```
 ## Table 2: Summary Statistics of Numerical Variables
 | Variable | Minimum | 1st Quartile | Median  | Mean    | 3rd Quartile | Maximum   |
@@ -126,12 +130,14 @@ Furthermore, box plots were employed to examine the relationship between categor
 ```{r}
 # Plot histograms for numerical variables
 data %>%
-  select(Affl, Age, LTime, Spend) %>%
-  gather(key = "variable", value = "value") %>%
+  dplyr::select(Affl, Age, LTime, Spend) %>%
+  tidyr::gather(key = "variable", value = "value") %>%
   ggplot(aes(x = value)) +
   geom_histogram(bins = 30, fill = "blue", color = "black") +
   facet_wrap(~ variable, scales = "free") +
-  labs(title = "Distribution of Numerical Variables") 
+  labs(title = "Distribution of Numerical Variables")
+
+
 ```
 
 ### Affluence Distribution

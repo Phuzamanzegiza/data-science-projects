@@ -1,0 +1,35 @@
+#name: "cars"
+#navbar:
+  #title: "Cars"
+  #left:
+    #- text: "Home"
+      #href: index.html
+    #- text: "Speed and Distance"
+      #href: speed-and-distance.html
+#output:
+  #html_document:
+    #theme: cosmo
+
+################################################################################
+name: "Projects"
+navbar:
+  title: "Projects"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Hierarchical Clustering"
+      href: hierarchical-clustering.html
+    - text: "Consumer Behaviour"
+      href: random-forest.html
+    - text: "Customer Segmentation"
+      href: pca-kmeans-clustering.html
+output:
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
+    highlight: tango
+    includes:
+      before_body: navbar.html
+      in_header: header.html
+    css: styles.css

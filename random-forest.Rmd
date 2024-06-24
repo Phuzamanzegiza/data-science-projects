@@ -1,5 +1,5 @@
 ---
-title: "Consumer Behaviour"
+title: "Consumer Behaviour of Certified ice Customers"
 author: "Francis Ngema"
 date: "2024-06-07"
 output: 
@@ -152,15 +152,19 @@ colSums(is.na(data))
 
 *Distribution of Numeric Variables*
 ```{r}
-# Plot histograms for numeric variables
+# Define numeric variables
 numeric_vars <- c("Age", "Hhsz")
-data %>% select(numeric_vars) %>% 
-  gather(key = "variable", value = "value") %>%
+
+# Select columns explicitly and gather data
+data %>%
+  dplyr::select(all_of(numeric_vars)) %>%
+  tidyr::gather(key = "variable", value = "value") %>%
   ggplot(aes(x = value)) +
   geom_histogram(bins = 30, fill = "blue", color = "black", alpha = 0.7) +
   facet_wrap(~ variable, scales = "free") +
   theme_minimal() +
   labs(title = "Distribution of Numeric Variables")
+
 ```
 
 The distribution analysis of numerical variables in the rice dataset, focusing on Age and Number of household members (Hhsz), reveals insights into the shape, center, and spread of the data.
