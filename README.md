@@ -1,5 +1,4 @@
-# data-science-projects
-# Data Science Projects by Franco
+# Data Science Projects 
 
 Welcome to my Data Science Projects repository! This repository showcases a variety of data science projects I have worked on, spanning various fields and employing a range of machine learning models and big data techniques. These projects illustrate my expertise in consumer analytics, predictive modeling, and other key areas in data science.
 
