@@ -1,5 +1,5 @@
 ---
-title: "Question_2 - Consumer Analytics Assessment 4"
+title: "Consumer Behaviour"
 author: "Francis Ngema"
 date: "2024-06-07"
 output: 
@@ -12,6 +12,19 @@ output:
       before_body: navbar.html
       in_header: header.html
 ---
+
+<style type="text/css">
+  body {font-family: Montserrat, sans-serif;}
+h1 {font-size: 33px;}
+h1.title {font-size: 36px;}
+h2 {font-size: 30px;}
+h3 {font-size: 24px;}
+h4 {font-size: 18px;}
+h5 {font-size: 16px;}
+h6 {font-size: 12px;}
+ p {font-size: 16px;}
+}
+</style>
 
 ```{r setup, include=FALSE}
 # Load necessary libraries
@@ -28,16 +41,6 @@ library(kernelshap)
 library(shapviz)
 options(warn = -1)
 ```
-
-# Executive Summary
-
-This report presents an analysis of the factors influencing the purchase of certified rice, using machine learning techniques to identify key predictors. The primary objective was to understand the significant determinants driving consumer behavior towards certified rice.
-
-The dataset, comprising various features such as perceived self-competence in identifying certified rice (Compt), self-reported income class (Inc), perceived psychological consequences of environmentally friendly behavior (Env), belief that certified rice has fewer residues compared to conventional rice (Resi), trust in the food quality certification system (Trust), and Gender, was rigorously cleaned and prepared. Feature selection through Recursive Feature Elimination (RFE) with cross-validation identified the most relevant predictors, which were then used to build and evaluate a Random Forest model.
-
-The model achieved an accuracy of 84.62%, with a sensitivity of 94.12% and a specificity of 77.27%. The Area Under the ROC Curve (AUC) was 0.9519, indicating excellent discriminative power. SHAP (SHapley Additive exPlanations) values were used to interpret the model's predictions, revealing that high perceived self-competence in identifying certified rice significantly influenced predictions positively. Higher income levels also contributed positively to the likelihood of purchasing certified rice, while positive perceptions of environmentally friendly behavior had a moderate influence. The belief that certified rice has fewer residues showed a balanced impact on predictions, and trust in the food quality certification system exhibited a mix of positive and negative contributions.
-
-In conclusion, the study highlights the importance of perceived competence, income, and environmental concerns in driving the purchase of certified rice. The SHAP analysis provided valuable insights into how these factors influence consumer behavior, offering an understanding that can inform marketing strategies and policy decisions. The results demonstrate that the current model is highly effective.
 
 # Introduction
 
