@@ -1,0 +1,35 @@
+---
+title: "Welcome to My Data Science Projects"
+author: "Franco"
+date: "2024-06-18"
+output: 
+  html_document:
+    theme: cerulean
+    toc: false
+    toc_float: false
+    highlight: tango
+    includes:
+      before_body: navbar.html
+      in_header: header.html
+    
+---
+
+<style>
+.navbar {
+  margin-bottom: 20px; /* Adjust the margin as needed */
+}
+
+.title {
+  margin-top: 20px; /* Adjust the margin as needed */
+}
+</style>
+## Welcome
+
+Welcome to my project! This is the main page of the site.
+
+## About
+
+This repository contains a collection of my data science projects that demonstrate my ability to handle large datasets, apply machine learning algorithms, and derive insights from data. These projects cover a broad spectrum of applications, particularly focusing on consumer analytics and big data.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
