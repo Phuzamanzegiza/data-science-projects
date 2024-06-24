@@ -30,27 +30,8 @@ library(factoextra)
 library(gridExtra)
 options(warn = -1)
 ```
-# QUESTION 1
 
-# Abstract
 
-**Background:** Customer segmentation, grouping customers based on shared characteristics, is essential for effective marketing in today's competitive landscape. Understanding customer behavior through clustering, a machine learning technique, allows businesses to tailor marketing strategies for maximum impact.
-
-**Objectives:** This study utilises a clustering algorithm to segment customers within a dataset, following a sequential approach. It aims to identify distinct customer segments, assess their quality, and provide detailed insights into each segment's characteristics. Finally, the study examines potential business applications based on the segmentation analysis.
-
-**Methods:** The study employs a data-driven approach, including data description, exploration, visualization, feature engineering, clustering analysis, and concluding with business implications.
-
-**Results:** The clustering algorithm identified two distinct customer segments based on key attributes:
-
-* **Cluster 1: Moderate Affluence, Loyalty, and Spending (Older Demographic)**
-
-This cluster represents an older customer base (average age 63.82 years) with moderate wealth (mean Affluence scaled value 0.248), average loyalty to the brand (mean Loyalty Time scaled value 0.191), and relatively low spending habits (mean Spend scaled value 0.021). 
-
-* **Cluster 2: Higher Affluence, Lower Loyalty and Spending (Younger Demographic)**
-
-This cluster comprises a younger demographic (average age 41.44 years) with slightly higher wealth (mean Affluence scaled value 0.273) but lower loyalty (mean Loyalty Time scaled value 0.151) and spending propensity (mean Spend scaled value 0.008).
-
-**Conclusion:** This study leverages data-driven insights to recommend actionable marketing strategies and enhance customer engagement. The identified customer segments offer valuable guidance.
 
 # Introduction
 
