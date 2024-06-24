@@ -13,7 +13,18 @@ output:
       in_header: header.html
 
 ---
-
+<style type="text/css">
+  body {font-family: Montserrat, sans-serif;}
+h1 {font-size: 33px;}
+h1.title {font-size: 36px;}
+h2 {font-size: 30px;}
+h3 {font-size: 24px;}
+h4 {font-size: 18px;}
+h5 {font-size: 16px;}
+h6 {font-size: 12px;}
+ p {font-size: 16px;}
+}
+</style>
 ```{r include=FALSE}
 # Load necessary libraries
 
