@@ -1,0 +1,599 @@
+---
+title: "Question_2 - Consumer Analytics Assessment 4"
+author: "Francis Ngema"
+date: "2024-06-07"
+output: 
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
+    highlight: tango
+    includes:
+      before_body: navbar.html
+      in_header: header.html
+---
+
+```{r setup, include=FALSE}
+# Load necessary libraries
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(ggcorrplot)
+library(caret)
+library(randomForest)
+library(pROC)
+library(MLmetrics)
+library(kernelshap)
+library(shapviz)
+options(warn = -1)
+```
+
+# Executive Summary
+
+This report presents an analysis of the factors influencing the purchase of certified rice, using machine learning techniques to identify key predictors. The primary objective was to understand the significant determinants driving consumer behavior towards certified rice.
+
+The dataset, comprising various features such as perceived self-competence in identifying certified rice (Compt), self-reported income class (Inc), perceived psychological consequences of environmentally friendly behavior (Env), belief that certified rice has fewer residues compared to conventional rice (Resi), trust in the food quality certification system (Trust), and Gender, was rigorously cleaned and prepared. Feature selection through Recursive Feature Elimination (RFE) with cross-validation identified the most relevant predictors, which were then used to build and evaluate a Random Forest model.
+
+The model achieved an accuracy of 84.62%, with a sensitivity of 94.12% and a specificity of 77.27%. The Area Under the ROC Curve (AUC) was 0.9519, indicating excellent discriminative power. SHAP (SHapley Additive exPlanations) values were used to interpret the model's predictions, revealing that high perceived self-competence in identifying certified rice significantly influenced predictions positively. Higher income levels also contributed positively to the likelihood of purchasing certified rice, while positive perceptions of environmentally friendly behavior had a moderate influence. The belief that certified rice has fewer residues showed a balanced impact on predictions, and trust in the food quality certification system exhibited a mix of positive and negative contributions.
+
+In conclusion, the study highlights the importance of perceived competence, income, and environmental concerns in driving the purchase of certified rice. The SHAP analysis provided valuable insights into how these factors influence consumer behavior, offering an understanding that can inform marketing strategies and policy decisions. The results demonstrate that the current model is highly effective.
+
+# Introduction
+
+The purpose of this exploratory data analysis was to understand the distribution of variables in the rice dataset, identify any patterns or trends, and gain insights into factors influencing customer decisions regarding certified rice. This analysis was intended to guide further studies using the Random Forest algorithm to understand customer behavior patterns and identify key determinants of consumer behavior.
+
+# Methodology
+
+## Exploratory Data Analysis
+
+### Data Import and Initial Inspection
+
+The rice dataset was imported from an Excel file. Initial inspection of the dataset included examining the structure and summary statistics of the variables.
+
+```{r}
+# Import the dataset
+data <- read_excel("rice_dataset.xlsx")
+
+# Display the first few rows of the dataset
+head(data)
+
+```
+
+### Data Description
+
+The rice dataset (available at https://data.mendeley.com/datasets/38w64m7w7t/1) comprises information gathered from participants, focusing on their demographic characteristics, beliefs, and behaviors related to certified rice consumption. Key variables include age, gender, education level, income class, household size, purchase behavior of certified rice, objective knowledge of food quality certifications, perceived competence in identifying certified rice, beliefs regarding sensory appeal, health benefits, convenience, value for money, and environmental consequences of certified rice. 
+
+Furthermore, variables capture participants' trust in food quality certification systems, reading habits of food labels, and the importance of rice in their overall diet. Overall, the dataset provides a comprehensive snapshot of participants' attitudes and behaviors regarding certified rice consumption, facilitating further analysis to uncover patterns and insights influencing consumer decisions in this domain.
+
+*Table 1*
+
+| Variable | Description                                                      | Variable type       |
+|----------|------------------------------------------------------------------|---------------------|
+| ID       | Participant ID                                                   | Numeric, continuous|
+| Age      | Age of the participant                                           | Numeric, continuous|
+| Gender   | Gender of the participant                                        | Binary             |
+| Inc      | Self-reported income class of the participant                    | Binary             |
+| Edu      | Education of the participant                                     | Categorical        |
+| Child    | Having children under 15 years of age                            | Binary             |
+| Hhsz     | Number of household members                                      | Numeric, continuous|
+| Buy      | Participant's purchase behavior of certified rice                | Binary             |
+| Kno      | Objective knowledge of food quality certifications for rice      | Binary             |
+| Compt    | Perceived self-competence in identifying certified rice          | Categorical        |
+| Sens     | Belief in the sensory appeal of certified rice                   | Categorical        |
+| Health   | Belief in the health benefits of certified rice                  | Categorical        |
+| Conve    | Belief in the convenience benefits of certified rice             | Categorical        |
+| Price    | Belief that certified rice is good value for money               | Categorical        |
+| Lresi    | Belief that certified rice has much less residues compared to conventional rice | Binary             |
+| Trust    | Trust in the food quality certification system for rice          | Binary             |
+| Env      | Perceived psychological consequences of environmentally friendly behavior | Categorical        |
+| Read     | Reading of food labels while purchasing food                    | Binary             |
+| Cons     | Importance of the food product as a staple within participant's overall diet | Binary             |
+
+This table provides a concise overview of the variables in the dataset, their descriptions, and variable types.
+
+### Data Exploration and Visualization
+
+We conducted univariate analysis to explore the distribution of individual variables. Numeric variables such as Age and Household Size (`Hhsz`) were visualized using histograms. Categorical variables, including `Gender`, Income Class (`Inc`), Education Level (`Edu`), and others, were visualised using bar plots.
+
+Bivariate analysis was performed to examine relationships between pairs of variables. This included scatter plots to analyse relationships between numeric variables. Furthermore, box plots were utilised to explore the relationship between numeric and categorical variables. 
+
+A correlation matrix for the numeric variables Age and Household Size (`Hhsz`) was computed and visualised to understand the relationships between these variables.
+
+### Summary Statistics 
+
+Upon inspecting the summary statistics of the rice dataset, it was observed that some variables had missing values. The summary below provides a glimpse into the distribution of variables, highlighting the presence of missing values where applicable.
+
+| Variable | Min | 1st Qu. | Median | Mean | 3rd Qu. | Max | NA's |
+|----------|-----|---------|--------|------|---------|-----|------|
+| ID       | 1.0 | 50.5    | 100.0  | 100.0| 149.5   | 199.0| 0    |
+| Age      | 25.00| 38.00 | 45.00 | 45.38 | 53.00 | 70.00 | 0    |
+| Gender   | 0.0000| 1.0000 | 1.0000 | 0.8643 | 1.0000 | 1.0000 | 0    |
+| Inc      | 0.0000| 0.0000 | 0.0000 | 0.4774 | 1.0000 | 1.0000 | 0    |
+| Edu      | 1.000 | 3.000  | 4.000  | NA    | 5.000   | NA    | 0    |
+| Child    | 0.0000| 0.0000 | 1.0000 | 0.6432 | 1.0000 | 1.0000 | 0    |
+| Hhsz     | 1.000 | 3.000  | 4.000  | 4.437  | 5.000   | 11.000 | 0    |
+| Buy      | 0.0000| 0.0000 | 1.0000 | 0.5226 | 1.0000 | 1.0000 | 0    |
+| Kno      | 0.0000| 0.0000 | 1.0000 | 0.6181 | 1.0000 | 1.0000 | 1    |
+| Compt    | 1.330| 3.165  | 4.670  | 4.377  | 5.330   | 7.000 | 0    |
+| Sens     | 3.500| 5.000  | 5.500  | 5.544  | 6.000   | 7.000 | 2    |
+| Health   | 4.000| 5.330  | 6.000  | 5.836  | 6.330   | 7.000 | 0    |
+| Conve    | 3.000| 3.670  | 4.330  | 4.508  | 5.000   | 7.000 | 1    |
+| Price    | 2.000| 3.000  | 5.000  | 4.535  | 6.000   | 7.000 | 1    |
+| Lresi    | 0.0000| 0.0000 | 0.0000 | 0.4573 | 1.0000 | 1.0000 | 0    |
+| Trust    | 0.0000| 0.0000 | 0.0000 | 0.2412 | 0.0000 | 1.0000 | 0    |
+| Env      | 5.330| 6.330  | 6.670  | 6.629  | 7.000   | 7.000 | 0    |
+| Read     | 0.0000| 1.0000 | 1.0000 | 0.8241 | 1.0000 | 1.0000 | 0    |
+| Cons     | 0.0000| 1.0000 | 1.0000 | 0.7889 | 1.0000 | 1.0000 | 0    |
+
+It can be noted below that the `Sens`, `Conve`, `Health` and `Price` variables have missing values.`Health` has two missing values, and `Sens`, `Conve` and `Price` have one missing value each.
+
+These missing values was handled appropriately in further analyses to ensure the integrity and accuracy of the results. Imputation technique were employed for handling missing values.
+
+```{r}
+# Display the structure of the dataset
+str(data)
+
+# Glimpse of the dataset
+glimpse(data)
+
+# Display summary statistics
+summary(data)
+
+# Check for missing values in each column
+colSums(is.na(data))
+
+```
+
+### Univariate Analysis of Numeric Variables
+
+*Distribution of Numeric Variables*
+```{r}
+# Plot histograms for numeric variables
+numeric_vars <- c("Age", "Hhsz")
+data %>% select(numeric_vars) %>% 
+  gather(key = "variable", value = "value") %>%
+  ggplot(aes(x = value)) +
+  geom_histogram(bins = 30, fill = "blue", color = "black", alpha = 0.7) +
+  facet_wrap(~ variable, scales = "free") +
+  theme_minimal() +
+  labs(title = "Distribution of Numeric Variables")
+```
+
+The distribution analysis of numerical variables in the rice dataset, focusing on Age and Number of household members (Hhsz), reveals insights into the shape, center, and spread of the data.
+
+*Shape of the Distribution:*
+The left histogram representing Age appears to be unimodal and roughly symmetric. Most values cluster around 50, with a spread between approximately 40 and 64.
+In contrast, the right histogram depicting the Number of household members (Hhsz) is also unimodal but exhibits a more pronounced peak around a specific value, indicating a stronger central tendency.
+
+*Central Tendency:*
+The center of the data in the left histogram, representing Age, is near 50, suggesting that the median or mean age of participants is around this value.
+For the right histogram, the peak indicates the central value (mean or median) around which most data points are concentrated, providing insight into the typical size of households among participants.
+
+*Variability:*
+The spread in the left histogram covering a wider range (40 to 64) suggests greater variability in ages among participants.
+Conversely, the right histogram displays less spread, with values concentrated around a specific point, indicating less variability in the number of household members among participants.
+
+### Univariate Analysis of Categorical Variables
+
+*Distribution of Categorical Variables*
+```{r}
+# Plot bar plots for categorical variables
+categorical_vars <- c("Gender", "Inc", "Edu", "Child", "Buy", "Kno", "Compt", "Sens", "Health", "Conve", "Price", "Lresi", "Trust", "Env", "Read", "Cons")
+data %>% select(categorical_vars) %>% 
+  gather(key = "variable", value = "value") %>%
+  ggplot(aes(x = value, fill = variable)) +
+  geom_bar(position = "dodge", color = "black", alpha = 0.7) +
+  facet_wrap(~ variable, scales = "free") +
+  theme_minimal() +
+  labs(title = "Distribution of Categorical Variables")
+```
+The distribution analysis of variables within the rice dataset reveals notable trends and insights into participants' behaviors and attitudes towards certified rice consumption.
+
+A significant portion of participants demonstrate regular purchasing behavior of certified rice, as evidenced by peaks in the distribution around 100 for those who purchased and lower values for those who did not. This indicates a potential market for certified rice products.
+
+The distribution of participants having children under 15 years of age leans towards a higher proportion with children in this age group. This demographic factor may influence buying habits or consumption patterns, particularly regarding bulk purchases of rice.
+
+Perceived competence in identifying certified rice tends to center around the 4-5 range, suggesting moderate confidence levels among participants. This highlights a potential opportunity for educational interventions to enhance participant certainty in identifying certified rice products.
+
+Consumption patterns reveal that rice is considered an important daily staple for many participants, with a peak around 150. This underscores the significance of rice as a staple food within the diet of a substantial group of participants.
+
+Convenience beliefs regarding certified rice exhibit variation, with some participants valuing convenience more highly than others. This diversity suggests the importance of tailored marketing strategies that address both preferences, emphasizing convenience benefits for some while focusing on other aspects like health or environmental impact for others.
+
+The distribution of education levels within the dataset reflects diversity, with the majority falling within high school, higher education other than university, and university categories. This underscores the importance of considering participants' educational backgrounds when designing communication or educational materials.
+
+Awareness of environmental consequences associated with rice production varies among participants, highlighting the need for targeted interventions to raise awareness about the environmental impact of rice production choices.
+
+The gender distribution shows a predominantly female representation within the dataset, indicating a gender imbalance among participants.
+
+Beliefs regarding the health benefits of certified rice exhibit variation, with peaks around different values. This emphasizes the importance of understanding diverse perceptions when promoting certified rice, as some participants may prioritize health benefits more highly than others.
+
+Income class distribution indicates a balance between upper-class and lower-income participants, suggesting a mix of income levels within the dataset.
+
+A higher proportion of participants demonstrate objective knowledge of food quality certifications, indicating a level of familiarity and awareness among the participants.
+
+Trust in food quality certification systems varies among participants, with some exhibiting high levels of trust while others express lower confidence. Understanding these variations can inform efforts to build trust and encourage participation in the certified rice market.
+
+These observations depict diverse perspectives and behaviors regarding certified rice consumption. 
+
+### Bivariate Analysis (Numeric vs Numeric)
+
+*Scatter plot of Age vs Household Size*
+```{r}
+# Scatter plot between Age and Hhsz
+ggplot(data, aes(x = Age, y = Hhsz)) +
+  geom_point(alpha = 0.6) +
+  theme_minimal() +
+  labs(title = "Scatter plot of Age vs Household Size",
+       x = "Age",
+       y = "Household Size")
+       
+```
+The scatter plot illustrates a notable trend indicating that as age increases, there is a decrease in the number of household members. This observation suggests a negative correlation between age and household size. For instance, at an age of 70, there appears to be a reduced number of household members compared to younger ages. This trend implies that as individuals age, they may have fewer dependents or family members living with them, which could be influenced by various factors such as children leaving home, changes in family structure, or lifestyle choices. 
+
+### Bivariate Analysis (Numeric vs Categorical)
+
+*Age Distribution by Purchase Behaviour*
+```{r}
+# Box plot of Age by Buy
+ggplot(data, aes(x = as.factor(Buy), y = Age)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Box plot of Age by Purchase Behaviour",
+       x = "Purchase Behavior (Buy)",
+       y = "Age")
+```
+The box plot shows the distribution of participant ages across two groups: those who buy certified rice (`Buy` = 1) and those who do not (`Buy` = 0).
+
+While the median age is slightly lower for those who do not buy certified rice, the overall distribution indicates that certified rice is purchased by people across a variety of age groups. There is no strong separation between the two groups, suggesting that age may not be a defining factor when it comes to buying certified rice.
+
+
+### Bivariate Analysis (Categorical vs Categorical)
+
+```{r}
+# Contingency table of Gender and Buy
+table(data$Gender, data$Buy)
+
+# Bar plot of Gender by Buy
+ggplot(data, aes(x = as.factor(Gender), fill = as.factor(Buy))) +
+  geom_bar(position = "dodge") +
+  theme_minimal() +
+  labs(title = "Bar plot of Gender by Purchase Behavior",
+       x = "Gender",
+       fill = "Purchase Behavior (Buy)")
+```
+The bar plot indicates some associations between `Gender` and `Buy` . For instance, a higher proportion of females purchased certified rice compared to males.
+
+### Correlation Matrix
+```{r}
+# Compute correlation matrix for numeric variables
+numeric_data <- data %>% select(Age, Hhsz)
+cor_matrix <- cor(numeric_data, use = "complete.obs")
+
+# Print the correlation matrix
+print(cor_matrix)
+
+# Visualize the correlation matrix
+ggcorrplot(cor_matrix, method = "circle", lab = TRUE)
+
+```
+The correlation analysis between the variables `Age` and `Hhsz` reveals a weak negative relationship, indicating that as age increases, there is a corresponding decrease in the number of household members. This finding corroborates previous observations made regarding the inverse association between age and household size.
+
+## Data Preprocessing
+
+### Handling Missing Data
+
+Following an assessment of missing values within the dataset, it was observed that the variables `Sens`, `Conve`, `Health`, and `Price` contained missing values. Specifically, `Health` exhibited two missing values, while `Sens`, `Conve`, and `Price` each had one missing value.
+
+To address these missing values, a mode imputation strategy was employed for the categorical variables (`Sens`, `Conve`, `Health`, and `Price`). The mode, representing the most frequently occurring value within each respective variable, was calculated and used to replace the missing values.
+
+Following the imputation process, the imputed values were combined with the original dataset. The old columns containing missing values (`Sens`, `Conve`, `Health`, and `Price`) were subsequently dropped from the combined dataset, resulting in a cleaned dataset ready for analysis.
+
+```{r}
+
+# Define a function to calculate mode
+get_mode <- function(x) {
+  unique_x <- unique(x)
+  unique_x[which.max(tabulate(match(x, unique_x)))]
+}
+
+# Imputation Strategy: Mode Imputation for categorical variables
+imputed_values <- data %>%
+  mutate(Sens = ifelse(is.na(Sens), get_mode(data$Sens), Sens),
+         Conve = ifelse(is.na(Conve), get_mode(data$Conve), Conve),
+         Health = ifelse(is.na(Health), get_mode(data$Health), Health),
+         Price = ifelse(is.na(Price), get_mode(data$Price), Price))
+
+# Combine imputed data with original dataset
+combined_data <- cbind(data[, !names(data) %in% c("Sens", "Conve", "Health", "Price")],
+                        imputed_values[, c("Sens", "Conve", "Health", "Price")])
+
+# Drop old columns with missing values
+cleaned_data <- combined_data %>%
+  select(-matches("Sens|Conve|Health|Price"))
+
+# View the cleaned dataset
+head(cleaned_data)
+
+
+
+```
+### Age Categorisation and Encoding
+
+The `Age` variable in the dataset was categorised into four distinct age groups to facilitate analysis. These categories were then encoded numerically for ease of use in statistical analysis and machine learning models. The defined and encoded categories are as follows:
+
+*Young Adults (25-34 years):* Encoded as 1. This group represents younger participants who are at the early stages of their adult life.
+*Middle-aged Adults (35-49 years):* Encoded as 2. This category includes participants who are in the middle phase of their adult life, often associated with peak career years and family responsibilities.
+*Older Adults (50-64 years):* Encoded as 3. Participants in this group are approaching retirement age and may have different consumption patterns and health considerations.
+*Seniors (65+ years):* Encoded as 4. This category includes participants who are in the senior phase of their life, typically retired, with potentially different purchasing behaviors and preferences.
+
+```{r}
+# Define age categories and encode them
+cleaned_data <- cleaned_data %>%
+  mutate(Age_Category = cut(Age,
+                            breaks = c(24, 34, 49, 64, Inf),
+                            labels = c("Young Adults (25-34)", "Middle-aged Adults (35-49)", "Older Adults (50-64)", "Seniors (65+)"),
+                            right = FALSE),
+         Age_Category_Encoded = as.integer(factor(Age_Category, 
+                                                  levels = c("Young Adults (25-34)", "Middle-aged Adults (35-49)", "Older Adults (50-64)", "Seniors (65+)"))))
+
+# View the first few rows to check the new Age_Category_Encoded column
+head(cleaned_data)
+
+```
+### Drop Unnecessary Columns
+
+In preparing the dataset for analysis, the `ID`, `Age`, and `Age_Category` columns were removed. This decision was made to streamline the dataset and focus on the variables that are most pertinent to the analysis objectives. The ID column, being a unique identifier for each participant, did not add analytical value. The `Age` and `Age_Category` columns were removed to avoid redundancy, given that the `Age_Category_Encoded` column now effectively captures the relevant age information in a numerical format suitable for analysis.
+
+```{r}
+# Drop ID, Age, and Age_Category columns
+cleaned_data <- cleaned_data %>%
+  select(-ID, -Age, -Age_Category)
+
+# View the first few rows to check the updated dataset
+head(cleaned_data)
+```
+### Feature Scaling of Hhsz
+
+Feature scaling was applied to the `Hhsz` (number of household members) variable to standardise its values. This involved transforming the variable to have a mean of 0 and a standard deviation of 1. The standardised Hhsz variable, now represented as Hhsz_Scaled, ensures that the feature is on a similar scale as other variables in the dataset, which is crucial for many machine learning algorithms to perform effectively.
+
+```{r}
+# Standardize the Hhsz variable
+cleaned_data <- cleaned_data %>%
+  mutate(Hhsz_Scaled = scale(Hhsz)) %>%
+  select(-Hhsz)  # Drop the original Hhsz column
+
+# View the first few rows to check the updated dataset
+head(cleaned_data)
+```
+
+### Feature Selection
+
+Recursive Feature Elimination (RFE) was performed to identify the most important features influencing the purchase behavior of certified rice. Using cross-validation, the optimal subset of features was selected to improve the model's predictive performance. Please refer to the output below.
+
+```{r}
+# Set up control for RFE
+control <- rfeControl(functions=rfFuncs, method="cv", number=10)
+
+# Define the predictor variables and the response variable
+predictors <- cleaned_data[, !names(cleaned_data) %in% c("Buy")]
+response <- cleaned_data$Buy
+
+# Perform RFE
+set.seed(123)
+results <- rfe(predictors, response, sizes=c(1:ncol(predictors)), rfeControl=control)
+
+# Print the results
+print(results)
+# List the chosen features
+chosen_features <- predictors[, predictors(results)]
+print(chosen_features)
+
+```
+
+## Model Implementation
+
+### Data Preparation
+
+The dataset used for model training and testing was preprocessed to select relevant features and split into training and testing sets. The target variable, 'Buy,' was extracted from the original cleaned data. Features were selected based on Recursive Feature Elimination (RFE) analysis, optimising model performance. The data was then split into 80% training and 20% testing sets using stratified sampling to ensure a balanced representation of classes.
+
+```{r}
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Extract the target variable 'Buy' from the original cleaned_data
+response <- cleaned_data$Buy
+
+# List the chosen features
+chosen_features <- predictors[, results$optVariables]
+
+# Add the target variable 'Buy' to the chosen features
+chosen_features$Buy <- response
+
+# Split the data into training and testing sets based on the chosen features
+index <- createDataPartition(chosen_features$Buy, p = 0.8, list = FALSE)
+train_data <- chosen_features[index, ]
+test_data <- chosen_features[-index, ]
+
+
+```
+
+### Model Training
+A Random Forest model was chosen for its ability to handle complex relationships and non-linearities in the data. The model was trained using the training dataset with 10-fold cross-validation to evaluate performance robustness. The number of trees in the forest was set to 100 to achieve a balance between model complexity and computational efficiency.
+
+```{r}
+# Combine chosen features with the response variable
+final_data <- cbind(chosen_features, Buy = response)
+
+# Set up the training control for 10-fold cross-validation
+train_control <- trainControl(method = "cv", number = 10)
+
+# Train the Random Forest model with 10-fold cross-validation
+set.seed(123)
+final_rf_model <- train(Buy ~ ., data = final_data, method = "rf", trControl = train_control, ntree = 100)
+
+# Print the model summary
+print(final_rf_model)
+
+
+# Get variable importance
+# Get variable importance
+final_importance <- varImp(final_rf_model)
+print(final_importance)
+plot(final_importance)
+
+```
+
+**Feature Importance Analysis:**
+
+1. **Compt (Perceived Self-Competence):** The feature "Compt," representing the perceived self-competence in identifying certified rice, emerges as the most important factor with a value close to 100. This high importance indicates that individuals' confidence in recognizing certified rice significantly influences their purchasing behavior.
+
+2. **Inc (Income Class):** Following competence, the feature "Inc," which denotes the self-reported income class of participants, holds notable importance in predicting purchase behavior. While its importance is lower than competence, income still contributes significantly to the model's predictions, highlighting its role in shaping consumer choices.
+
+3. **Env (Environmental Consequences):** Environmental factors, represented by the feature "Env," exhibit moderate importance, positioning between competence and income in terms of influence. This suggests that individuals' perceptions of the psychological consequences of environmentally friendly behavior play a notable role in their decision-making process regarding rice purchase.
+
+4. **Lresi (Belief in Reduced Residues):** The feature "Lresi," indicating the belief that certified rice has fewer residues compared to conventional rice, demonstrates relatively lower importance compared to competence, income, and environmental factors. While still contributing to the model's predictions, life satisfaction ranks lower in terms of influence.
+
+5. **Trust (Trust in Certification System):** Trust in the food quality certification system for rice, represented by the feature "Trust," holds a position of importance lower than belief in reduced residues but higher than gender. Although trust contributes to predicting purchase behavior, its impact is less significant compared to other factors.
+
+6. **Gender:** Gender emerges as the feature with the lowest importance among those analyzed. While still playing a role in the model's predictions, gender has no influence compared to competence, income, environmental factors, trust, and belief in reduced residues. 
+
+**Conclusion:**
+The analysis of feature importance highlights the significant role of perceived self-competence, income class, environmental perceptions and belief in reduced residues in predicting purchase behavior of certified rice. 
+
+### Model Evaluation
+
+The trained Random Forest model was evaluated using various metrics to assess its performance. Variable importance analysis was conducted to identify the most influential features in predicting purchase behavior. The model's overall performance was assessed using metrics such as accuracy, precision, recall, and F1-score.
+
+```{r}
+
+# Predict on the testing set
+predictions <- predict(final_rf_model, newdata = test_data)
+
+# Define a threshold
+threshold <- 0.5
+
+# Convert predictions to binary values
+binary_predictions <- ifelse(predictions >= threshold, 1, 0)
+
+# Ensure that both predicted and actual values are factors
+binary_predictions <- factor(binary_predictions)
+test_data$Buy <- factor(test_data$Buy)
+
+# Evaluate the model with the confusion matrix
+confusion_matrix <- confusionMatrix(binary_predictions, test_data$Buy)
+
+# Print confusion matrix
+print("Confusion Matrix:")
+print(confusion_matrix)
+
+# Additional metrics
+accuracy <- confusion_matrix$overall['Accuracy']
+precision <- confusion_matrix$byClass['Pos Pred Value']
+recall <- confusion_matrix$byClass['Sensitivity']
+f1 <- confusion_matrix$byClass['F1']
+print(paste("Accuracy:", accuracy))
+print(paste("Precision:", precision))
+print(paste("Recall:", recall))
+print(paste("F1-score:", f1))
+
+```
+
+
+**Confusion Matrix and Performance Metrics:**
+The confusion matrix provides a snapshot of the model's performance in predicting the purchase behavior of certified rice.
+
+- **Accuracy:** The model achieved an accuracy of 84.62%, indicating the proportion of correctly classified instances out of the total predictions.
+- **Precision:** The precision, also known as the positive predictive value, stands at 76.19%. This metric represents the proportion of true positive predictions out of all positive predictions made by the model.
+- **Recall (Sensitivity):** The recall, or sensitivity, measures the proportion of actual positive instances that were correctly identified by the model. It is calculated at 94.12%.
+- **F1-score:** The F1-score, a harmonic mean of precision and recall, serves as a combined measure of the model's accuracy and completeness. The F1-score achieved by the model is 84.21%.
+
+**Analysis:**
+The confusion matrix provides insights into the model's performance across different classes. It shows that out of the 17 instances predicted as class 0 (not buying certified rice), 16 were correctly classified, resulting in a sensitivity of 94.12%. The specificity, which measures the proportion of actual negative instances correctly identified by the model, is 77.27%. This indicates that while the model is quite effective at identifying positive instances, there is still room for improving the identification of negative instances.
+
+**Conclusion:**
+The model demonstrates strong performance in predicting the purchase behavior of certified rice, with an accuracy of 84.62%. Despite its high sensitivity, the model could benefit from improvements in specificity to enhance the identification of instances where participants do not purchase certified rice. The balanced accuracy of 85.70% underscores the model’s overall robustness, though further refinements can be made to improve its precision and specificity.
+
+
+### ROC Curve Analysis
+
+The ROC curve provided a visual representation of the model's performance in distinguishing between the positive and negative classes. The plot depicted the True Positive Rate (Sensitivity) against the False Positive Rate (1 - Specificity). A diagonal line represented a random classifier, while the ROC curve illustrated the model's discriminatory power. The Area Under the Curve (AUC) quantified the model's performance, with a modereate AUC indicating fair predictive accuracy.
+
+```{r}
+# Plot ROC curve with reversed x-axis
+roc_curve <- roc(test_data$Buy, as.numeric(predictions))
+plot(roc_curve, main="ROC Curve", col="blue", lwd=2, reverse=TRUE)
+
+# Add diagonal line (random classifier)
+abline(a=0, b=1, lty=2, col="red")
+
+# Add legend
+legend("bottomright", legend=c("ROC Curve", "Random Classifier"), col=c("blue", "red"), lty=1:2, cex=0.8)
+
+# Calculate AUC (Area Under the Curve)
+auc <- auc(roc_curve)
+print(paste("AUC:", auc))
+
+```
+
+
+**ROC Curve Results**
+
+**Key Findings:**
+The ROC curve analysis for the classifier yielded an Area Under the Curve (AUC) of 0.9519. The AUC is a measure of the classifier's ability to distinguish between positive and negative classes.
+
+**Interpretation:**
+An AUC of 0.9519 indicates that the classifier possesses a strong discriminative power in distinguishing between the positive and negative classes. This value suggests that the classifier performs very well in terms of identifying true positive instances while minimizing false positive instances.
+
+**Implications:**
+The high AUC value of 0.9519 demonstrates that the classifier is highly effective in differentiating between the classes. This strong performance implies that the model is well-calibrated and reliable for predicting the purchase behavior of certified rice. While there is always room for fine-tuning, the current model shows excellent discriminative ability, making it a robust tool for this task.
+
+**Conclusion:**
+The AUC of 0.9519 suggests that the classifier has a very high discriminative power. This indicates that the model is highly effective and reliable in predicting the purchase behavior of certified rice, showcasing the success of the current model's optimization and feature engineering efforts.
+
+## SHAP Values Analysis (SHAP (SHapley Additive exPlanations))
+
+SHAP values offered insights into the importance of features in driving model predictions. By calculating the contribution of each feature to the model's output, SHAP values highlighted the factors influencing purchase behavior. In our analysis, we utilized the Kernel SHAP method to compute SHAP values for the Random Forest model. The SHAP visualization (shapviz) provided a clear understanding of feature importance through various plots, such as bee swarm plots, which visualised the distribution of SHAP values for each feature. Insights gained from SHAP analysis could inform marketing strategies and enhance understanding of customer preferences.
+
+```{r}
+# Train the Random Forest model on the training set
+final_rf_model <- randomForest(Buy ~ ., data = train_data, ntree = 100)
+
+# Calculate Kernel SHAP values
+library(kernelshap)
+s <- kernelshap(final_rf_model, train_data[, -which(names(train_data) == "Buy")], bg_X = train_data)
+
+# Convert to shapviz object
+library(shapviz)
+sv <- shapviz(s)
+
+# Gain insights
+sv_importance(sv, kind = "bee")
+
+
+```
+
+
+**Purpose:** Analysing the SHAP values helps us understand how important different factors (features) are in predicting rice purchase behavior.
+
+**Findings:**
+
+* **Competence:** This seems to be the most important factor, with high SHAP values suggesting people with strong competence are more likely to be predicted as rice buyers.
+* **Income:** Income also plays a role, but its effect varies.  Higher income levels might be associated with a higher chance of buying rice, but the impact might not be the same across all income brackets.
+* **Environment:** The influence of environment on predictions is moderate. This suggests that environmental factors might have some impact, but it's not as strong as competence or income.
+* **Lresi (Belief in Reduced Residues):**  The SHAP values for life satisfaction are spread out evenly. This means it's hard to say definitively if being more or less satisfied with life influences rice purchase behavior in a consistent way.
+* **Trust and Gender:** Both these factors seem to have mixed influences on predictions. Trust can have both positive and negative effects, and the same might be true for gender.
+
+# Conclusion
+
+The primary objective of this analysis was to identify key factors influencing the likelihood of buying certified rice using a Random Forest model. Our findings highlight the significant roles of various features, with Competence (perceived self-competence in identifying certified rice) emerging as the most influential factor. Income, Environment, `Lresi` (belief in reduced residues), and Trust in the certification system also play notable roles.
+
+The Random Forest model, validated through 10-fold cross-validation, demonstrated high accuracy (84.62%) and a balanced accuracy score of 85.70%, indicating strong discriminative power. The ROC curve analysis, with an AUC of 0.9519, further confirmed the model's excellent performance.
+
+SHAP values provided deeper insights into feature importance, revealing how individual attributes impacted model predictions. These insights can guide targeted strategies to enhance the model's predictive accuracy and practical application.
+
+This analysis demonstrates the importance of understanding feature impacts in predictive modeling, offering a robust foundation for predicting consumer behavior towards certified rice. The results indicate that the current model is highly effective.
+
+
+
