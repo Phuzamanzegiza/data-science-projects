@@ -1,140 +1,59 @@
-# Data Science Projects 
+# Data Science Projects
 
-Welcome to my Data Science Projects repository! This repository showcases a variety of data science projects I have worked on, spanning various fields and employing a range of machine learning models and big data techniques. These projects illustrate my expertise in consumer analytics, predictive modeling, and other key areas in data science.
+Welcome to my Data Science Projects repository. This repository showcases a collection of my projects across various fields, including machine learning, big data, and consumer analytics.
+
+## Project Structure
+
+- **index.Rmd**: Home page of the site.
+- **hierarchical-clustering.Rmd**: Project on Hierarchical Clustering.
+- **random-forest.Rmd**: Project on Consumer Behaviour using Random Forest.
+- **pca-kmeans-clustering.Rmd**: Project on Customer Segmentation using PCA and K-Means Clustering.
+- **navbar.html**: Custom navigation bar included in the site.
+- **header.html**: Custom header file.
+- **styles.css**: Custom styles for the site.
+- **my-site.yaml**: Configuration file for the site.
 
 ## Table of Contents
 
-- [About](#about)
-- [Projects](#projects)
-  - [Consumer Analytics](#consumer-analytics)
-  - [Big Data](#big-data)
-  - [Machine Learning Models](#machine-learning-models)
-  - [Other Fields](#other-fields)
-- [Repository Structure](#repository-structure)
-- [How to Run](#how-to-run)
-- [Technologies Used](#technologies-used)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+The site includes a floating table of contents for easy navigation:
 
-## About
+- **Home**: Overview of the projects.
+- **Hierarchical Clustering**: Detailed analysis and results of hierarchical clustering.
+- **Consumer Behaviour**: Insights and findings from the consumer behaviour analysis using random forest.
+- **Customer Segmentation**: Segmentation of customers using PCA and K-Means clustering.
 
-This repository contains a collection of my data science projects that demonstrate my ability to handle large datasets, apply machine learning algorithms, and derive insights from data. These projects cover a broad spectrum of applications, particularly focusing on consumer analytics and big data.
+## How to Use
 
-## Projects
+### Preview the Site Locally
 
-### Consumer Analytics
+To preview the site locally, follow these steps:
 
-1. **Customer Segmentation**
-   - **Description:** Segmenting customers based on purchasing behavior using clustering techniques.
-   - **Techniques:** K-Means Clustering, PCA
-   - **Tools:** R, Python, Scikit-learn
+1. Clone the repository to your local machine.
+2. Open R or RStudio.
+3. Set the working directory to the project directory.
+4. Use the following command to render the site:
 
-2. **Churn Prediction**
-   - **Description:** Predicting customer churn for a subscription-based service.
-   - **Techniques:** Logistic Regression, Random Forest, XGBoost
-   - **Tools:** Python, Scikit-learn, XGBoost
+    ```r
+    setwd("path/to/your/project")
+    rmarkdown::render_site()
+    ```
 
-### Big Data
+5. Open the generated HTML files in your browser to view the site.
 
-1. **Real-Time Data Processing**
-   - **Description:** Processing and analyzing streaming data in real-time.
-   - **Techniques:** Apache Kafka, Apache Spark Streaming
-   - **Tools:** Java, Scala, Apache Spark, Apache Kafka
+### Deploy to GitHub Pages
 
-2. **Large Scale Data Analysis**
-   - **Description:** Analyzing large datasets to extract meaningful insights.
-   - **Techniques:** MapReduce, Hive, Pig
-   - **Tools:** Hadoop, Hive, Pig
-
-### Machine Learning Models
-
-1. **Predictive Modeling**
-   - **Description:** Building predictive models for various applications.
-   - **Techniques:** Linear Regression, Decision Trees, Neural Networks
-   - **Tools:** Python, TensorFlow, Keras, Scikit-learn
-
-2. **Natural Language Processing**
-   - **Description:** Text analysis and sentiment analysis on social media data.
-   - **Techniques:** Tokenization, Lemmatization, Sentiment Analysis
-   - **Tools:** Python, NLTK, SpaCy
-
-### Other Fields
-
-1. **Healthcare Analytics**
-   - **Description:** Predicting disease outbreaks using historical data.
-   - **Techniques:** Time Series Analysis, ARIMA, Prophet
-   - **Tools:** Python, R, Prophet
-
-2. **Financial Analytics**
-   - **Description:** Stock price prediction using historical data.
-   - **Techniques:** LSTM, GRU
-   - **Tools:** Python, TensorFlow, Keras
-
-## Repository Structure
-
-The repository is structured as follows:
-
-```
-.
-├── Consumer_Analytics
-│   ├── Customer_Segmentation
-│   ├── Churn_Prediction
-├── Big_Data
-│   ├── Real_Time_Data_Processing
-│   ├── Large_Scale_Data_Analysis
-├── Machine_Learning_Models
-│   ├── Predictive_Modeling
-│   ├── Natural_Language_Processing
-├── Other_Fields
-│   ├── Healthcare_Analytics
-│   ├── Financial_Analytics
-└── README.md
-```
-
-Each project folder contains the necessary code, data, and documentation to understand and run the project.
-
-## How to Run
-
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/YourUsername/YourRepositoryName.git
-   cd YourRepositoryName
-   ```
-
-2. **Navigate to the Project Folder:**
-   ```bash
-   cd Consumer_Analytics/Customer_Segmentation
-   ```
-
-3. **Install Dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the Project:**
-   ```bash
-   python main.py
-   ```
+1. Ensure that GitHub Pages is enabled for your repository.
+2. Push the changes to the `main` or `gh-pages` branch (depending on your GitHub Pages configuration).
+3. The site should be accessible at `https://yourusername.github.io/your-repository-name`.
 
 ## Technologies Used
 
-- **Programming Languages:** Python, R, Scala, Java
-- **Frameworks and Libraries:** TensorFlow, Keras, Scikit-learn, NLTK, SpaCy
-- **Big Data Tools:** Apache Spark, Hadoop, Hive, Pig, Kafka
-- **Visualization:** Matplotlib, Seaborn, ggplot2
-- **Version Control:** Git
-
-## Contributing
-
-Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to contribute to this repository.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+- **R**: Programming language used for data analysis and visualization.
+- **RMarkdown**: Dynamic document format to combine code and narrative.
+- **Bootstrap**: Front-end framework for responsive design.
+- **GitHub Pages**: Hosting service for the site.
 
 ## Contact
 
-For any questions or inquiries, please contact me at franco@example.com.
+For any inquiries or collaborations, please reach out to me via [email](mailto:your-email@example.com).
 
-Thank you for visiting my repository! I hope you find these projects insightful and useful.
