@@ -1,8 +1,17 @@
 ---
 title: "Hierarchical Clustering"
 author: "Francis Ngema"
-output: html_document
 date: "2024-06-07"
+output: 
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
+    highlight: tango
+    includes:
+      before_body: navbar.html
+      in_header: header.html
+
 ---
 
 ```{r include=FALSE}
