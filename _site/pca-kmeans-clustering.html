@@ -729,7 +729,7 @@ distributions.</p>
 <span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a></span>
 <span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co"># Plot the histograms</span></span>
 <span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="fu">grid.arrange</span>(<span class="at">grobs =</span> histograms, <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>[1] “ID” “Gender” “CodedGender” “MaritalStatus” “WorkStatus”<br />
 [6] “Education” “Edcoded” “AnnualIncomex1000” “Age” “Location”<br />
 [11] “PurchasingDecisionMaker” “PurchasingLocation” “PLcoded”
@@ -770,7 +770,7 @@ the data distributions across different categories.</p>
 <span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a></span>
 <span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co"># Plot the bar plots in a 2-column grid</span></span>
 <span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a>gridExtra<span class="sc">::</span><span class="fu">grid.arrange</span>(<span class="at">grobs =</span> bar_plots, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="exploration-and-encoding-strategy-for-categorical-variables"
 class="section level2">
@@ -1142,7 +1142,7 @@ data analysis and modeling.</p>
 <span id="cb29-12"><a href="#cb29-12" tabindex="-1"></a></span>
 <span id="cb29-13"><a href="#cb29-13" tabindex="-1"></a><span class="co"># Plot the box plots in a 2-column grid</span></span>
 <span id="cb29-14"><a href="#cb29-14" tabindex="-1"></a><span class="fu">grid.arrange</span>(<span class="at">grobs =</span> box_plots, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div id="exploration-of-numerical-variables-scatter-plot-matrix"
 class="section level2">
@@ -1245,7 +1245,7 @@ investigation into the underlying dynamics of our dataset.</p>
 ## [====================================================================================================&gt;--] 98% est: 0s plot: [7, 7]
 ## [=======================================================================================================]100% est: 0s `stat_bin()`
 ## using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="exploration-of-numerical-variables-correlation-analysis"
 class="section level2">
@@ -1287,7 +1287,7 @@ tasks.</p>
 <span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a><span class="co"># Plot the correlation matrix using a heatmap</span></span>
 <span id="cb32-10"><a href="#cb32-10" tabindex="-1"></a><span class="fu">corrplot</span>(correlation_matrix, <span class="at">method =</span> <span class="st">&quot;color&quot;</span>, <span class="at">type =</span> <span class="st">&quot;upper&quot;</span>, </span>
 <span id="cb32-11"><a href="#cb32-11" tabindex="-1"></a>         <span class="at">addCoef.col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">tl.col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">tl.srt =</span> <span class="dv">45</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 <div id="inspect-final-dataset" class="section level2">
 <h2>Inspect final dataset</h2>
@@ -1362,11 +1362,11 @@ processes.</p>
 <span id="cb37-7"><a href="#cb37-7" tabindex="-1"></a><span class="co"># Plot the variance explained by each principal component</span></span>
 <span id="cb37-8"><a href="#cb37-8" tabindex="-1"></a><span class="fu">barplot</span>(pc_var, <span class="at">main =</span> <span class="st">&quot;Variance Explained by Principal Components&quot;</span>,</span>
 <span id="cb37-9"><a href="#cb37-9" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Principal Component&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Percentage of Variance Explained&quot;</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="co"># Plot the cumulative variance explained by principal components</span></span>
 <span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a><span class="fu">plot</span>(pc_cumvar, <span class="at">type =</span> <span class="st">&quot;b&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Cumulative Variance Explained by Principal Components&quot;</span>,</span>
 <span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Number of Principal Components&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Cumulative Percentage of Variance Explained&quot;</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
 <div id="pca-importance-of-components" class="section level2">
 <h2>PCA Importance of Components</h2>
 <p>With PC1 capturing over 99% of the variance, it is evident that this
@@ -1450,11 +1450,11 @@ data.</p>
 <span id="cb43-23"><a href="#cb43-23" tabindex="-1"></a></span>
 <span id="cb43-24"><a href="#cb43-24" tabindex="-1"></a><span class="co"># Display the plots</span></span>
 <span id="cb43-25"><a href="#cb43-25" tabindex="-1"></a>bar_plot_pc1</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>bar_plot_pc2</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>bar_plot_pc3</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="co">#bar_plot_pc4</span></span></code></pre></div>
 </div>
 <div id="principal-component-analysis-interpretation"
@@ -1497,7 +1497,7 @@ class="section level2">
 <span id="cb47-16"><a href="#cb47-16" tabindex="-1"></a></span>
 <span id="cb47-17"><a href="#cb47-17" tabindex="-1"></a><span class="co"># Combine plots</span></span>
 <span id="cb47-18"><a href="#cb47-18" tabindex="-1"></a>combined_plot <span class="ot">&lt;-</span> <span class="fu">grid.arrange</span>(pca_scatter, var_representation, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="co"># Save PCA scatter plot as standalone image</span></span>
 <span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;pca_scatter_plot.png&quot;</span>, pca_scatter, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
 <span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a></span>
@@ -1536,7 +1536,7 @@ within the data set.</p>
 <span id="cb49-10"><a href="#cb49-10" tabindex="-1"></a></span>
 <span id="cb49-11"><a href="#cb49-11" tabindex="-1"></a><span class="co"># Call elbow_method function</span></span>
 <span id="cb49-12"><a href="#cb49-12" tabindex="-1"></a><span class="fu">elbow_method</span>(pca_data, <span class="at">max_k =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 Elbow point is between 5 and 6 clusters. Other methods below will assist
 in making a definite decision.</p>
 </div>
@@ -1569,7 +1569,7 @@ maximizes intra-cluster cohesion and inter-cluster separation.</p>
 <span id="cb50-11"><a href="#cb50-11" tabindex="-1"></a></span>
 <span id="cb50-12"><a href="#cb50-12" tabindex="-1"></a><span class="co"># Call silhouette_method function</span></span>
 <span id="cb50-13"><a href="#cb50-13" tabindex="-1"></a><span class="fu">silhouette_method</span>(pca_data, <span class="at">max_k =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Silhouette Method shows 6 clusters.</p>
 </div>
 <div id="gap-statistics" class="section level2">
@@ -1639,7 +1639,7 @@ each cluster.</p>
 ## Clustering k = 1,2,..., K.max (= 10): .. done
 ## Bootstrapping, b = 1,2,..., B (= 10)  [one &quot;.&quot; per sample]:
 ## .......... 10</code></pre>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 Gap Statistics shows 6 clusters.Therefore 6 clusters were selected for
 segmentation.</p>
 </div>
@@ -1673,7 +1673,7 @@ understanding the K-means clustering results derived from PCA.</p>
 <span id="cb53-12"><a href="#cb53-12" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb53-13"><a href="#cb53-13" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name =</span> <span class="st">&quot;Cluster&quot;</span>) <span class="sc">+</span></span>
 <span id="cb53-14"><a href="#cb53-14" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;K-means Clustering Results (K = 6)&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Principal Component 1&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Principal Component 2&quot;</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 ## K-means fviz plot</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="co"># Perform PCA on your data</span></span>
 <span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a>pc <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(data_final_scaled, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
@@ -1691,7 +1691,7 @@ understanding the K-means clustering results derived from PCA.</p>
 <span id="cb54-14"><a href="#cb54-14" tabindex="-1"></a>             <span class="at">palette =</span> <span class="st">&quot;jco&quot;</span>, </span>
 <span id="cb54-15"><a href="#cb54-15" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_minimal</span>(),</span>
 <span id="cb54-16"><a href="#cb54-16" tabindex="-1"></a>             <span class="at">main =</span> <span class="st">&quot;K-means Clustering Results (K = 6)&quot;</span>)</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 There is an overlap between clusters, especially cluster 3, 4 and 6
 while cluster 1 and 2 are slightly isolated from other clusters but
 overlap with each other. Cluster 5 also appear to be independent. It
@@ -1857,7 +1857,7 @@ data points may have been assigned to the wrong cluster.</p>
 ## 4       4  111          0.45
 ## 5       5  300          0.42
 ## 6       6  141          0.34</code></pre>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-27-1.png" width="672" />
 # Cluster Profiles</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a><span class="co"># Assign cluster labels to original scaled dataset</span></span>
 <span id="cb62-2"><a href="#cb62-2" tabindex="-1"></a>data_final_scaled <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_final_scaled, <span class="at">Cluster =</span> kmeans_result<span class="sc">$</span>cluster)</span>
@@ -1880,7 +1880,7 @@ data points may have been assigned to the wrong cluster.</p>
 <span id="cb62-19"><a href="#cb62-19" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Mean&quot;</span>,</span>
 <span id="cb62-20"><a href="#cb62-20" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Cluster&quot;</span>) <span class="sc">+</span></span>
 <span id="cb62-21"><a href="#cb62-21" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="./pca-kmeans-clustering_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="pca-kmeans-clustering_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 </div>
 <div id="plotly-histograms-of-cluster-profiles" class="section level2">
 <h2>Plotly Histograms of cluster profiles</h2>
