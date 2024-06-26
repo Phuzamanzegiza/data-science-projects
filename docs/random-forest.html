@@ -1113,7 +1113,7 @@ class="section level3">
 <span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
 <span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of Numeric Variables&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>The distribution analysis of numerical variables in the rice dataset,
 focusing on Age and Number of household members (Hhsz), reveals insights
 into the shape, center, and spread of the data.</p>
@@ -1148,7 +1148,7 @@ class="section level3">
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of Categorical Variables&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 The distribution analysis of variables within the rice dataset reveals
 notable trends and insights into participants’ behaviors and attitudes
 towards certified rice consumption.</p>
@@ -1216,7 +1216,7 @@ regarding certified rice consumption.</p>
 <span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Scatter plot of Age vs Household Size&quot;</span>,</span>
 <span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Age&quot;</span>,</span>
 <span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Household Size&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 The scatter plot illustrates a notable trend indicating that as age
 increases, there is a decrease in the number of household members. This
 observation suggests a negative correlation between age and household
@@ -1238,7 +1238,7 @@ class="section level3">
 <span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Box plot of Age by Purchase Behaviour&quot;</span>,</span>
 <span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Purchase Behavior (Buy)&quot;</span>,</span>
 <span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Age&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 The box plot shows the distribution of participant ages across two
 groups: those who buy certified rice (<code>Buy</code> = 1) and those
 who do not (<code>Buy</code> = 0).</p>
@@ -1264,7 +1264,7 @@ class="section level3">
 <span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Bar plot of Gender by Purchase Behavior&quot;</span>,</span>
 <span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Gender&quot;</span>,</span>
 <span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Purchase Behavior (Buy)&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 The bar plot indicates some associations between <code>Gender</code> and
 <code>Buy</code> . For instance, a higher proportion of females
 purchased certified rice compared to males.</p>
@@ -1282,7 +1282,7 @@ purchased certified rice compared to males.</p>
 ## Hhsz -0.04438532  1.00000000</code></pre>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># Visualize the correlation matrix</span></span>
 <span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="fu">ggcorrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">&quot;circle&quot;</span>, <span class="at">lab =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 The correlation analysis between the variables <code>Age</code> and
 <code>Hhsz</code> reveals a weak negative relationship, indicating that
 as age increases, there is a corresponding decrease in the number of
@@ -1778,7 +1778,7 @@ efficiency.</p>
 ## Trust    1.938
 ## Gender   0.000</code></pre>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="fu">plot</span>(final_importance)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p><strong>Feature Importance Analysis:</strong></p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Compt (Perceived Self-Competence):</strong> The feature
@@ -1946,7 +1946,7 @@ accuracy.</p>
 <span id="cb54-5"><a href="#cb54-5" tabindex="-1"></a></span>
 <span id="cb54-6"><a href="#cb54-6" tabindex="-1"></a><span class="co"># Add legend</span></span>
 <span id="cb54-7"><a href="#cb54-7" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;ROC Curve&quot;</span>, <span class="st">&quot;Random Classifier&quot;</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">cex=</span><span class="fl">0.8</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a><span class="co"># Calculate AUC (Area Under the Curve)</span></span>
 <span id="cb55-2"><a href="#cb55-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">auc</span>(roc_curve)</span>
 <span id="cb55-3"><a href="#cb55-3" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;AUC:&quot;</span>, auc))</span></code></pre></div>
@@ -2002,7 +2002,7 @@ understanding of customer preferences.</p>
 <span id="cb60-4"><a href="#cb60-4" tabindex="-1"></a></span>
 <span id="cb60-5"><a href="#cb60-5" tabindex="-1"></a><span class="co"># Gain insights</span></span>
 <span id="cb60-6"><a href="#cb60-6" tabindex="-1"></a><span class="fu">sv_importance</span>(sv, <span class="at">kind =</span> <span class="st">&quot;bee&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p><strong>Purpose:</strong> Analysing the SHAP values helps us
 understand how important different factors (features) are in predicting
 rice purchase behavior.</p>
@@ -2068,7 +2068,7 @@ data %&gt;%
   facet_wrap(~ variable, scales = &quot;free&quot;) +
   theme_minimal() +
   labs(title = &quot;Distribution of Numeric Variables&quot;)</code></pre>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>The distribution analysis of numerical variables in the rice dataset,
 focusing on Age and Number of household members (Hhsz), reveals insights
 into the shape, center, and spread of the data.</p>
@@ -2102,7 +2102,7 @@ class="section level3">
 <span id="cb62-7"><a href="#cb62-7" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
 <span id="cb62-8"><a href="#cb62-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb62-9"><a href="#cb62-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of Categorical Variables&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 The distribution analysis of variables within the rice dataset reveals
 notable trends and insights into participants’ behaviors and attitudes
 towards certified rice consumption.</p>
@@ -2171,7 +2171,7 @@ class="section level3">
 <span id="cb63-5"><a href="#cb63-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Scatter plot of Age vs Household Size&quot;</span>,</span>
 <span id="cb63-6"><a href="#cb63-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Age&quot;</span>,</span>
 <span id="cb63-7"><a href="#cb63-7" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Household Size&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 The scatter plot illustrates a notable trend indicating that as age
 increases, there is a decrease in the number of household members. This
 observation suggests a negative correlation between age and household
@@ -2193,7 +2193,7 @@ class="section level3">
 <span id="cb64-5"><a href="#cb64-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Box plot of Age by Purchase Behaviour&quot;</span>,</span>
 <span id="cb64-6"><a href="#cb64-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Purchase Behavior (Buy)&quot;</span>,</span>
 <span id="cb64-7"><a href="#cb64-7" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Age&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 The box plot shows the distribution of participant ages across two
 groups: those who buy certified rice (<code>Buy</code> = 1) and those
 who do not (<code>Buy</code> = 0).</p>
@@ -2219,7 +2219,7 @@ class="section level3">
 <span id="cb67-5"><a href="#cb67-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Bar plot of Gender by Purchase Behavior&quot;</span>,</span>
 <span id="cb67-6"><a href="#cb67-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Gender&quot;</span>,</span>
 <span id="cb67-7"><a href="#cb67-7" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Purchase Behavior (Buy)&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 The bar plot indicates some associations between <code>Gender</code> and
 <code>Buy</code> . For instance, a higher proportion of females
 purchased certified rice compared to males.</p>
@@ -2237,7 +2237,7 @@ purchased certified rice compared to males.</p>
 ## Hhsz -0.04438532  1.00000000</code></pre>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a><span class="co"># Visualize the correlation matrix</span></span>
 <span id="cb70-2"><a href="#cb70-2" tabindex="-1"></a><span class="fu">ggcorrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">&quot;circle&quot;</span>, <span class="at">lab =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 The correlation analysis between the variables <code>Age</code> and
 <code>Hhsz</code> reveals a weak negative relationship, indicating that
 as age increases, there is a corresponding decrease in the number of
@@ -2732,7 +2732,7 @@ efficiency.</p>
 ## Trust    1.938
 ## Gender   0.000</code></pre>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" tabindex="-1"></a><span class="fu">plot</span>(final_importance)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p><strong>Feature Importance Analysis:</strong></p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Compt (Perceived Self-Competence):</strong> The feature
@@ -2902,7 +2902,7 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="#cb1
 <span id="cb104-5"><a href="#cb104-5" tabindex="-1"></a></span>
 <span id="cb104-6"><a href="#cb104-6" tabindex="-1"></a><span class="co"># Add legend</span></span>
 <span id="cb104-7"><a href="#cb104-7" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;ROC Curve&quot;</span>, <span class="st">&quot;Random Classifier&quot;</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">cex=</span><span class="fl">0.8</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <div class="sourceCode" id="cb105"><pre
 class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" tabindex="-1"></a><span class="co"># Calculate AUC (Area Under the Curve)</span></span>
 <span id="cb105-2"><a href="#cb105-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">auc</span>(roc_curve)</span>
@@ -2961,7 +2961,7 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb1
 <span id="cb110-4"><a href="#cb110-4" tabindex="-1"></a></span>
 <span id="cb110-5"><a href="#cb110-5" tabindex="-1"></a><span class="co"># Gain insights</span></span>
 <span id="cb110-6"><a href="#cb110-6" tabindex="-1"></a><span class="fu">sv_importance</span>(sv, <span class="at">kind =</span> <span class="st">&quot;bee&quot;</span>)</span></code></pre></div>
-<p><img src="random-forest_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><img src="./random-forest_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <p><strong>Purpose:</strong> Analysing the SHAP values helps us
 understand how important different factors (features) are in predicting
 rice purchase behavior.</p>
