@@ -1,0 +1,58 @@
+---
+title: "diabetes-clusters"
+author: "Franco"
+date: "2024-07-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(corrplot)
+
+# Load the data
+data <- read_csv("diabetes.csv")
+
+# Display the first few rows of the dataset
+print(head(data))
+
+# Summary of the dataset
+print(summary(data))
+
+# Check for missing values
+missing_values <- sapply(data, function(x) sum(is.na(x)))
+print(missing_values)
+
+# Visualize the distribution of each feature
+feature_names <- colnames(data)
+for (feature in feature_names) {
+  p <- ggplot(data, aes_string(x = feature)) +
+    geom_histogram(bins = 30, fill = "blue", color = "black", alpha = 0.7) +
+    theme_minimal() +
+    labs(title = paste("Distribution of", feature), x = feature, y = "Frequency")
+  print(p)
+}
+
+# Compute and visualize the correlation matrix
+cor_matrix <- cor(data, use = "complete.obs")
+corrplot(cor_matrix, method = "circle")
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
