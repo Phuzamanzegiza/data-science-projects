@@ -9,14 +9,31 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
+# Exploratory Data Analysis
 
 ```{r}
 # Load necessary libraries
+# Load necessary libraries
+library(tidyverse)
+library(readxl)
 library(ggplot2)
 library(dplyr)
-library(readr)
+library(ggcorrplot)
+library(caret)
+library(scales)
+library(gridExtra)
+library(GGally)
 library(corrplot)
+library(factoextra)
+library(cluster)
+library(plotly)
+library(fpc)
+library(clValid)
+library(clusterSim)
+library(GGally)
+library(openxlsx)
+library(plotly)
+library(VIM)
 
 # Load the data
 data <- read_csv("diabetes.csv")
@@ -31,19 +48,6 @@ print(summary(data))
 missing_values <- sapply(data, function(x) sum(is.na(x)))
 print(missing_values)
 
-# Visualize the distribution of each feature
-feature_names <- colnames(data)
-for (feature in feature_names) {
-  p <- ggplot(data, aes_string(x = feature)) +
-    geom_histogram(bins = 30, fill = "blue", color = "black", alpha = 0.7) +
-    theme_minimal() +
-    labs(title = paste("Distribution of", feature), x = feature, y = "Frequency")
-  print(p)
-}
-
-# Compute and visualize the correlation matrix
-cor_matrix <- cor(data, use = "complete.obs")
-corrplot(cor_matrix, method = "circle")
 
 ```
 
@@ -51,8 +55,679 @@ corrplot(cor_matrix, method = "circle")
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r histo, echo=TRUE}
+# Helper function to create histograms
+create_histogram <- function(data, column, title, binwidth, fill_color) {
+  ggplot(data, aes_string(x = column)) +
+    geom_histogram(aes(y = 100 * (..count..) / sum(..count..)), binwidth = binwidth, colour = "black", fill = fill_color) +
+    ggtitle(title) +
+    ylab("Percentage") +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 14, face = "bold"),
+          axis.title = element_text(size = 12),
+          axis.text = element_text(size = 8))
+}
+
+# Create histograms for each feature with new colors
+p1 <- create_histogram(data, "Pregnancies", "Number of Pregnancies", 1, "#1f77b4") # Blue
+p2 <- create_histogram(data, "Glucose", "Glucose", 5, "#ff7f0e") # Orange
+p3 <- create_histogram(data, "BloodPressure", "Blood Pressure", 2, "#2ca02c") # Green
+p4 <- create_histogram(data, "SkinThickness", "Skin Thickness", 2, "#d62728") # Red
+p5 <- create_histogram(data, "Insulin", "Insulin", 20, "#9467bd") # Purple
+p6 <- create_histogram(data, "BMI", "Body Mass Index", 1, "#8c564b") # Brown
+p7 <- create_histogram(data, "DiabetesPedigreeFunction", "Diabetes Pedigree Function", 0.05, "#e377c2") # Pink
+p8 <- create_histogram(data, "Age", "Age", 1, "#7f7f7f") # Gray
+
+# Arrange plots in a grid layout with larger size
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r denseplot, echo=TRUE}
+# Helper function to create density plots with outcome comparison
+create_density_with_outcome <- function(data, column, title) {
+  mean_values <- data %>%
+    group_by(Outcome) %>%
+    summarize(mean_value = mean(get(column), na.rm = TRUE)) %>%
+    ungroup()
+  
+  ggplot(data, aes_string(x = column, fill = "as.factor(Outcome)")) +
+    geom_density(alpha = 0.5) +
+    geom_vline(data = mean_values, aes(xintercept = mean_value, color = as.factor(Outcome)),
+               linetype = "dotted", size = 1) +
+    scale_fill_manual(values = c("#FFFF00", "#008080")) +  # Yellow and Teal hex codes
+    scale_color_manual(values = c("red", "blue")) +
+    labs(title = title, fill = "Outcome", color = "Outcome") +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 10, face = "bold"),
+          axis.title = element_text(size = 10),
+          axis.text = element_text(size = 8))
+}
+
+# Create density plots for each feature with outcome comparison
+p1 <- create_density_with_outcome(data, "Pregnancies", "Pregnancies vs Diabetes")
+p2 <- create_density_with_outcome(data, "Glucose", "Glucose vs Diabetes")
+p3 <- create_density_with_outcome(data, "BloodPressure", "Blood Pressure vs Diabetes")
+p4 <- create_density_with_outcome(data, "SkinThickness", "Skin Thickness vs Diabetes")
+p5 <- create_density_with_outcome(data, "Insulin", "Insulin vs Diabetes")
+p6 <- create_density_with_outcome(data, "BMI", "BMI vs Diabetes")
+p7 <- create_density_with_outcome(data, "DiabetesPedigreeFunction", "Diabetes Pedigree Function vs Diabetes")
+p8 <- create_density_with_outcome(data, "Age", "Age vs Diabetes")
+
+# Arrange plots in a grid layout with larger size
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r scatterplot, echo=TRUE}
+# Function to create scatter plot with outcome comparison
+create_scatter_with_outcome <- function(data, x_col, y_col, x_title, y_title) {
+  ggplot(data, aes_string(x = x_col, y = y_col, color = "as.factor(Outcome)")) +
+    geom_point(alpha = 0.7) +
+    labs(x = x_title, y = y_title, color = "Outcome") +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 14, face = "bold"),
+          axis.title = element_text(size = 12),
+          axis.text = element_text(size = 10))
+}
+
+# Create scatter plot for a couple of variables
+scatter_plot1 <- create_scatter_with_outcome(data, "Glucose", "BMI", "Glucose", "BMI")
+scatter_plot2 <- create_scatter_with_outcome(data, "Age", "BloodPressure", "Age", "Blood Pressure")
+
+# Arrange plots in a grid layout
+grid.arrange(scatter_plot1, scatter_plot2, ncol = 2)
+```
+
+
+
+
+
+```{r scatterplot2, echo=TRUE}
+# Convert Outcome to factor with appropriate levels
+data$Outcome <- factor(data$Outcome, levels = c(0, 1))
+
+# Select only numeric columns (excluding "Outcome")
+numeric_data <- data[, sapply(data, is.numeric) & !(names(data) %in% "Outcome")]
+
+# Define a custom color palette for Outcome
+my_colors <- c("#1f77b4", "#ff7f0e")  # Blue and Orange
+
+# Create a custom wrap function for points to include color
+wrap_points <- function(data, mapping, ...) {
+  ggplot(data = data, mapping = mapping) +
+    geom_point(alpha = 0.5, ...) +
+    scale_color_manual(values = my_colors)
+}
+
+# Plot pairwise scatter plots using GGally with custom aesthetics
+ggpairs(data,
+        columns = which(sapply(data, is.numeric) & !(names(data) %in% "Outcome")),
+        mapping = ggplot2::aes(color = Outcome),
+        lower = list(continuous = wrap_points),
+        upper = list(continuous = wrap("cor", size = 3)),
+        diag = list(continuous = wrap("barDiag", binwidth = 1)),
+        title = "Pairwise Scatter Plots of Numeric Variables"
+)
+```
+
+
+
+```{r  boxplot, echo=TRUE}
+# Define custom colors
+my_colors <- c("#FFFF66", "#66CCCC", "#FF9966")  # Yellow, Teal, Peach
+
+# Reshape data for ggplot
+data_long <- data %>%
+  gather(key = "variable", value = "value", -Outcome)
+
+# Create box plots using ggplot
+ggplot(data_long, aes(x = Outcome, y = value, fill = as.factor(Outcome))) +
+  geom_boxplot() +
+  facet_wrap(~ variable, scales = "free") +
+  labs(title = "Box Plots of Numerical Variables by Outcome") +
+  theme_minimal() +
+  scale_fill_manual(values = my_colors) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels if needed
+```
+
+
+```{r corr plot, echo=FALSE}
+# Compute and visualize the correlation matrix
+cor_matrix <- cor(numeric_data, use = "complete.obs")
+corrplot(cor_matrix, method = "circle")
+```
+
+
+
+# Preprocessing
+
+
+
+
+
+
+
+```{r zero-values, echo=TRUE}
+# Check for zero values in numeric_data
+zero_counts <- sapply(numeric_data, function(x) sum(x == 0))
+
+# Print the results
+print(zero_counts)
+
+```
+
+
+
+
+
+# KNN Imputation
+
+
+
+```{r knn-impute, echo=FALSE}
+# Replace zeros with NA for columns to be imputed
+columns_to_impute <- c("Glucose", "BloodPressure", "SkinThickness", "Insulin", "BMI")
+data[columns_to_impute] <- lapply(data[columns_to_impute], function(x) ifelse(x == 0, NA, x))
+
+# Perform KNN imputation using the VIM package
+imputed_data <- kNN(data, variable = columns_to_impute, k = 5)
+
+# Remove columns with `_imp` suffix
+# Remove columns with `_imp` suffix using dplyr::select explicitly
+clean_data <- imputed_data %>%
+  dplyr::select(-dplyr::ends_with("_imp"))
+
+# Verify the clean dataframe
+print(clean_data)
+
+# Convert Outcome to factor
+clean_data$Outcome <- factor(clean_data$Outcome, levels = c(0, 1))
+
+# Define a custom color palette for Outcome
+my_colors <- c("#1f77b4", "#ff7f0e")  # Blue and Orange
+
+# Create a custom wrap function for points to include color
+wrap_points <- function(data, mapping, ...) {
+  ggplot(data = data, mapping = mapping) +
+    geom_point(alpha = 0.5, ...) +
+    scale_color_manual(values = my_colors)
+}
+
+# Plot pairwise scatter plots using GGally with custom aesthetics
+ggpairs(clean_data,
+        columns = which(sapply(clean_data, is.numeric) & !(names(clean_data) %in% "Outcome")),
+        mapping = ggplot2::aes(color = Outcome),
+        lower = list(continuous = wrap_points),
+        upper = list(continuous = wrap("cor", size = 3)),
+        diag = list(continuous = wrap("barDiag", binwidth = 1)),
+        title = "Pairwise Scatter Plots of Numeric Variables"
+)
+```
+
+
+
+
+
+
+
+
+
+
+```{r final-df, echo=TRUE}
+# Check for missing values
+missing_values <- sapply(clean_data, function(x) sum(is.na(x)))
+print(missing_values)
+
+# Glimpse data
+glimpse(clean_data)
+```
+
+
+
+# Principal Component Analysis (PCA)
+
+
+
+
+
+
+```{r pca, echo=TRUE}
+# Remove the Outcome column from clean_data
+clean_data <- clean_data[, !names(clean_data) %in% "Outcome"]
+
+# Check for missing values in clean_data
+missing_values <- any(is.na(clean_data))
+if (missing_values) {
+  print("There are missing values in clean_data. Handle them before proceeding with PCA.")
+} else {
+  # Perform PCA on your data
+  pc <- prcomp(clean_data, center = TRUE, scale = TRUE)
+  
+  # Summary of the PCA results
+  summary(pc)
+  
+  # Percentage of variance explained by each principal component
+  pc_var <- pc$sdev^2 / sum(pc$sdev^2) * 100
+  
+  # Cumulative variance explained by principal components
+  pc_cumvar <- cumsum(pc_var)
+  
+  # Plot the variance explained by each principal component
+  barplot(pc_var, main = "Variance Explained by Principal Components",
+          xlab = "Principal Component", ylab = "Percentage of Variance Explained")
+  
+  # Plot the cumulative variance explained by principal components
+  plot(pc_cumvar, type = "b", main = "Cumulative Variance Explained by Principal Components",
+       xlab = "Number of Principal Components", ylab = "Cumulative Percentage of Variance Explained")
+}
+
+```
+
+
+## PCA Importance of Components
+
+
+
+
+
+## Applying Kaiser's Criterion to PCA Results
+
+
+
+
+
+```{r eigen, echo=TRUE}
+# Calculate eigenvalues
+eigenvalues <- pc$sdev^2
+
+# Print the eigenvalues
+print(eigenvalues)
+
+# Filter eigenvalues greater than 1
+optimal_components <- eigenvalues[eigenvalues > 1]
+
+# Print the eigenvalues of principal components greater than 1
+print(optimal_components)
+```
+
+
+
+
+
+
+
+
+
+```{r loadings, echo=TRUE}
+# Extract variable loadings for PC1 to PC4
+variable_loadings <- as.data.frame(pc$rotation[, 1:3])
+
+# Function to create bar plot for variable loadings
+create_bar_plot <- function(pc_num) {
+  bar_data <- data.frame(variable = rownames(variable_loadings),
+                         loading = variable_loadings[, pc_num])
+  ggplot(bar_data, aes(x = reorder(variable, loading), y = loading)) +
+    geom_bar(stat = "identity", fill = "#0073C2FF") +
+    coord_flip() +
+    labs(title = paste("Variable Loadings for PC", pc_num),
+         x = "Variable", y = "Loading")
+}
+
+# Create bar plots for variable loadings of PC1 to PC4
+bar_plot_pc1 <- create_bar_plot(1)
+bar_plot_pc2 <- create_bar_plot(2)
+bar_plot_pc3 <- create_bar_plot(3)
+#bar_plot_pc4 <- create_bar_plot(4)
+
+# Display the plots
+bar_plot_pc1
+bar_plot_pc2
+bar_plot_pc3
+#bar_plot_pc4
+```
+
+
+
+
+
+
+
+
+
+## Visualisation of Principal Component Analysis (PCA) Results
+
+
+
+```{r final-df, echo=TRUE}
+# Extract PCA components for clustering
+pca_data <- pc$x  # Assuming pc is the result of your PCA analysis
+
+# Visualize PCA results (scatter plot)
+pca_scatter <- fviz_pca_ind(pc, geom.ind = "point", 
+                            pointshape = 21, palette = "jco", 
+                            addEllipses = TRUE, ellipse.level = 0.95, 
+                            repel = TRUE) +
+              ggtitle("PCA Visualisation")
+
+# Variable representation (arrows)
+var_representation <- fviz_pca_var(pc, col.var = "contrib", 
+                                    gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+                                    repel = TRUE, axes = c(1, 2), arrows = TRUE) + 
+                      labs(title = "Variable Representation")
+
+# Combine plots
+combined_plot <- grid.arrange(pca_scatter, var_representation, ncol = 2)
+
+# Save PCA scatter plot as standalone image
+ggsave("pca_scatter_plot.png", pca_scatter, width = 8, height = 6)
+
+# Save variable representation plot as standalone image
+ggsave("variable_representation_plot.png", var_representation, width = 8, height = 6)
+
+```
+
+
+# Determine optimal number of clusters
+
+## Elbow Method
+
+
+
+
+
+
+```{r final-df, echo=TRUE}
+# Elbow Method
+elbow_method <- function(pca_data, max_k) {
+  wss <- numeric(max_k)
+  for (i in 1:max_k) {
+    kmeans_model <- kmeans(pca_data, centers = i, nstart = 10)
+    wss[i] <- sum(kmeans_model$tot.withinss)
+  }
+  plot(1:max_k, wss, type = "b", xlab = "Number of Clusters (k)", ylab = "Total Within Sum of Squares (WSS)", main = "Elbow Method")
+}
+
+# Call elbow_method function
+elbow_method(pca_data, max_k = 10)
+```
+
+
+## Silhouette Method
+
+
+
+
+
+
+
+```{r final-df, echo=TRUE}
+# Silhouette Method
+silhouette_method <- function(pca_data, max_k) {
+  silhouette_scores <- numeric(max_k)
+  for (i in 2:max_k) {
+    kmeans_model <- kmeans(pca_data, centers = i, nstart = 10)
+    silhouette_obj <- silhouette(kmeans_model$cluster, dist(pca_data))
+    silhouette_scores[i] <- mean(silhouette_obj[, "sil_width"])
+  }
+  plot(2:max_k, silhouette_scores[2:max_k], type = "b", xlab = "Number of Clusters (k)", ylab = "Silhouette Score", main = "Silhouette Method")
+}
+
+# Call silhouette_method function
+silhouette_method(pca_data, max_k = 10)
+
+```
+
+
+
+
+## Gap Statistics
+
+
+
+
+
+```{r final-df, echo=TRUE}
+gap_statistics <- function(pca_data, max_k, B = 10) {
+  gap <- numeric(max_k - 1)  # Initialize with length max_k - 1
+  for (i in 2:max_k) {  # Start from 2 instead of 1
+    print(paste("Calculating gap statistic for k =", i))
+    kmeans_model <- kmeans(pca_data, centers = i, nstart = 10)
+    gap_result <- clusGap(pca_data, FUNcluster = kmeans, K.max = i, B = B)
+    gap[i - 1] <- max(gap_result$Tab[, "gap"])  # Use maximum gap value
+  }
+  plot(2:max_k, gap, type = "b", xlab = "Number of Clusters (k)", ylab = "Gap Statistic", main = "Gap Statistics")
+}
+
+# Call gap_statistics function
+gap_statistics(pca_data, max_k = 10)
+```
+
+
+
+
+# K-means Clustering with K = 6
+
+
+
+
+
+```{r final-df, echo=TRUE}
+# Extract PC scores for PC1 to PC2
+pc_scores <- as.data.frame(pc$x[, 1:3])
+
+# Perform K-means clustering with K = 5 using PCA results
+kmeans_result <- kmeans(pc_scores, centers = 6, nstart = 10)
+
+# Visualize the clusters
+ggplot(pc_scores, aes(x = PC1, y = PC2, color = factor(kmeans_result$cluster))) +
+  geom_point() +
+  scale_color_discrete(name = "Cluster") +
+  labs(title = "K-means Clustering Results (K = 6)", x = "Principal Component 1", y = "Principal Component 2")
+
+```
+
+##  K-means fviz plot
+
+
+
+
+```{r final-df, echo=TRUE}
+# Extract PC scores for PC1 to PC3
+pc_scores <- as.data.frame(pc$x[, 1:3])
+
+# Perform K-means clustering with K = 6 using PCA results
+set.seed(123)  # Setting seed for reproducibility
+kmeans_result <- kmeans(pc_scores, centers = 6, nstart = 10)
+
+# Visualize the clusters using fviz
+fviz_cluster(kmeans_result, data = pc_scores, geom = "point", 
+             ellipse.type = "convex", 
+             palette = "jco", 
+             ggtheme = theme_minimal(),
+             main = "K-means Clustering Results (K = 6)")
+```
+
+
+
+## 3D Visualization of clusters
+
+
+
+
+
+
+```{r final-df, echo=TRUE}
+# Visualize the clusters in 3D
+plot_ly(data = pc_scores, x = ~PC1, y = ~PC2, z = ~PC3, color = factor(kmeans_result$cluster), 
+        type = "scatter3d", mode = "markers", marker = list(size = 6)) %>%
+  layout(title = "K-means Clustering Results (K = 6)",
+         scene = list(xaxis = list(title = "Principal Component 1"),
+                      yaxis = list(title = "Principal Component 2"),
+                      zaxis = list(title = "Principal Component 3")))
+```
+
+
+
+
+## Cluster Statistics and Dissimilarity Calculation
+
+
+
+```{r final-df, echo=TRUE}
+# Perform K-means clustering with K=6 using PCA results
+set.seed(123)  # For reproducibility
+kmeans_result <- kmeans(pc_scores[, 1:3], centers = 6, nstart = 10)
+
+# Add cluster labels to the PCA scores
+pc_scores_with_clusters <- cbind(pc_scores, cluster = kmeans_result$cluster)
+
+# Function to compute cluster statistics
+compute_cluster_stats <- function(cluster_data, cluster_centers) {
+  cluster_stats <- cluster_data %>%
+    group_by(cluster) %>%
+    summarise(
+      number_obs = n(),
+      max_dissimilarity = max(daisy(cluster_data[, 1:3])),
+      average_dissimilarity = mean(daisy(cluster_data[, 1:3]))
+    )
+  
+  isolation <- sapply(1:nrow(cluster_centers), function(i) {
+    min_dist <- min(dist(rbind(cluster_centers[i, ], cluster_centers[-i, ])))
+    return(min_dist)
+  })
+  
+  cluster_stats$isolation <- isolation
+  return(cluster_stats)
+}
+
+# Compute dissimilarities and cluster statistics
+dissimilarities <- daisy(pc_scores_with_clusters[, 1:3])
+cluster_centers <- kmeans_result$centers
+cluster_stats <- compute_cluster_stats(pc_scores_with_clusters, cluster_centers)
+
+# Print the cluster statistics
+print(cluster_stats)
+```
+
+
+
+
+# Evaluation of K-means Clustering
+
+## Silhouette Coefficient
+
+
+
+```{r final-df, echo=TRUE}
+# Check for missing values
+missing_values <- sapply(clean_data, function(x) sum(is.na(x)))
+print(missing_values)
+
+# Glimpse data
+glimpse(clean_data)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+```{r final-df, echo=TRUE}
+# Function to calculate Silhouette Coefficient
+calculate_silhouette <- function(data, clusters) {
+  library(cluster)
+  sil <- silhouette(clusters, dist(data))
+  return(sil)
+}
+
+# Perform PCA on clean_data
+pc <- prcomp(clean_data, center = TRUE, scale = TRUE)
+pc_data <- pc$x[, 1:3]  # Use first 3 principal components
+
+# Perform K-means clustering with K = 6
+set.seed(123)  # Set seed for reproducibility
+kmeans_result <- kmeans(pc_data, centers = 6, nstart = 25)
+clusters <- kmeans_result$cluster
+
+# Calculate silhouette coefficients
+sil_scores <- calculate_silhouette(pc_data, clusters)
+
+# Plot silhouette plot
+fviz_silhouette(sil_scores, palette = "jco", main = "Silhouette Plot for K-means Clustering")
+```
+
+
+
+
+# Cluster Profiles
+
+
+
+```{r final-df, echo=TRUE}
+# Perform PCA on clean_data
+pc <- prcomp(clean_data, center = TRUE, scale = TRUE)
+pc_data <- pc$x[, 1:3]  # Use first 3 principal components
+
+# Perform K-means clustering with K = 6
+set.seed(123)  # Set seed for reproducibility
+kmeans_result <- kmeans(pc_data, centers = 6, nstart = 25)
+clusters <- kmeans_result$cluster
+
+# Assign cluster labels to clean_data
+clean_data_with_clusters <- cbind(clean_data, Cluster = kmeans_result$cluster)
+
+# Calculate mean of original variables by cluster
+cluster_means <- aggregate(. ~ Cluster, data = clean_data_with_clusters, FUN = mean)
+
+# Visualize cluster profiles (bar plots)
+library(ggplot2)
+library(tidyr)
+
+# Reshape data for plotting (assuming clean_data has appropriate column names)
+cluster_means_long <- pivot_longer(cluster_means, cols = -Cluster, names_to = "Variable", values_to = "Mean")
+
+# Create bar plot
+ggplot(cluster_means_long, aes(x = Variable, y = Mean, fill = factor(Cluster))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Cluster Profiles (Clean Data)",
+       x = "Variable",
+       y = "Mean",
+       fill = "Cluster") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+
+
+
+
+
+```{r final-df, echo=TRUE}
+# Create interactive plotly bar plot
+plot_ly(cluster_means_long, x = ~Variable, y = ~Mean, color = ~factor(Cluster), type = "bar") %>%
+  layout(title = "Cluster Profiles",
+         xaxis = list(title = "Variable"),
+         yaxis = list(title = "Mean"),
+         barmode = "group")
+```
+
+
+
