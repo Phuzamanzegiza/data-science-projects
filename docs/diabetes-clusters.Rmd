@@ -2,17 +2,36 @@
 title: "diabetes-clusters"
 author: "Franco"
 date: "2024-07-02"
-output: html_document
+output: 
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
+    highlight: tango
+    includes:
+      before_body: navbar.html
+      in_header: header.html
+      
 ---
+
+<style type="text/css">
+  body {font-family: Montserrat, sans-serif;}
+h1 {font-size: 33px;}
+h1.title {font-size: 36px;}
+h2 {font-size: 30px;}
+h3 {font-size: 24px;}
+h4 {font-size: 18px;}
+h5 {font-size: 16px;}
+h6 {font-size: 12px;}
+ p {font-size: 16px;}
+}
+</style>
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
 
-# Exploratory Data Analysis
-
-```{r}
-# Load necessary libraries
 # Load necessary libraries
 library(tidyverse)
 library(readxl)
@@ -35,6 +54,41 @@ library(openxlsx)
 library(plotly)
 library(VIM)
 
+```
+# Executive Summary
+
+**Background:**
+This report explores the application of clustering analysis to identify distinct groups within a dataset related to diabetes risk factors. The dataset includes variables such as age, glucose levels, insulin levels, BMI, blood pressure, and genetic predisposition factors.
+
+**Objective:**
+The objective was to categorize individuals into clusters based on their health profiles and assess their respective risks of developing diabetes. By understanding these clusters, targeted interventions could be developed to mitigate diabetes risks effectively.
+
+**Results:**
+Four distinct clusters were identified:
+- Cluster 1: Young adults with low diabetes risk.
+- Cluster 2: Middle-aged individuals with high diabetes risk.
+- Cluster 3: Young adults with moderate diabetes risk.
+- Cluster 4: Older adults with moderate diabetes risk.
+
+Each cluster exhibited unique characteristics in terms of age, glucose levels, insulin levels, BMI, blood pressure, and genetic predisposition. Strategic interventions were recommended for each cluster to optimize diabetes prevention and management efforts.
+
+**Conclusion:**
+By tailoring interventions to the specific needs of each cluster, healthcare providers can enhance the effectiveness of diabetes prevention strategies. This targeted approach not only improves health outcomes but also contributes to reducing the overall burden of diabetes in the population.
+
+
+# Exploratory Data Analysis
+
+In this section, an exploratory data analysis (EDA) was conducted on the diabetes dataset. The primary objective was to understand the distribution of each variable, identify missing values, and explore potential relationships between features. This analysis served as a foundation for subsequent modeling and predictive analysis.
+
+
+## Data Overview
+
+The dataset was loaded and the first few rows were displayed to get an initial glimpse of the data structure. A summary of the dataset was generated to gain insights into the central tendency and dispersion of each feature. Missing values were checked in the dataset, as they can significantly impact the analysis and modeling. The number of missing values in each column was calculated and displayed.
+
+
+
+```{r}
+
 # Load the data
 data <- read_csv("diabetes.csv")
 
@@ -51,10 +105,11 @@ print(missing_values)
 
 ```
 
-## Including Plots
+## Distribution of Features
+Histograms were constructed for each feature to visualise their distributions. These visualisations highlight how data points are distributed across different ranges, offering insights into the prevalence and spread of each variable.
 
-You can also embed plots, for example:
 
+*Histograms*
 ```{r histo, echo=TRUE}
 # Helper function to create histograms
 create_histogram <- function(data, column, title, binwidth, fill_color) {
@@ -81,8 +136,42 @@ p8 <- create_histogram(data, "Age", "Age", 1, "#7f7f7f") # Gray
 # Arrange plots in a grid layout with larger size
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
 ```
+### Histogram Analysis
+
+#### Number of Pregnancies
+The histogram reveals that a significant portion of individuals in the dataset have 0 to 5 pregnancies, indicating a prevalent demographic within the study group. A smaller proportion of individuals have higher numbers of pregnancies, such as 10, 15, and 20.
+
+#### Glucose
+The distribution of glucose levels appears normal, with a peak around 80 to 150. This suggests that most individuals in the dataset have glucose levels within this range, which is crucial for understanding metabolic health.
+
+#### Blood Pressure
+The histogram for blood pressure shows a right-skewed distribution, indicating that a substantial number of individuals have blood pressure readings clustered around 70 to 80. This skewness implies potential variations in blood pressure across the dataset.
+
+#### Skin Thickness
+Skin thickness distribution is also right-skewed, with most individuals having thickness measurements between 20 and 40. This metric is essential in assessing overall health and potential metabolic conditions.
+
+#### Insulin
+The insulin distribution is is approximately, with a concentration of individuals showing medium insulin levels, particularly around 100. 
+
+#### Diabetes Pedigree Function
+The histogram for the diabetes pedigree function reveals a right-skewed distribution, with the majority of individuals having function values less than 1. This metric provides insights into the genetic predisposition to diabetes within the study population.
+
+#### BMI (Body Mass Index)
+BMI distribution appears roughly normal, centered around 20 to 40. This standard measure of body composition highlights the prevalence of healthy weight ranges within the dataset.
+
+#### Age
+The age distribution is right-skewed, indicating that a significant number of individuals are younger, with ages clustering around 20 to 40. Understanding age demographics is crucial for analysing health outcomes across different age groups.
+
+#### Summary
+ the histograms provide valuable insights into the distribution and central tendencies of critical health metrics within the diabetes dataset. These findings serve as a foundational analysis for further exploration and modeling efforts, contributing to informed decision-making in healthcare and medical research.
 
 
+
+## Relationships Between Features
+
+Density plots were created to explore the distribution of each feature, segmented by diabetes outcome. These plots help identify potential patterns or differences in feature distributions between individuals with and without diabetes. Furthermore, scatter plots were used to visualise the relationship between pairs of features, with data points color-coded based on the outcome variable (diabetes presence). This helped in identifying any patterns or trends that existed between these features.
+
+*Density Plot*
 ```{r denseplot, echo=TRUE}
 # Helper function to create density plots with outcome comparison
 create_density_with_outcome <- function(data, column, title) {
@@ -117,19 +206,33 @@ p8 <- create_density_with_outcome(data, "Age", "Age vs Diabetes")
 # Arrange plots in a grid layout with larger size
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
 ```
+### Density Plot Analysis
 
+#### Pregnancies vs. Diabetes Outcome
+The density plots show that individuals with diabetes tend to have a slightly higher mean number of pregnancies compared to those without diabetes. This suggests a possible correlation between higher pregnancy numbers and diabetes risk.
 
+#### Glucose vs. Diabetes Outcome
+The distribution of glucose levels shows that individuals with diabetes have significantly higher mean glucose levels than those without diabetes. This strong differentiation highlights glucose as a critical factor in diabetes diagnosis and management.
 
+#### Blood Pressure vs. Diabetes Outcome
+Blood pressure distributions reveal a subtle difference in mean values between individuals with and without diabetes. While there is a slight variation, it suggests that blood pressure alone may not be a strong differentiator for diabetes in this population.
 
+#### Skin Thickness vs. Diabetes Outcome
+The skin thickness density plots indicate little difference between the two groups, suggesting that this metric does not strongly distinguish between diabetes and non-diabetes individuals.
 
+#### Insulin vs. Diabetes Outcome
+The insulin level distributions show that individuals with diabetes tend to have slightly higher mean insulin levels. This finding supports the role of hyperinsulinaemia in the development of diabetes.
 
+#### BMI (Body Mass Index) vs. Diabetes Outcome
+BMI is higher on average for individuals with diabetes. This correlation aligns with known associations between higher body mass index and increased diabetes risk.
 
+#### Diabetes Pedigree Function vs. Diabetes Outcome
+The diabetes pedigree function values are slightly higher for individuals with diabetes, indicating a possible genetic predisposition in these cases.
 
+#### Age vs. Diabetes Outcome
+Older individuals tend to have a higher mean age in the diabetes group. This suggests that age is a significant factor in the prevalence of diabetes, with older individuals being more at risk.
 
-
-
-
-
+*Scatter Plot*
 ```{r scatterplot, echo=TRUE}
 # Function to create scatter plot with outcome comparison
 create_scatter_with_outcome <- function(data, x_col, y_col, x_title, y_title) {
@@ -149,11 +252,27 @@ scatter_plot2 <- create_scatter_with_outcome(data, "Age", "BloodPressure", "Age"
 # Arrange plots in a grid layout
 grid.arrange(scatter_plot1, scatter_plot2, ncol = 2)
 ```
+### Scatter Plot Analysis
+
+#### Glucose vs. BMI
+
+The scatter plot of Glucose levels against BMI (Body Mass Index) offers valuable insights into the relationship between these two variables. Glucose levels range from 0 to 200, while BMI values span from 0 to 60.
+
+In examining the scatter plot, a noticeable positive correlation between `Glucose` levels and `BMI` is evident. Higher Glucose levels generally correspond with higher `BMI` values. This trend is particularly observable among individuals with diabetes, who typically exhibit both elevated `Glucose` and `BMI` levels compared to those without diabetes. However, the distinction between the two groups in this plot is not very pronounced, suggesting that additional factors might also play significant roles in differentiating between the outcomes of diabetes and non-diabetes.
+
+#### Age vs. Blood Pressure
+
+The scatter plot analysing `Age` versus `Blood Pressure` delves into the interaction between these two variables. `Age` ranges from 20 to 80 years, and Blood Pressure values extend from 0 to 125.
+
+Observations from this scatter plot indicate no clear linear relationship between `Age` and `Blood Pressure`. The data points are widely scattered, highlighting a substantial variability in Blood Pressure across different ages. This variability suggests that Blood Pressure is influenced by multiple factors beyond Age alone. Despite the lack of a strong linear relationship, a slight trend of increasing `Blood Pressure` with `Age` is discernible. This trend aligns with the general medical understanding that Blood Pressure tends to rise as individuals age.
+
+These scatter plots visually depict the complex relationships between these health metrics and their association with diabetes. 
 
 
+## Pairwise Relationships
+Pairwise scatter plots were utilized to examine relationships between pairs of numeric variables. Each plot included data points colored by diabetes outcome, facilitating visual identification of correlations or trends between variables.
 
-
-
+*Pairwise Scatter Plot*
 ```{r scatterplot2, echo=TRUE}
 # Convert Outcome to factor with appropriate levels
 data$Outcome <- factor(data$Outcome, levels = c(0, 1))
@@ -181,8 +300,53 @@ ggpairs(data,
         title = "Pairwise Scatter Plots of Numeric Variables"
 )
 ```
+### Pairwise Scatter Plot Analysis
+
+This analysis explores the relationships between different numerical variables related to diabetes through scatter plots. Each plot highlights the interaction between two variables, providing insights into potential correlations and patterns.
+
+#### Pregnancies vs. Other Variables
+
+The scatter plots show that the number of pregnancies has a weak positive correlation with `Glucose` levels. However, no strong patterns or significant correlations emerge with other variables, indicating that the number of pregnancies may not be a strong predictor for other health metrics in this dataset.
+
+#### Glucose vs. Other Variables
+
+Glucose levels exhibit a positive correlation with `BMI` and `Insulin` (Body Mass Index), suggesting that individuals with higher glucose levels tend to have higher BMI and `Insulin` values. This correlation aligns with the understanding that elevated glucose levels, hyperinsulinaemia and increased body weight are often linked. However, no clear patterns are observed between glucose levels and other variables.
+
+#### Blood Pressure vs. Other Variables
+
+Blood pressure does not show strong correlations with other variables in the dataset. The scatter plots reveal a wide dispersion of blood pressure values across different levels of other variables, indicating a lack of significant linear relationships.
+
+#### Skin Thickness vs. Other Variables
+
+Skin thickness does not demonstrate significant correlations with other variables. The scatter plots suggest that skin thickness is relatively independent of other health metrics in this dataset, showing no strong linear patterns.
+
+### Insulin vs. Other Variables
+
+Insulin levels show strong positive correlation with glucose levels and have a weak positive correlation with BMI, suggesting that individuals with higher insulin levels may also have higher BMI values. However, no strong patterns are observed between insulin levels and other variables, indicating that insulin is not a strong predictor of other health metrics in this dataset.
+
+#### BMI vs. Other Variables
+
+BMI shows a positive correlation with glucose levels, reinforcing the link between increased body weight and higher glucose levels. However, BMI does not exhibit clear patterns with other variables, suggesting that while BMI and glucose levels are related, BMI alone is not strongly predictive of other health metrics.
+
+#### Diabetes Pedigree Function vs. Other Variables
+
+The diabetes pedigree function does not show strong correlations with other variables. The scatter plots indicate that this metric, which reflects genetic predisposition to diabetes, operates independently of the other health metrics in this dataset.
+
+#### Age vs. Other Variables
+
+Age exhibits a weak positive correlation with blood pressure, aligning with the understanding that blood pressure tends to increase with age. However, no strong patterns are observed between age and other variables, indicating that age alone is not a strong predictor of other health metrics in this dataset.
+
+#### Summary
+These scatter plots provide a visual overview of the relationships between various health metrics related to diabetes. While some correlations and patterns are observable, many variables do not show strong linear relationships, highlighting the complexity of predicting diabetes and related health outcomes based on these metrics alone.
 
 
+
+
+
+
+## Central Tendency Using Box Plots
+
+Box plots were generated to illustrate the distribution of numerical variables across different diabetes outcomes. Each plot depicts the spread and central tendency of variables within each outcome category, offering insights into potential differences between groups.
 
 ```{r  boxplot, echo=TRUE}
 # Define custom colors
@@ -201,6 +365,47 @@ ggplot(data_long, aes(x = Outcome, y = value, fill = as.factor(Outcome))) +
   scale_fill_manual(values = my_colors) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels if needed
 ```
+### Box Plot Analysis
+
+The box plots provide a comparative visualisation of numerical variables based on the diabetes outcome categories (labeled as ‘0’ for no diabetes and ‘1’ for diabetes). These plots help in understanding the distribution and spread of each variable within the two outcome groups.
+
+#### Age
+
+The median age is higher for individuals in the diabetic category. However, the age distribution for individuals with diabetes (outcome '1') is wider, indicating a greater variability in age among diabetic individuals compared to those without diabetes (outcome '0').
+
+#### Blood Pressure
+
+The median blood pressure is slightly higher for individuals with diabetes (outcome '1'). The variability is similar in blood pressure values for both groups.
+
+#### BMI (Body Mass Index)
+
+The median BMI is higher for the diabetes group (outcome '1'), indicating that individuals with diabetes tend to have a higher body mass index. Additionally, the range of BMI values is wider for this group, reflecting greater variability in body weight among diabetic individuals.
+
+#### Diabetes Pedigree Function
+
+The median value for the diabetes pedigree function is slightly higher for individuals with diabetes (outcome '1'). This function, which represents genetic predisposition, shows more variability among those with diabetes, suggesting diverse genetic factors at play.
+
+#### Glucose
+
+The median glucose level is significantly higher for the diabetes group (outcome '1'). There is less overlap between the two outcomes for glucose, indicating that higher glucose levels are strongly associated with diabetes.
+
+#### Insulin
+
+Individuals with diabetes (outcome '1') have a lower median insulin level. However, the overall trend shows that higher insulin levels are more common among diabetic individuals.
+
+#### Pregnancies
+
+The median number of pregnancies is higher for individuals with diabetes (outcome '1'). The range of pregnancy counts is also wider for this group, indicating greater variability in the number of pregnancies among diabetic individuals.
+
+#### Skin Thickness
+
+The median skin thickness is slightly similar for both outcome groups. However, the variability in skin thickness is greater for individuals with diabetes (outcome '1'), suggesting more diverse skin thickness measurements among this group.
+
+#### Summary
+These box plots highlight the differences in distribution and variability of key health metrics between individuals with and without diabetes. They provide valuable insights into how these variables are associated with the presence of diabetes, helping to identify potential risk factors and areas for further investigation.
+
+## Statistical Relationships
+A correlation matrix was computed and visualised to quantify the strength and direction of relationships between numeric variables. This analysis provides insights into variables that may influence each other and helps prioritise features for further investigation.
 
 
 ```{r corr plot, echo=FALSE}
@@ -208,12 +413,44 @@ ggplot(data_long, aes(x = Outcome, y = value, fill = as.factor(Outcome))) +
 cor_matrix <- cor(numeric_data, use = "complete.obs")
 corrplot(cor_matrix, method = "circle")
 ```
+### Correlation Plot Analysis
 
+The correlation plot offers a comprehensive view of how various health-related variables interrelate, providing insights into their mutual influences. This analysis is crucial for understanding which factors might influence others and how they collectively contribute to health outcomes.
 
+#### Age
+Age shows a weak positive correlation with glucose levels, suggesting a tendency for glucose levels to increase slightly with age. This observation shows the importance of age as a factor in understanding metabolic health changes over time. Furthermore, age demonstrates a significant correlation with the number of pregnancies, indicating that older individuals tend to have had more pregnancies throughout their lives.
+
+#### Blood Pressure
+In this plot, blood pressure exhibits weak correlations with BMI and age. This finding suggests that changes in blood pressure are not strongly influenced by variations in BMI or age within this dataset. However, it highlights the need for further investigation into other potential factors that may impact blood pressure variability.
+
+#### BMI (Body Mass Index)
+BMI shows a positive correlation with glucose levels, indicating that individuals with higher BMI tend to have higher glucose levels. This association affirms the link between obesity and metabolic health, where higher BMI can contribute to increased glucose levels. There were no strong correlations observed between BMI and other variables in this analysis.
+
+#### Diabetes Pedigree Function
+The diabetes pedigree function does not show significant correlations with any other variables in the plot. This result suggests that genetic predisposition to diabetes, as measured by the pedigree function, operates independently of the other health metrics included in this study. This finding emphasises the complex nature of diabetes susceptibility, involving both genetic and environmental factors.
+
+### Glucose
+Glucose levels demonstrate a positive correlation with insulin levels. This relationship indicates that as glucose levels rise, insulin levels tend to increase as well, reflecting the body's response to maintain glucose homeostasis. Weak correlations were also observed between glucose levels and both BMI and age, suggesting minor associations with these variables.
+
+#### Insulin
+Insulin levels show weak correlations with skin thickness. This finding suggests that insulin levels may be influenced to a small degree by variations in this health metric. Understanding these relationships can provide insights into insulin regulation and its role in metabolic health.
+
+#### Pregnancies
+The number of pregnancies exhibits a strong positive correlation with age. This correlation highlights a natural life course relationship, where older individuals tend to have had more pregnancies. This observation is relevant for understanding reproductive health impacts and potential implications for metabolic health.
+
+#### Skin Thickness
+Skin thickness shows weak correlations with insulin and BMI. This finding suggests limited associations between skin thickness and these health metrics within the dataset. Further exploration may reveal additional insights into the physiological implications of skin thickness in relation to metabolic health.
+
+#### Summary
+The correlation plot analysis provides an understanding of how various health-related variables interact and influence each other.
 
 # Preprocessing
 
+Preprocessing the data is crucial to ensure that it is clean, consistent, and ready for further analysis. This section outlines the steps taken to prepare the dataset for modeling and analysis.
 
+## Checking and Handling Zero Values
+
+Zero values in certain variables can sometimes indicate missing data or outliers. It is essential to identify and appropriately handle these values to avoid bias in subsequent analyses.
 
 
 
@@ -227,13 +464,21 @@ zero_counts <- sapply(numeric_data, function(x) sum(x == 0))
 print(zero_counts)
 
 ```
+## Imputation of Missing Values
 
+Columns such as `Glucose`, `BloodPressure`, `SkinThickness`, `Insulin`, and `BMI` often contain zero values that are not plausible for these health-related metrics. These zeros are replaced with NA (Not Available) to signify missing data, enabling more accurate imputation.
 
+## KNN Imputation
 
+The K-nearest neighbors (KNN) imputation method is employed using the VIM package. This technique fills in missing values based on the values of neighboring data points, ensuring that imputed values are realistic and contextually appropriate for health-related metrics.
 
+## Removing Imputed Columns
 
-# KNN Imputation
+After imputation, columns suffixed with `_imp` are removed from the dataset. This cleanup step ensures that only the original variables and their imputed values remain for further analysis, reducing redundancy and maintaining clarity in the dataset structure.
 
+## Conversion of Outcome Variable
+
+The "Outcome" variable, which denotes the presence (1) or absence (0) of diabetes, is converted to a factor. This conversion allows for categorical analysis and ensures that the model interprets this variable correctly during predictive modeling and statistical analyses.
 
 
 ```{r knn-impute, echo=FALSE}
@@ -255,35 +500,13 @@ print(clean_data)
 # Convert Outcome to factor
 clean_data$Outcome <- factor(clean_data$Outcome, levels = c(0, 1))
 
-# Define a custom color palette for Outcome
-my_colors <- c("#1f77b4", "#ff7f0e")  # Blue and Orange
 
-# Create a custom wrap function for points to include color
-wrap_points <- function(data, mapping, ...) {
-  ggplot(data = data, mapping = mapping) +
-    geom_point(alpha = 0.5, ...) +
-    scale_color_manual(values = my_colors)
-}
-
-# Plot pairwise scatter plots using GGally with custom aesthetics
-ggpairs(clean_data,
-        columns = which(sapply(clean_data, is.numeric) & !(names(clean_data) %in% "Outcome")),
-        mapping = ggplot2::aes(color = Outcome),
-        lower = list(continuous = wrap_points),
-        upper = list(continuous = wrap("cor", size = 3)),
-        diag = list(continuous = wrap("barDiag", binwidth = 1)),
-        title = "Pairwise Scatter Plots of Numeric Variables"
-)
 ```
 
 
+### Handling Missing Values
 
-
-
-
-
-
-
+Finally, the dataset is checked again for any remaining missing values. This step ensures that the data is complete and ready for exploratory analysis and modeling. Any missing values that persist after imputation may need further investigation or handling, depending on the specific requirements of the analysis.
 
 ```{r final-df, echo=TRUE}
 # Check for missing values
@@ -294,61 +517,74 @@ print(missing_values)
 glimpse(clean_data)
 ```
 
-
-
 # Principal Component Analysis (PCA)
 
+Principal Component Analysis (PCA) was utilized to simplify the complexity of high-dimensional data while preserving its essential features. This section explains how PCA was applied to our dataset and interprets its results.
 
+## Understanding PCA
 
+PCA transformed correlated variables into a set of linearly uncorrelated components, known as principal components (PCs). These components were ordered by the amount of variance they explained in the data, with the first PC explaining the maximum variance and each subsequent PC explaining less.
 
+## Performing PCA
+
+Initially, the dataset, including dummy variables for the outcome categories, was centered and scaled. This normalization step ensured that each variable contributed equally to the analysis, regardless of its original scale or units.
+
+## Explained Variance
+
+The PCA results included a summary of the variance explained by each principal component. This information helped in understanding how much information each PC retained from the original dataset. It enabled us to decide how many principal components to retain based on the cumulative variance explained.
 
 
 ```{r pca, echo=TRUE}
-# Remove the Outcome column from clean_data
+
+# Convert Outcome to dummy variables
+clean_data$Outcome_0 <- ifelse(clean_data$Outcome == 0, 1, 0)
+clean_data$Outcome_1 <- ifelse(clean_data$Outcome == 1, 1, 0)
+
+# Remove the original Outcome column
 clean_data <- clean_data[, !names(clean_data) %in% "Outcome"]
 
-# Check for missing values in clean_data
-missing_values <- any(is.na(clean_data))
-if (missing_values) {
-  print("There are missing values in clean_data. Handle them before proceeding with PCA.")
-} else {
-  # Perform PCA on your data
-  pc <- prcomp(clean_data, center = TRUE, scale = TRUE)
-  
-  # Summary of the PCA results
-  summary(pc)
-  
-  # Percentage of variance explained by each principal component
-  pc_var <- pc$sdev^2 / sum(pc$sdev^2) * 100
-  
-  # Cumulative variance explained by principal components
-  pc_cumvar <- cumsum(pc_var)
-  
-  # Plot the variance explained by each principal component
-  barplot(pc_var, main = "Variance Explained by Principal Components",
-          xlab = "Principal Component", ylab = "Percentage of Variance Explained")
-  
-  # Plot the cumulative variance explained by principal components
-  plot(pc_cumvar, type = "b", main = "Cumulative Variance Explained by Principal Components",
-       xlab = "Number of Principal Components", ylab = "Cumulative Percentage of Variance Explained")
-}
+# Perform PCA on your data including dummy variables
+pc <- prcomp(clean_data, center = TRUE, scale. = TRUE)
+
+# Summary of the PCA results
+summary(pc)
+
+# Percentage of variance explained by each principal component
+pc_var <- pc$sdev^2 / sum(pc$sdev^2) * 100
+
+# Cumulative variance explained by principal components
+pc_cumvar <- cumsum(pc_var)
+
+# Plot the variance explained by each principal component
+barplot(pc_var, main = "Variance Explained by Principal Components",
+        xlab = "Principal Component", ylab = "Percentage of Variance Explained")
+
+# Plot the cumulative variance explained by principal components
+plot(pc_cumvar, type = "b", main = "Cumulative Variance Explained by Principal Components",
+     xlab = "Number of Principal Components", ylab = "Cumulative Percentage of Variance Explained")
 
 ```
+### Cumulative Variance Plot Analysis
 
+#### Number of Principal Components (PCs)
+The x-axis of the plot represents the number of principal components included in the analysis. It starts from 1 (the first principal component) and extends to the total number of features in the dataset.
 
-## PCA Importance of Components
+#### Cumulative Percentage of Variance Explained
+On the y-axis, you'll find the cumulative percentage of variance explained by the selected principal components. As you add more principal components, this percentage increases, reflecting the total amount of variance captured by those components. This plot is crucial for deciding the number of components needed to explain a high percentage of the dataset's variance effectively, typically aiming for 90% or more.
 
+#### Curve Behavior
+The curve on the plot begins at the bottom left corner, near 0% explained variance, and ascends rapidly at the start. This steep ascent indicates that the initial principal components account for a significant portion of the variance in the data. As more components are added, the curve gradually flattens out. 
 
+#### Summary
+The cumulative explained variance plot in PCA guides the selection of the optimal number of principal components by showing how much variance is captured as components are added. It balances the trade-off between retaining enough information for analysis while avoiding the inclusion of redundant components that do not significantly contribute to explaining the dataset's variance.
 
+## Determining Optimal Components
 
-
-## Applying Kaiser's Criterion to PCA Results
-
-
-
-
+Moreover, methods such as Kaiser's criterion was used to determine the optimal number of principal components. It suggests retaining only those components with eigenvalues (variance explained by each component) greater than one. 
 
 ```{r eigen, echo=TRUE}
+# Applying Kaiser's Criterion to PCA Results
+
 # Calculate eigenvalues
 eigenvalues <- pc$sdev^2
 
@@ -362,13 +598,9 @@ optimal_components <- eigenvalues[eigenvalues > 1]
 print(optimal_components)
 ```
 
+## Variable Loadings
 
-
-
-
-
-
-
+Variable loadings represented the correlation coefficients between the original variables and the principal components. These coefficients indicated the strength and direction of each variable's contribution to the principal components. Bar plots of variable loadings visualised which variables were most influential in each principal component.
 
 ```{r loadings, echo=TRUE}
 # Extract variable loadings for PC1 to PC4
@@ -398,17 +630,20 @@ bar_plot_pc3
 #bar_plot_pc4
 ```
 
+### PC 1 Variable Loadings Analysis
+In PCA, variable loadings quantify the contribution of each original variable to the variance explained by each principal component. These loadings are crucial for understanding which variables are most influential in defining each PC.
 
+- **Outcome:** The variable "Outcome" shows the highest positive loading, indicating it strongly influences PC1.
+- **Outcome_1:**Thevariable "Outcome_1" presents with a highest negative loading, suggesting a significant contribution to PC1.
+- **Insulin, BMI, Skin Thickness, and Age:** These variables also contribute inversely to PC1, albeit to a lesser extent, in descending order of influence.
+- **Blood Pressure, Diabetes Pedigree Function and Pregnancies:** These variables exhibit very small negative loadings on PC1.
 
+**Summary:**
+The sign and magnitude of loadings indicate the direction and strength of the relationship between each original variable and PC1. Higher absolute loading values signify greater influence on the variance explained by PC1. Positive loadings indicate a direct correlation, while negative loadings signify an inverse correlation with PC1. 
 
+## PCA Visualisation
 
-
-
-
-
-## Visualisation of Principal Component Analysis (PCA) Results
-
-
+Visualising PCA results was crucial for interpreting the relationships between data points and understanding the distribution of variables across principal components. Scatter plots and variable representation plots (showing arrows indicating variable contributions) provided intuitive insights into how variables clustered and correlated in reduced-dimensional space.
 
 ```{r final-df, echo=TRUE}
 # Extract PCA components for clustering
@@ -438,15 +673,11 @@ ggsave("variable_representation_plot.png", var_representation, width = 8, height
 
 ```
 
+## Determine optimal number of clusters
+and statistical techniques like the elbow method, silhouette method, and gap statistics were employed. These methods helped in selecting a suitable number of clusters that best captured the variability in the data while avoiding overfitting. The number of clusters chosen were four based on these methods including average Silhouette width score that was performed after clustering.
 
-# Determine optimal number of clusters
-
-## Elbow Method
-
-
-
-
-
+### Elbow Method
+The Elbow method is a technique used in clustering algorithms, particularly K-means clustering, to determine the optimal number of clusters \( k \) in a dataset. It involves plotting the within-cluster sum of squares (WSS) against different values of \( k \). The "elbow" point on the plot represents the optimal \( k \) where the rate of decrease in WSS slows down, indicating that adding more clusters does not significantly improve the clustering performance. 
 
 ```{r final-df, echo=TRUE}
 # Elbow Method
@@ -464,12 +695,9 @@ elbow_method(pca_data, max_k = 10)
 ```
 
 
-## Silhouette Method
+### Silhouette Method
 
-
-
-
-
+The Silhouette Method is a technique used to determine the optimal number of clusters \( k \) in a dataset for clustering algorithms like K-means. It evaluates how similar each point in one cluster is to points in its own cluster compared to points in other clusters. 
 
 
 ```{r final-df, echo=TRUE}
@@ -488,14 +716,9 @@ silhouette_method <- function(pca_data, max_k) {
 silhouette_method(pca_data, max_k = 10)
 
 ```
+### Gap Statistics
 
-
-
-
-## Gap Statistics
-
-
-
+Gap Statistics is a method used to determine the optimal number of clusters \( k \) in a dataset for clustering algorithms such as K-means. It compares the within-cluster variation (sum of squares) of the clustering algorithm's output with that of a reference null distribution that represents data with no obvious clustering structure.
 
 
 ```{r final-df, echo=TRUE}
@@ -517,31 +740,35 @@ gap_statistics(pca_data, max_k = 10)
 
 
 
-# K-means Clustering with K = 6
+# K-means Clustering with K = 4
 
 
+## K-Means Clustering
+K-means clustering is a method used to partition a dataset into distinct groups (clusters) based on similarity. By minimising the variance within each cluster, K-means aims to create groups where the data points within each group are more similar to each other than to those in other groups. This analysis applied K-means clustering to the results of Principal Component Analysis (PCA) to understand the underlying patterns in the data.
 
+##  Clustering with K=4
+To explore the dataset's structure, we performed K-means clustering using the first three principal components (PC1 to PC3). We set the number of clusters (K) to 4. The PCA results provided a reduced dimensionality space, making it easier to visualise and interpret the clusters.
 
+## Cluster Visualization
+The clusters were visualised in two-dimensional and three-dimensional plots. The 2D plot displayed the data points along PC1 and PC2, colored according to their cluster assignments. A 3D scatter plot further illustrated the clustering in the PCA-reduced space, showing the separation and distribution of clusters across PC1, PC2, and PC3. 
 
 ```{r final-df, echo=TRUE}
 # Extract PC scores for PC1 to PC2
 pc_scores <- as.data.frame(pc$x[, 1:3])
 
 # Perform K-means clustering with K = 5 using PCA results
-kmeans_result <- kmeans(pc_scores, centers = 6, nstart = 10)
+kmeans_result <- kmeans(pc_scores, centers = 4, nstart = 10)
 
 # Visualize the clusters
 ggplot(pc_scores, aes(x = PC1, y = PC2, color = factor(kmeans_result$cluster))) +
   geom_point() +
   scale_color_discrete(name = "Cluster") +
-  labs(title = "K-means Clustering Results (K = 6)", x = "Principal Component 1", y = "Principal Component 2")
+  labs(title = "K-means Clustering Results (K = 4)", x = "Principal Component 1", y = "Principal Component 2")
 
 ```
-
-##  K-means fviz plot
-
-
-
+## Observations from Visualisation (scatter plot)
+- **Cluster Distribution:** The visualisations revealed distinct groupings, indicating that the K-means algorithm effectively identified separate clusters within the data.
+- **Cluster Separation:**  Clusters exhibited overlapping boundaries, suggesting potential some dissimilarity between those groups.
 
 ```{r final-df, echo=TRUE}
 # Extract PC scores for PC1 to PC3
@@ -549,30 +776,26 @@ pc_scores <- as.data.frame(pc$x[, 1:3])
 
 # Perform K-means clustering with K = 6 using PCA results
 set.seed(123)  # Setting seed for reproducibility
-kmeans_result <- kmeans(pc_scores, centers = 6, nstart = 10)
+kmeans_result <- kmeans(pc_scores, centers = 4, nstart = 10)
 
 # Visualize the clusters using fviz
 fviz_cluster(kmeans_result, data = pc_scores, geom = "point", 
              ellipse.type = "convex", 
              palette = "jco", 
              ggtheme = theme_minimal(),
-             main = "K-means Clustering Results (K = 6)")
+             main = "K-means Clustering Results (K = 4)")
 ```
+## Observations from Visualisation (fviz_cluster)
+- **Cluster Sizes:** The clusters varied in size, reflecting the dataset's inherent structure and the algorithm's ability to group similar observations.
+- **Dissimilarity:** Clusters showed varying degrees of internal dissimilarity, with some clusters being more homogeneous than others.
 
 
-
-## 3D Visualization of clusters
-
-
-
-
-
-
+*3D Visualization of clusters*
 ```{r final-df, echo=TRUE}
 # Visualize the clusters in 3D
 plot_ly(data = pc_scores, x = ~PC1, y = ~PC2, z = ~PC3, color = factor(kmeans_result$cluster), 
         type = "scatter3d", mode = "markers", marker = list(size = 6)) %>%
-  layout(title = "K-means Clustering Results (K = 6)",
+  layout(title = "K-means Clustering Results (K = 4)",
          scene = list(xaxis = list(title = "Principal Component 1"),
                       yaxis = list(title = "Principal Component 2"),
                       zaxis = list(title = "Principal Component 3")))
@@ -583,12 +806,17 @@ plot_ly(data = pc_scores, x = ~PC1, y = ~PC2, z = ~PC3, color = factor(kmeans_re
 
 ## Cluster Statistics and Dissimilarity Calculation
 
+**Cluster Statistics:**
+To gain deeper insights into the clusters, we computed various statistics:
+- **Number of Observations:** Each cluster's size was calculated to understand the distribution of data points across clusters.
+- **Dissimilarity Measures:** Maximum and average dissimilarities within each cluster were evaluated using the Gower distance, a metric suitable for mixed data types.
+- **Isolation:** The isolation of each cluster was assessed by measuring the minimum distance between cluster centers, indicating how distinct each cluster is from others.
 
 
 ```{r final-df, echo=TRUE}
 # Perform K-means clustering with K=6 using PCA results
 set.seed(123)  # For reproducibility
-kmeans_result <- kmeans(pc_scores[, 1:3], centers = 6, nstart = 10)
+kmeans_result <- kmeans(pc_scores[, 1:3], centers = 4, nstart = 10)
 
 # Add cluster labels to the PCA scores
 pc_scores_with_clusters <- cbind(pc_scores, cluster = kmeans_result$cluster)
@@ -620,35 +848,53 @@ cluster_stats <- compute_cluster_stats(pc_scores_with_clusters, cluster_centers)
 # Print the cluster statistics
 print(cluster_stats)
 ```
+### K-Means Clustering Statistical Analysis
 
 
+#### Key Findings
+1. **Cluster Sizes:** The number of observations in each cluster varied, with Cluster 2 being the largest (266 observations) and Cluster 3 being the smallest (127 observations). This variation in cluster sizes indicates a non-uniform distribution of data points across the clusters.
+
+2. **Maximum Dissimilarity:** All clusters exhibited the same maximum dissimilarity value of 10.51. This value represents the most dissimilar pair of observations within each cluster and highlights the maximum internal variability.
+
+3. **Average Dissimilarity:** The average dissimilarity within each cluster was consistent across all clusters at 3.23. This measure indicates the typical distance between observations within the same cluster, suggesting a similar level of internal cohesion.
+
+4. **Isolation:** The isolation metric, which measures the minimum distance between cluster centers, was also identical for all clusters at 2.40. This value reflects the degree of separation between the clusters, indicating that each cluster is equally distinct from the others.
 
 
-# Evaluation of K-means Clustering
+# Evaluation of K-Means Clustering
 
-## Silhouette Coefficient
+Evaluating the performance and validity of the K-means clustering algorithm is essential to ensure that the clusters formed are meaningful and distinct. This section presents the evaluation of the K-means clustering performed on the dataset using several key metrics.
 
+## Evaluation Metrics
+
+1. **Calinski-Harabasz Index:**
+   The Calinski-Harabasz index, also known as the Variance Ratio Criterion, measures the ratio of the sum of between-cluster dispersion to the sum of within-cluster dispersion. Higher values of the Calinski-Harabasz index indicate better-defined and more distinct clusters. For the given clustering solution, the Calinski-Harabasz index was computed, providing a quantitative assessment of cluster separation and compactness.
+
+2. **Dunn Index:**
+   The Dunn index is another metric used to evaluate the clustering quality by considering both the minimum inter-cluster distance and the maximum intra-cluster distance. A higher Dunn index indicates better clustering, as it signifies well-separated and compact clusters. The Dunn index was calculated for the clustering solution, helping to confirm the distinctiveness of the clusters.
+
+3. **Silhouette Coefficient:**
+   The silhouette coefficient measures how similar an object is to its own cluster compared to other clusters. It ranges from -1 to 1, where a value close to 1 indicates that the data point is well-matched to its own cluster and poorly matched to neighboring clusters. The silhouette coefficients for each data point were calculated, and a silhouette plot was generated to visually assess the clustering quality. The plot highlighted the cohesion within clusters and the separation between different clusters.
 
 
 ```{r final-df, echo=TRUE}
-# Check for missing values
-missing_values <- sapply(clean_data, function(x) sum(is.na(x)))
-print(missing_values)
+# Compute the distance matrix
+dist_matrix <- dist(pc_data)
 
-# Glimpse data
-glimpse(clean_data)
+
+
+# Compute Calinski-Harabasz Index
+calinski_harabasz <- cluster.stats(dist_matrix, clusters)$ch
+
+# Compute Dunn Index
+dunn_index <- cluster.stats(dist_matrix, clusters)$dunn
+
+# Print Evaluation Metrics
+
+print(paste("Calinski-Harabasz Index:", calinski_harabasz))
+print(paste("Dunn Index:", dunn_index))
+
 ```
-
-
-
-
-
-
-
-
-
-
-
 
 ```{r final-df, echo=TRUE}
 # Function to calculate Silhouette Coefficient
@@ -659,12 +905,11 @@ calculate_silhouette <- function(data, clusters) {
 }
 
 # Perform PCA on clean_data
-pc <- prcomp(clean_data, center = TRUE, scale = TRUE)
-pc_data <- pc$x[, 1:3]  # Use first 3 principal components
+
 
 # Perform K-means clustering with K = 6
 set.seed(123)  # Set seed for reproducibility
-kmeans_result <- kmeans(pc_data, centers = 6, nstart = 25)
+kmeans_result <- kmeans(pc_data, centers = 4, nstart = 25)
 clusters <- kmeans_result$cluster
 
 # Calculate silhouette coefficients
@@ -677,18 +922,16 @@ fviz_silhouette(sil_scores, palette = "jco", main = "Silhouette Plot for K-means
 
 
 
-# Cluster Profiles
+## Cluster Profiles
 
+To further understand the characteristics of each cluster, the mean values of the original variables were computed for each cluster. This analysis provided insights into the distinguishing features of each cluster, revealing how different variables contributed to the clustering results. A bar plot was created to visualise the cluster profiles, showing the mean values of the variables for each cluster and highlighting the differences between them.
 
 
 ```{r final-df, echo=TRUE}
-# Perform PCA on clean_data
-pc <- prcomp(clean_data, center = TRUE, scale = TRUE)
-pc_data <- pc$x[, 1:3]  # Use first 3 principal components
 
 # Perform K-means clustering with K = 6
 set.seed(123)  # Set seed for reproducibility
-kmeans_result <- kmeans(pc_data, centers = 6, nstart = 25)
+kmeans_result <- kmeans(pc_data, centers = 4, nstart = 25)
 clusters <- kmeans_result$cluster
 
 # Assign cluster labels to clean_data
@@ -714,12 +957,7 @@ ggplot(cluster_means_long, aes(x = Variable, y = Mean, fill = factor(Cluster))) 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-
-
-
-
-
-
+*Plotly Bar Chart*
 ```{r final-df, echo=TRUE}
 # Create interactive plotly bar plot
 plot_ly(cluster_means_long, x = ~Variable, y = ~Mean, color = ~factor(Cluster), type = "bar") %>%
@@ -729,5 +967,98 @@ plot_ly(cluster_means_long, x = ~Variable, y = ~Mean, color = ~factor(Cluster), 
          barmode = "group")
 ```
 
+## Comparison and Description of Clusters
+
+## Description of Clusters
+
+### Cluster 1 - Low Risk Young Adults
+**Age**: The average age in Cluster 1 is 26.42 years.  
+**Outcome**: Only 9.9% of individuals in this cluster have diabetes (Outcome_1 = 0.099), while 90% do not (Outcome_0 = 0.90).  
+**Glucose**: The mean glucose level is 105.89 mg/dL, which is relatively low compared to the other clusters.  
+**Insulin**: Average insulin level is 96.2 µU/mL which is relatively normal.  
+**BMI**: The mean BMI is 26.75, indicating that individuals in this cluster are slightly overweight according WHO classification.  
+**Blood Pressure**: The average blood pressure is 65.09 mmHg, which is the lowest among all clusters.  
+**Diabetes Pedigree Function**: The mean value is 0.428, suggesting a mild genetic predisposition to diabetes.  
+**Pregnancies**: On average, individuals have 2.29 pregnancies.  
+**Skin Thickness**: The mean skin thickness is 21.079 mm, indicating thinner skinfold measurements compared to other clusters.
+
+### Cluster 2 - High Risk Middle-Aged Adults
+
+**Age**: The average age in Cluster 2 is 35.05 years.  
+**Outcome**: A significant 76.5% of individuals in this cluster have diabetes (Outcome_1 = 0.765), while only 23.4% do not (Outcome_0 = 0.234).  
+**Glucose**: The mean glucose level is 164.67 mg/dL, the highest among all clusters.  
+**Insulin**: Average insulin level is 295 µU/mL, indicating higher insulin resistance or insulin therapy.  
+**BMI**: The mean BMI is 37, categorizing individuals in this cluster as obese.  
+**Blood Pressure**: The average blood pressure is 73.5 mmHg.  
+**Diabetes Pedigree Function**: The mean value is 0.693, indicating a higher genetic predisposition to diabetes.  
+**Pregnancies**: On average, individuals have 3.86 pregnancies.  
+**Skin Thickness**: The mean skin thickness is 34.4 mm, indicating thicker skinfold measurements.
+
+### Cluster 3 - Moderate Risk Young Adults
+
+**Age**: The average age in Cluster 3 is 28 years.  
+**Outcome**: 33.1% of individuals in this cluster have diabetes (Outcome_1 = 0.331), while 69% do not (Outcome_0 = 0.69).  
+**Glucose**: The mean glucose level is 113 mg/dL.  
+**Insulin**: Average insulin level is 128 µU/mL.  
+**BMI**: The mean BMI is 37.46, indicating that individuals in this cluster are morbidly obese.  
+**Blood Pressure**: The average blood pressure is 74.1 mmHg.  
+**Diabetes Pedigree Function**: The mean value is 0.45, indicating a moderate genetic predisposition to diabetes.  
+**Pregnancies**: On average, individuals have 2.06 pregnancies.  
+**Skin Thickness**: The mean skin thickness is 35.4 mm, the highest among all clusters.
+
+### Cluster 4 - Moderate Risk Older Adults
+
+**Age**: The average age in Cluster 4 is 47 years.  
+**Outcome**: 44.9% of individuals in this cluster have diabetes (Outcome_1 = 0.449), while 55% do not (Outcome_0 = 0.55).  
+**Glucose**: The mean glucose level is 127 mg/dL.  
+**Insulin**: Average insulin level is 141 µU/mL.  
+**BMI**: The mean BMI is 32, categorising individuals in this cluster as obese.  
+**Blood Pressure**: The average blood pressure is 80 mmHg, the highest among all clusters.  
+**Diabetes Pedigree Function**: The mean value is 0.42, indicating a moderate genetic predisposition to diabetes.  
+**Pregnancies**: On average, individuals have 8 pregnancies, the highest among all clusters.  
+**Skin Thickness**: The mean skin thickness is 30.42 mm.
 
 
+### Comparison of Clusters:
+- **Age**: Cluster 4 has the oldest average age (47 years), while Cluster 1 has the youngest (26.42 years).
+- **Outcome (Diabetes Prevalence)**: Cluster 2 has the highest prevalence of diabetes (76.5%), followed by Cluster 4 (44.9%), Cluster 3 (33.1%), and Cluster 1 (9.9%).
+- **Glucose Levels**: Cluster 2 has the highest average glucose level (164.67 mg/dL), indicating a higher risk or presence of diabetes.
+- **Insulin Levels**: Cluster 2 also has the highest insulin levels (295 µU/mL), followed by Cluster 3 (128 µU/mL), Cluster 4 (141 µU/mL), and Cluster 1 (96.2 µU/mL).
+- **BMI**: Clusters 2 and 3 have similar high BMI values (37 and 37.46, respectively), indicating obesity, while Cluster 1 has the lowest BMI (26.75).
+- **Blood Pressure**: Cluster 4 has the highest blood pressure (80 mmHg), whereas Cluster 1 has the lowest (65.09 mmHg).
+- **Diabetes Pedigree Function**: Cluster 2 has the highest genetic predisposition to diabetes (0.693), while Clusters 1 and 4 have the lowest (0.428 and 0.42, respectively).
+- **Pregnancies**: Cluster 4 has the highest average number of pregnancies (8), indicating a potential factor in the higher age and diabetes prevalence in this cluster.
+- **Skin Thickness**: Cluster 3 has the highest skin thickness (35.4 mm), while Cluster 1 has the lowest (21.079 mm).
+
+
+## Strategic Interventions for Each Cluster
+
+**Cluster 1: Low Risk Young Adults**
+
+**Intervention Focus**: Prevention and Education
+
+For Cluster 1, comprising young adults with a low risk of diabetes, strategic interventions should focus on prevention and education. Promoting a healthy lifestyle through continued encouragement of balanced eating habits and regular physical activity is essential to maintaining their normal weight and low glucose levels. Educational campaigns on diabetes prevention, specifically targeting young adults, can reinforce the importance of these habits. Additionally, advocating for routine health screenings to monitor vital signs such as glucose and insulin levels can help in early detection and prevention of diabetes.
+
+**Cluster 2: High Risk Middle-Aged Adults**
+
+**Intervention Focus**: Intensive Management and Support
+
+Cluster 2 consists of middle-aged adults at high risk for diabetes, necessitating intensive management and support. Medical management, including insulin therapy and medications, is crucial to control high glucose and insulin levels. Specialized weight management programs should be implemented to address obesity and reduce related health risks. Given the high genetic predisposition to diabetes in this cluster, genetic counseling can provide valuable insights and management strategies. Regular health check-ups and increased monitoring frequency are imperative for early intervention and effective management of potential complications.
+
+**Cluster 3: Moderate Risk Young Adults**
+
+**Intervention Focus**: Risk Reduction and Monitoring
+
+Young adults in Cluster 3, who face a moderate risk of developing diabetes, require interventions aimed at risk reduction and monitoring. Targeted diet and exercise programs can help address obesity and manage glucose levels. Regular health monitoring of glucose and insulin levels is essential to manage and reduce the risk of diabetes. Establishing support groups can provide necessary lifestyle modification guidance and peer support to encourage healthy habits. Preventive healthcare services, including routine screenings and early detection strategies, should be emphasized to mitigate the risk of diabetes.
+
+**Cluster 4: Moderate Risk Older Adults**
+
+**Intervention Focus**: Comprehensive Care and Lifestyle Adjustments
+
+For older adults in Cluster 4 with a moderate risk of diabetes, a comprehensive care approach combining medical treatment and lifestyle adjustments is recommended. Chronic disease management programs tailored to older adults should focus on controlling BMI, blood pressure, and glucose levels. Encouraging participation in age-appropriate physical activity programs can improve overall health. These integrated care strategies aim to manage moderate risk factors effectively and improve health outcomes.
+
+# Conclusion
+
+This report analysed the characteristics of four distinct clusters within a dataset, each representing different levels of diabetes risk. Cluster 1, comprising young adults with low diabetes risk, benefits from preventive education and lifestyle maintenance. Cluster 2, with high-risk middle-aged adults, requires intensive management and support, including medical treatments and weight management. Cluster 3, featuring young adults with moderate risk, should focus on risk reduction and continuous monitoring through targeted diet and exercise programs. Cluster 4, consisting of older adults with moderate risk, demands comprehensive care and lifestyle adjustments tailored to their specific health needs.
+
+By identifying and understanding these clusters, we can implement strategic interventions that are tailored to the unique needs of each group. This targeted approach enhances the effectiveness of diabetes prevention and management efforts, ultimately leading to improved health outcomes and a reduction in the prevalence of diabetes.
