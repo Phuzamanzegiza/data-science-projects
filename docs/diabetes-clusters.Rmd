@@ -737,13 +737,7 @@ gap_statistics <- function(pca_data, max_k, B = 10) {
 gap_statistics(pca_data, max_k = 10)
 ```
 
-
-
-
 # K-means Clustering 
-
-
-### K-Means Clustering
 
 K-means clustering is a method used to partition a dataset into distinct groups (clusters) based on similarity. By minimising the variance within each cluster, K-means aims to create groups where the data points within each group are more similar to each other than to those in other groups. This analysis applied K-means clustering to the results of Principal Component Analysis (PCA) to understand the underlying patterns in the data.
 
@@ -773,8 +767,13 @@ ggplot(pc_scores, aes(x = PC1, y = PC2, color = factor(kmeans_result$cluster))) 
 
 ### Observations from Visualisation (scatter plot)
 
-- **Cluster Distribution:** The visualisations revealed distinct groupings, indicating that the K-means algorithm effectively identified separate clusters within the data.
-- **Cluster Separation:**  Clusters exhibited overlapping boundaries, suggesting potential some dissimilarity between those groups.
+#### Cluster Distribution
+
+The visualisations revealed distinct groupings, indicating that the K-means algorithm effectively identified separate clusters within the data.
+
+#### Cluster Separation
+
+Clusters exhibited overlapping boundaries, suggesting potential some dissimilarity between those groups.
 
 ```{r cluster-2, echo=TRUE}
 # Extract PC scores for PC1 to PC3
@@ -794,8 +793,13 @@ fviz_cluster(kmeans_result, data = pc_scores, geom = "point",
 
 ### Observations from Visualisation (fviz_cluster)
 
-- **Cluster Sizes:** The clusters varied in size, reflecting the dataset's inherent structure and the algorithm's ability to group similar observations.
-- **Dissimilarity:** Clusters showed varying degrees of internal dissimilarity, with some clusters being more homogeneous than others.
+#### Cluster Sizes
+
+The clusters varied in size, reflecting the dataset's inherent structure and the algorithm's ability to group similar observations.
+
+#### Dissimilarity
+
+Clusters showed varying degrees of internal dissimilarity, with some clusters being more homogeneous than others.
 
 
 *3D Visualization of clusters*
