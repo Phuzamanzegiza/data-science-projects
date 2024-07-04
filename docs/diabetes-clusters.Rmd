@@ -521,15 +521,15 @@ glimpse(clean_data)
 
 Principal Component Analysis (PCA) was utilized to simplify the complexity of high-dimensional data while preserving its essential features. This section explains how PCA was applied to our dataset and interprets its results.
 
-## Understanding PCA
+### Understanding PCA
 
 PCA transformed correlated variables into a set of linearly uncorrelated components, known as principal components (PCs). These components were ordered by the amount of variance they explained in the data, with the first PC explaining the maximum variance and each subsequent PC explaining less.
 
-## Performing PCA
+### Performing PCA
 
 Initially, the dataset, including dummy variables for the outcome categories, was centered and scaled. This normalization step ensured that each variable contributed equally to the analysis, regardless of its original scale or units.
 
-## Explained Variance
+### Explained Variance
 
 The PCA results included a summary of the variance explained by each principal component. This information helped in understanding how much information each PC retained from the original dataset. It enabled us to decide how many principal components to retain based on the cumulative variance explained.
 
@@ -578,7 +578,7 @@ The curve on the plot begins at the bottom left corner, near 0% explained varian
 #### Summary
 The cumulative explained variance plot in PCA guides the selection of the optimal number of principal components by showing how much variance is captured as components are added. It balances the trade-off between retaining enough information for analysis while avoiding the inclusion of redundant components that do not significantly contribute to explaining the dataset's variance.
 
-## Determining Optimal Components
+### Determining Optimal Components
 
 Moreover, methods such as Kaiser's criterion was used to determine the optimal number of principal components. It suggests retaining only those components with eigenvalues (variance explained by each component) greater than one. 
 
@@ -598,7 +598,7 @@ optimal_components <- eigenvalues[eigenvalues > 1]
 print(optimal_components)
 ```
 
-## Variable Loadings
+### Variable Loadings
 
 Variable loadings represented the correlation coefficients between the original variables and the principal components. These coefficients indicated the strength and direction of each variable's contribution to the principal components. Bar plots of variable loadings visualised which variables were most influential in each principal component.
 
@@ -641,7 +641,7 @@ In PCA, variable loadings quantify the contribution of each original variable to
 **Summary:**
 The sign and magnitude of loadings indicate the direction and strength of the relationship between each original variable and PC1. Higher absolute loading values signify greater influence on the variance explained by PC1. Positive loadings indicate a direct correlation, while negative loadings signify an inverse correlation with PC1. 
 
-## PCA Visualisation
+### PCA Visualisation
 
 Visualising PCA results was crucial for interpreting the relationships between data points and understanding the distribution of variables across principal components. Scatter plots and variable representation plots (showing arrows indicating variable contributions) provided intuitive insights into how variables clustered and correlated in reduced-dimensional space.
 
@@ -673,10 +673,10 @@ ggsave("variable_representation_plot.png", var_representation, width = 8, height
 
 ```
 
-## Determine optimal number of clusters
+### Determine optimal number of clusters
 and statistical techniques like the elbow method, silhouette method, and gap statistics were employed. These methods helped in selecting a suitable number of clusters that best captured the variability in the data while avoiding overfitting. The number of clusters chosen were four based on these methods including average Silhouette width score that was performed after clustering.
 
-### Elbow Method
+#### Elbow Method
 The Elbow method is a technique used in clustering algorithms, particularly K-means clustering, to determine the optimal number of clusters \( k \) in a dataset. It involves plotting the within-cluster sum of squares (WSS) against different values of \( k \). The "elbow" point on the plot represents the optimal \( k \) where the rate of decrease in WSS slows down, indicating that adding more clusters does not significantly improve the clustering performance. 
 
 ```{r elbow, echo=TRUE}
@@ -695,7 +695,7 @@ elbow_method(pca_data, max_k = 10)
 ```
 
 
-### Silhouette Method
+#### Silhouette Method
 
 The Silhouette Method is a technique used to determine the optimal number of clusters \( k \) in a dataset for clustering algorithms like K-means. It evaluates how similar each point in one cluster is to points in its own cluster compared to points in other clusters. 
 
@@ -716,7 +716,7 @@ silhouette_method <- function(pca_data, max_k) {
 silhouette_method(pca_data, max_k = 10)
 
 ```
-### Gap Statistics
+#### Gap Statistics
 
 Gap Statistics is a method used to determine the optimal number of clusters \( k \) in a dataset for clustering algorithms such as K-means. It compares the within-cluster variation (sum of squares) of the clustering algorithm's output with that of a reference null distribution that represents data with no obvious clustering structure.
 
@@ -743,15 +743,15 @@ gap_statistics(pca_data, max_k = 10)
 # K-means Clustering 
 
 
-## K-Means Clustering
+### K-Means Clustering
 
 K-means clustering is a method used to partition a dataset into distinct groups (clusters) based on similarity. By minimising the variance within each cluster, K-means aims to create groups where the data points within each group are more similar to each other than to those in other groups. This analysis applied K-means clustering to the results of Principal Component Analysis (PCA) to understand the underlying patterns in the data.
 
-##  Clustering with K=4
+###  Clustering with K=4
 
 To explore the dataset's structure, we performed K-means clustering using the first three principal components (PC1 to PC3). We set the number of clusters (K) to 4. The PCA results provided a reduced dimensionality space, making it easier to visualise and interpret the clusters.
 
-##  Cluster Visualisation
+###  Cluster Visualisation
 
 The clusters were visualised in two-dimensional and three-dimensional plots. The 2D plot displayed the data points along PC1 and PC2, colored according to their cluster assignments. A 3D scatter plot further illustrated the clustering in the PCA-reduced space, showing the separation and distribution of clusters across PC1, PC2, and PC3. 
 
@@ -771,7 +771,7 @@ ggplot(pc_scores, aes(x = PC1, y = PC2, color = factor(kmeans_result$cluster))) 
 
 ```
 
-## Observations from Visualisation (scatter plot)
+### Observations from Visualisation (scatter plot)
 
 - **Cluster Distribution:** The visualisations revealed distinct groupings, indicating that the K-means algorithm effectively identified separate clusters within the data.
 - **Cluster Separation:**  Clusters exhibited overlapping boundaries, suggesting potential some dissimilarity between those groups.
@@ -791,7 +791,8 @@ fviz_cluster(kmeans_result, data = pc_scores, geom = "point",
              ggtheme = theme_minimal(),
              main = "K-means Clustering Results (K = 4)")
 ```
-## Observations from Visualisation (fviz_cluster)
+
+### Observations from Visualisation (fviz_cluster)
 
 - **Cluster Sizes:** The clusters varied in size, reflecting the dataset's inherent structure and the algorithm's ability to group similar observations.
 - **Dissimilarity:** Clusters showed varying degrees of internal dissimilarity, with some clusters being more homogeneous than others.
@@ -811,7 +812,7 @@ plot_ly(data = pc_scores, x = ~PC1, y = ~PC2, z = ~PC3, color = factor(kmeans_re
 
 
 
-## Cluster Statistics and Dissimilarity Calculation
+### Cluster Statistics and Dissimilarity Calculation
 
 **Cluster Statistics:**
 To gain deeper insights into the clusters, we computed various statistics:
@@ -857,32 +858,40 @@ print(cluster_stats)
 ```
 ### K-Means Clustering Statistical Analysis
 
+#### Cluster Sizes
 
-#### Key Findings
+The number of observations in each cluster varied, with Cluster 2 being the largest (266 observations) and Cluster 3 being the smallest (127 observations). This variation in cluster sizes indicates a non-uniform distribution of data points across the clusters.
 
-1. **Cluster Sizes:** The number of observations in each cluster varied, with Cluster 2 being the largest (266 observations) and Cluster 3 being the smallest (127 observations). This variation in cluster sizes indicates a non-uniform distribution of data points across the clusters.
+#### Maximum Dissimilarity
 
-2. **Maximum Dissimilarity:** All clusters exhibited the same maximum dissimilarity value of 10.51. This value represents the most dissimilar pair of observations within each cluster and highlights the maximum internal variability.
+All clusters exhibited the same maximum dissimilarity value of 10.51. This value represents the most dissimilar pair of observations within each cluster and highlights the maximum internal variability.
 
-3. **Average Dissimilarity:** The average dissimilarity within each cluster was consistent across all clusters at 3.23. This measure indicates the typical distance between observations within the same cluster, suggesting a similar level of internal cohesion.
+#### Average Dissimilarity
 
-4. **Isolation:** The isolation metric, which measures the minimum distance between cluster centers, was also identical for all clusters at 2.40. This value reflects the degree of separation between the clusters, indicating that each cluster is equally distinct from the others.
+The average dissimilarity within each cluster was consistent across all clusters at 3.23. This measure indicates the typical distance between observations within the same cluster, suggesting a similar level of internal cohesion.
+
+#### Isolation
+
+The isolation metric, which measures the minimum distance between cluster centers, was also identical for all clusters at 2.40. This value reflects the degree of separation between the clusters, indicating that each cluster is equally distinct from the others.
 
 
 # Evaluation of K-Means Clustering
 
 Evaluating the performance and validity of the K-means clustering algorithm is essential to ensure that the clusters formed are meaningful and distinct. This section presents the evaluation of the K-means clustering performed on the dataset using several key metrics.
 
-## Evaluation Metrics
+### Evaluation Metrics
 
-1. **Calinski-Harabasz Index:**
-   The Calinski-Harabasz index, also known as the Variance Ratio Criterion, measures the ratio of the sum of between-cluster dispersion to the sum of within-cluster dispersion. Higher values of the Calinski-Harabasz index indicate better-defined and more distinct clusters. For the given clustering solution, the Calinski-Harabasz index was computed, providing a quantitative assessment of cluster separation and compactness.
+#### Calinski-Harabasz Index
 
-2. **Dunn Index:**
-   The Dunn index is another metric used to evaluate the clustering quality by considering both the minimum inter-cluster distance and the maximum intra-cluster distance. A higher Dunn index indicates better clustering, as it signifies well-separated and compact clusters. The Dunn index was calculated for the clustering solution, helping to confirm the distinctiveness of the clusters.
+The Calinski-Harabasz index, also known as the Variance Ratio Criterion, measures the ratio of the sum of between-cluster dispersion to the sum of within-cluster dispersion. Higher values of the Calinski-Harabasz index indicate better-defined and more distinct clusters. For the given clustering solution, the Calinski-Harabasz index was computed, providing a quantitative assessment of cluster separation and compactness.
 
-3. **Silhouette Coefficient:**
-   The silhouette coefficient measures how similar an object is to its own cluster compared to other clusters. It ranges from -1 to 1, where a value close to 1 indicates that the data point is well-matched to its own cluster and poorly matched to neighboring clusters. The silhouette coefficients for each data point were calculated, and a silhouette plot was generated to visually assess the clustering quality. The plot highlighted the cohesion within clusters and the separation between different clusters.
+#### Dunn Index
+
+The Dunn index is another metric used to evaluate the clustering quality by considering both the minimum inter-cluster distance and the maximum intra-cluster distance. A higher Dunn index indicates better clustering, as it signifies well-separated and compact clusters. The Dunn index was calculated for the clustering solution, helping to confirm the distinctiveness of the clusters.
+
+#### Silhouette Coefficient
+
+The silhouette coefficient measures how similar an object is to its own cluster compared to other clusters. It ranges from -1 to 1, where a value close to 1 indicates that the data point is well-matched to its own cluster and poorly matched to neighboring clusters. The silhouette coefficients for each data point were calculated, and a silhouette plot was generated to visually assess the clustering quality. The plot highlighted the cohesion within clusters and the separation between different clusters.
 
 
 ```{r metrics, echo=TRUE}
@@ -928,7 +937,7 @@ sil_scores <- calculate_silhouette(pca_data, clusters)
 fviz_silhouette(sil_scores, palette = "jco", main = "Silhouette Plot for K-means Clustering")
 ```
 
-## Cluster Profiles
+### Cluster Profiles
 
 To further understand the characteristics of each cluster, the mean values of the original variables were computed for each cluster. This analysis provided insights into the distinguishing features of each cluster, revealing how different variables contributed to the clustering results. A bar plot was created to visualise the cluster profiles, showing the mean values of the variables for each cluster and highlighting the differences between them.
 
@@ -971,7 +980,7 @@ plot_ly(cluster_means_long, x = ~Variable, y = ~Mean, color = ~factor(Cluster), 
 
 ## Comparison and Description of Clusters
 
-## Description of Clusters
+### Description of Clusters
 
 ### Cluster 1 - Low Risk Young Adults
 **Age**: The average age in Cluster 1 is 26.42 years.  
