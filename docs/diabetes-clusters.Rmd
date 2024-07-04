@@ -877,7 +877,7 @@ Evaluating the performance and validity of the K-means clustering algorithm is e
    The silhouette coefficient measures how similar an object is to its own cluster compared to other clusters. It ranges from -1 to 1, where a value close to 1 indicates that the data point is well-matched to its own cluster and poorly matched to neighboring clusters. The silhouette coefficients for each data point were calculated, and a silhouette plot was generated to visually assess the clustering quality. The plot highlighted the cohesion within clusters and the separation between different clusters.
 
 
-```{r evaluate, echo=TRUE}
+```{r metrics, echo=TRUE}
 # Compute the distance matrix
 dist_matrix <- dist(pc_data)
 
