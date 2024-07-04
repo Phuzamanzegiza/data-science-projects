@@ -430,7 +430,7 @@ BMI shows a positive correlation with glucose levels, indicating that individual
 #### Diabetes Pedigree Function
 The diabetes pedigree function does not show significant correlations with any other variables in the plot. This result suggests that genetic predisposition to diabetes, as measured by the pedigree function, operates independently of the other health metrics included in this study. This finding emphasises the complex nature of diabetes susceptibility, involving both genetic and environmental factors.
 
-### Glucose
+#### Glucose
 Glucose levels demonstrate a positive correlation with insulin levels. This relationship indicates that as glucose levels rise, insulin levels tend to increase as well, reflecting the body's response to maintain glucose homeostasis. Weak correlations were also observed between glucose levels and both BMI and age, suggesting minor associations with these variables.
 
 #### Insulin
@@ -749,7 +749,7 @@ K-means clustering is a method used to partition a dataset into distinct groups 
 
 To explore the dataset's structure, we performed K-means clustering using the first three principal components (PC1 to PC3). We set the number of clusters (K) to 4. The PCA results provided a reduced dimensionality space, making it easier to visualise and interpret the clusters.
 
-## Cluster Visualisation
+##  Cluster Visualisation
 
 The clusters were visualised in two-dimensional and three-dimensional plots. The 2D plot displayed the data points along PC1 and PC2, colored according to their cluster assignments. A 3D scatter plot further illustrated the clustering in the PCA-reduced space, showing the separation and distribution of clusters across PC1, PC2, and PC3. 
 
