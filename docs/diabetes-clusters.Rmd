@@ -745,7 +745,7 @@ K-means clustering is a method used to partition a dataset into distinct groups 
 
 To explore the dataset's structure, we performed K-means clustering using the first three principal components (PC1 to PC3). We set the number of clusters (K) to 4. The PCA results provided a reduced dimensionality space, making it easier to visualise and interpret the clusters.
 
-###  Cluster Visualisation
+###  Cluster Visualisation
 
 The clusters were visualised in two-dimensional and three-dimensional plots. The 2D plot displayed the data points along PC1 and PC2, colored according to their cluster assignments. A 3D scatter plot further illustrated the clustering in the PCA-reduced space, showing the separation and distribution of clusters across PC1, PC2, and PC3. 
 
@@ -802,12 +802,12 @@ The clusters varied in size, reflecting the dataset's inherent structure and the
 Clusters showed varying degrees of internal dissimilarity, with some clusters being more homogeneous than others.
 
 
-*3D Visualization of clusters*
+
 ```{r cluster-3D, echo=TRUE}
 # Visualize the clusters in 3D
 plot_ly(data = pc_scores, x = ~PC1, y = ~PC2, z = ~PC3, color = factor(kmeans_result$cluster), 
         type = "scatter3d", mode = "markers", marker = list(size = 6)) %>%
-  layout(title = "K-means Clustering Results (K = 4)",
+  layout(title = "3D K-means Clustering Results (K = 4)",
          scene = list(xaxis = list(title = "Principal Component 1"),
                       yaxis = list(title = "Principal Component 2"),
                       zaxis = list(title = "Principal Component 3")))
@@ -818,11 +818,17 @@ plot_ly(data = pc_scores, x = ~PC1, y = ~PC2, z = ~PC3, color = factor(kmeans_re
 
 ### Cluster Statistics and Dissimilarity Calculation
 
-**Cluster Statistics:**
-To gain deeper insights into the clusters, we computed various statistics:
-- **Number of Observations:** Each cluster's size was calculated to understand the distribution of data points across clusters.
-- **Dissimilarity Measures:** Maximum and average dissimilarities within each cluster were evaluated using the Gower distance, a metric suitable for mixed data types.
-- **Isolation:** The isolation of each cluster was assessed by measuring the minimum distance between cluster centers, indicating how distinct each cluster is from others.
+
+#### Number of Observations
+
+Each cluster's size was calculated to understand the distribution of data points across clusters.
+
+#### Dissimilarity Measures
+
+Maximum and average dissimilarities within each cluster were evaluated using the Gower distance, a metric suitable for mixed data types.
+
+#### Isolation
+The isolation of each cluster was assessed by measuring the minimum distance between cluster centers, indicating how distinct each cluster is from others.
 
 
 ```{r clusterstats, echo=TRUE}
