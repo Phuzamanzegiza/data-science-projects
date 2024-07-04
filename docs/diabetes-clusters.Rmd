@@ -58,24 +58,18 @@ library(VIM)
 ```
 # Executive Summary
 
-**Background:**
-This report explores the application of clustering analysis to identify distinct groups within a dataset related to diabetes risk factors. The dataset includes variables such as age, glucose levels, insulin levels, BMI, blood pressure, and genetic predisposition factors.
+### Background
+Diabetes is a significant public health issue with varying prevalence across different demographic groups. Understanding the underlying characteristics of these groups can aid in developing targeted interventions to manage and prevent diabetes effectively.
 
-**Objective:**
-The objective was to categorize individuals into clusters based on their health profiles and assess their respective risks of developing diabetes. By understanding these clusters, targeted interventions could be developed to mitigate diabetes risks effectively.
+### Objective
+The objective of this study was to identify distinct clusters within a population based on various health and demographic parameters and to develop tailored strategic interventions for each cluster to improve diabetes management and prevention.
 
-**Results:**
-Four distinct clusters were identified:
-- Cluster 1: Young adults with low diabetes risk.
-- Cluster 2: Middle-aged individuals with high diabetes risk.
-- Cluster 3: Young adults with moderate diabetes risk.
-- Cluster 4: Older adults with moderate diabetes risk.
+### Results
+Four distinct clusters were identified cluster 1, a high-risk group with 99% diabetes prevalence, severe obesity, and elevated glucose and insulin levels.
+Cluster 2, older individuals with moderate obesity, no diabetes, and the highest average number of pregnancies. Cluster 3, younger individuals with severe obesity, no diabetes, but a considerable genetic predisposition. Cluster 4, youngest group with low diabetes prevalence, overweight, and the lowest glucose and insulin levels.
 
-Each cluster exhibited unique characteristics in terms of age, glucose levels, insulin levels, BMI, blood pressure, and genetic predisposition. Strategic interventions were recommended for each cluster to optimize diabetes prevention and management efforts.
-
-**Conclusion:**
-By tailoring interventions to the specific needs of each cluster, healthcare providers can enhance the effectiveness of diabetes prevention strategies. This targeted approach not only improves health outcomes but also contributes to reducing the overall burden of diabetes in the population.
-
+### Conclusion
+Tailored interventions for each cluster are essential. Cluster 1 requires intensive medical and lifestyle interventions. Cluster 2 needs preventive measures to maintain their health. Cluster 3 should focus on weight management programs. Cluster 4 benefits from promoting a healthy lifestyle to prevent future health risks. These targeted strategies are crucial for effective diabetes management and prevention across different population segments.
 
 # Exploratory Data Analysis
 
@@ -633,12 +627,24 @@ bar_plot_pc3
 ### PC 1 Variable Loadings Analysis
 In PCA, variable loadings quantify the contribution of each original variable to the variance explained by each principal component. These loadings are crucial for understanding which variables are most influential in defining each PC.
 
-- **Outcome:** The variable "Outcome" shows the highest positive loading, indicating it strongly influences PC1.
-- **Outcome_1:**Thevariable "Outcome_1" presents with a highest negative loading, suggesting a significant contribution to PC1.
-- **Insulin, BMI, Skin Thickness, and Age:** These variables also contribute inversely to PC1, albeit to a lesser extent, in descending order of influence.
-- **Blood Pressure, Diabetes Pedigree Function and Pregnancies:** These variables exhibit very small negative loadings on PC1.
+#### Outcome
 
-**Summary:**
+The variable "Outcome" shows the highest positive loading, indicating it strongly influences PC1.
+
+#### Outcome_1
+
+The variable "Outcome_1" presents with a highest negative loading, suggesting a significant contribution to PC1.
+
+#### Insulin, BMI, Skin Thickness, and Age
+
+These variables also contribute inversely to PC1, albeit to a lesser extent, in descending order of influence.
+
+#### Blood Pressure, Diabetes Pedigree Function and Pregnancies
+
+These variables exhibit very small negative loadings on PC1.
+
+#### Summary
+
 The sign and magnitude of loadings indicate the direction and strength of the relationship between each original variable and PC1. Higher absolute loading values signify greater influence on the variance explained by PC1. Positive loadings indicate a direct correlation, while negative loadings signify an inverse correlation with PC1. 
 
 ### PCA Visualisation
@@ -923,12 +929,6 @@ dunn_index <- fpc::cluster.stats(dist_matrix, clusters)$dunn
 print(paste("Calinski-Harabasz Index:", calinski_harabasz))
 print(paste("Dunn Index:", dunn_index))
 
-class(dist_matrix)  # Should be 'dist'
-class(clusters)     # Should be 'integer' or 'factor'
-dim(dist_matrix)
-length(clusters)
-
-
 ```
 
 ```{r sihloplot, echo=TRUE}
@@ -990,96 +990,56 @@ plot_ly(cluster_means_long, x = ~Variable, y = ~Mean, color = ~factor(Cluster), 
 
 ## Comparison and Description of Clusters
 
-### Description of Clusters
+### Cluster Descriptions
 
-### Cluster 1 - Low Risk Young Adults
-**Age**: The average age in Cluster 1 is 26.42 years.  
-**Outcome**: Only 9.9% of individuals in this cluster have diabetes (Outcome_1 = 0.099), while 90% do not (Outcome_0 = 0.90).  
-**Glucose**: The mean glucose level is 105.89 mg/dL, which is relatively low compared to the other clusters.  
-**Insulin**: Average insulin level is 96.2 µU/mL which is relatively normal.  
-**BMI**: The mean BMI is 26.75, indicating that individuals in this cluster are slightly overweight according WHO classification.  
-**Blood Pressure**: The average blood pressure is 65.09 mmHg, which is the lowest among all clusters.  
-**Diabetes Pedigree Function**: The mean value is 0.428, suggesting a mild genetic predisposition to diabetes.  
-**Pregnancies**: On average, individuals have 2.29 pregnancies.  
-**Skin Thickness**: The mean skin thickness is 21.079 mm, indicating thinner skinfold measurements compared to other clusters.
+**Cluster 1: High-Risk Severe Diabetes Group**
 
-### Cluster 2 - High Risk Middle-Aged Adults
+Cluster 1 is distinct due to its high prevalence of diabetes, with nearly all individuals (99%) diagnosed with the condition. These individuals have significantly elevated mean glucose levels at 143 mg/dL and an average insulin level of 197 µU/mL, indicating severe insulin resistance. The mean BMI of 35.4 categorizes them as severely obese. Their blood pressure averages at 75.3 mmHg, which is within a normal range. The diabetes pedigree function, at 0.56, suggests a strong genetic predisposition to diabetes. On average, individuals in this cluster have 5 pregnancies and a mean skin thickness of 33 mm, indicative of thicker skinfold measurements.
 
-**Age**: The average age in Cluster 2 is 35.05 years.  
-**Outcome**: A significant 76.5% of individuals in this cluster have diabetes (Outcome_1 = 0.765), while only 23.4% do not (Outcome_0 = 0.234).  
-**Glucose**: The mean glucose level is 164.67 mg/dL, the highest among all clusters.  
-**Insulin**: Average insulin level is 295 µU/mL, indicating higher insulin resistance or insulin therapy.  
-**BMI**: The mean BMI is 37, categorizing individuals in this cluster as obese.  
-**Blood Pressure**: The average blood pressure is 73.5 mmHg.  
-**Diabetes Pedigree Function**: The mean value is 0.693, indicating a higher genetic predisposition to diabetes.  
-**Pregnancies**: On average, individuals have 3.86 pregnancies.  
-**Skin Thickness**: The mean skin thickness is 34.4 mm, indicating thicker skinfold measurements.
+**Cluster 2: Older, Non-Diabetic Moderately Obese Group**
 
-### Cluster 3 - Moderate Risk Young Adults
+Cluster 2 is unique as none of its individuals are diagnosed with diabetes. This cluster has the highest average age of 47 years. The mean glucose level is lower at 119.02 mg/dL, and the average insulin level is 121 µU/mL. The mean BMI of 30.42 places them in the moderately obese category. Blood pressure averages slightly higher at 78 mmHg. With a diabetes pedigree function of 0.40, this cluster shows a lower genetic predisposition to diabetes. Individuals in this cluster have the highest average number of pregnancies at 7, and a mean skin thickness of 30 mm.
 
-**Age**: The average age in Cluster 3 is 28 years.  
-**Outcome**: 33.1% of individuals in this cluster have diabetes (Outcome_1 = 0.331), while 69% do not (Outcome_0 = 0.69).  
-**Glucose**: The mean glucose level is 113 mg/dL.  
-**Insulin**: Average insulin level is 128 µU/mL.  
-**BMI**: The mean BMI is 37.46, indicating that individuals in this cluster are morbidly obese.  
-**Blood Pressure**: The average blood pressure is 74.1 mmHg.  
-**Diabetes Pedigree Function**: The mean value is 0.45, indicating a moderate genetic predisposition to diabetes.  
-**Pregnancies**: On average, individuals have 2.06 pregnancies.  
-**Skin Thickness**: The mean skin thickness is 35.4 mm, the highest among all clusters.
+**Cluster 3: Younger, Severe Obesity Group**
 
-### Cluster 4 - Moderate Risk Older Adults
+Cluster 3 comprises younger individuals with an average age of 27 years, all of whom are diabetes-free. This cluster has a mean glucose level of 112 mg/dL and an average insulin level of 146 µU/mL. Despite their younger age, they have a high mean BMI of 37.4, categorizing them as severely obese. Blood pressure averages at 74.2 mmHg. The diabetes pedigree function of 0.44 suggests a considerable genetic predisposition to diabetes. Individuals in this cluster have, on average, 2.1 pregnancies and the highest mean skin thickness of 35.4 mm.
 
-**Age**: The average age in Cluster 4 is 47 years.  
-**Outcome**: 44.9% of individuals in this cluster have diabetes (Outcome_1 = 0.449), while 55% do not (Outcome_0 = 0.55).  
-**Glucose**: The mean glucose level is 127 mg/dL.  
-**Insulin**: Average insulin level is 141 µU/mL.  
-**BMI**: The mean BMI is 32, categorising individuals in this cluster as obese.  
-**Blood Pressure**: The average blood pressure is 80 mmHg, the highest among all clusters.  
-**Diabetes Pedigree Function**: The mean value is 0.42, indicating a moderate genetic predisposition to diabetes.  
-**Pregnancies**: On average, individuals have 8 pregnancies, the highest among all clusters.  
-**Skin Thickness**: The mean skin thickness is 30.42 mm.
+**Cluster 4: Young, Overweight, Low Diabetes Prevalence Group**
+
+Cluster 4 features the youngest individuals, with an average age of 25 years. Only 0.4% of this cluster is diagnosed with diabetes. This cluster has the lowest mean glucose level at 104 mg/dL and the lowest average insulin level at 96 µU/mL. The mean BMI of 27 indicates they are generally overweight but not obese. Blood pressure averages at 65 mmHg, the lowest among all clusters. The diabetes pedigree function is 0.42, indicating a moderate genetic predisposition to diabetes. Individuals in this cluster have an average of 2 pregnancies, and the mean skin thickness is 21 mm, the thinnest among all clusters.
+
+### Key Findings
+
+The analysis reveals that Cluster 1 has the highest diabetes prevalence at 99%, while Clusters 2, 3, and 4 have negligible or no diabetes prevalence. In terms of glucose and insulin levels, Cluster 1 exhibits the highest values, indicating severe diabetes and insulin resistance, whereas Cluster 4 shows the lowest levels, suggesting better glucose regulation.
+
+Regarding BMI and obesity, Clusters 1 and 3 are characterized by severe obesity, while Cluster 2 is moderately obese, and Cluster 4 is overweight. Age and genetic predisposition differ among the clusters, with Cluster 2 being the oldest and having the lowest genetic predisposition to diabetes, while Cluster 4 is the youngest with a moderate genetic predisposition. 
+
+Lastly, Cluster 2 has the highest average number of pregnancies, whereas Cluster 4 has the thinnest skinfold measurements, indicating varying demographic and health characteristics across the clusters.
 
 
-### Comparison of Clusters:
-- **Age**: Cluster 4 has the oldest average age (47 years), while Cluster 1 has the youngest (26.42 years).
-- **Outcome (Diabetes Prevalence)**: Cluster 2 has the highest prevalence of diabetes (76.5%), followed by Cluster 4 (44.9%), Cluster 3 (33.1%), and Cluster 1 (9.9%).
-- **Glucose Levels**: Cluster 2 has the highest average glucose level (164.67 mg/dL), indicating a higher risk or presence of diabetes.
-- **Insulin Levels**: Cluster 2 also has the highest insulin levels (295 µU/mL), followed by Cluster 3 (128 µU/mL), Cluster 4 (141 µU/mL), and Cluster 1 (96.2 µU/mL).
-- **BMI**: Clusters 2 and 3 have similar high BMI values (37 and 37.46, respectively), indicating obesity, while Cluster 1 has the lowest BMI (26.75).
-- **Blood Pressure**: Cluster 4 has the highest blood pressure (80 mmHg), whereas Cluster 1 has the lowest (65.09 mmHg).
-- **Diabetes Pedigree Function**: Cluster 2 has the highest genetic predisposition to diabetes (0.693), while Clusters 1 and 4 have the lowest (0.428 and 0.42, respectively).
-- **Pregnancies**: Cluster 4 has the highest average number of pregnancies (8), indicating a potential factor in the higher age and diabetes prevalence in this cluster.
-- **Skin Thickness**: Cluster 3 has the highest skin thickness (35.4 mm), while Cluster 1 has the lowest (21.079 mm).
+### Key Strategic Interventions
+
+**Cluster 1: High-Risk Severe Diabetes Group**
+
+For Cluster 1, characterised by a 99% diabetes prevalence, intensive medical management is crucial. This should include comprehensive diabetes care involving medication, regular glucose monitoring, and insulin therapy. Lifestyle interventions are equally important; structured programs focusing on diet, exercise, and weight loss can help mitigate the severe health risks associated with high glucose and insulin levels. Additionally, frequent health screenings should be conducted to monitor and manage comorbid conditions such as hypertension and cardiovascular diseases, ensuring holistic care for individuals in this cluster.
+
+**Cluster 2: Older, Non-Diabetic Moderately Obese Group**
+
+Cluster 2, comprising older individuals with moderate obesity and no diabetes prevalence, should prioritize preventive health measures to avoid the onset of diabetes. Promoting healthy eating habits and regular physical activity is essential. Regular health screenings to monitor blood glucose and other health parameters will help in early detection and prevention of potential health issues. Educational programs focused on maintaining a healthy lifestyle and managing obesity can provide the necessary knowledge and motivation for individuals in this cluster to stay healthy.
+
+**Cluster 3: Younger, Severe Obesity Group**
+
+For the younger individuals in Cluster 3, who are severely obese but non-diabetic, weight management programs are imperative. These programs should include nutritional counseling and physical activity tailored to address severe obesity. Regular screenings to detect early signs of diabetes and other obesity-related conditions can help in proactive health management. Behavioural interventions that promote long-term lifestyle changes and healthy habits are also recommended to support sustained weight loss and overall well-being.
+
+**Cluster 4: Young, Overweight, Low Diabetes Prevalence Group**
+
+Cluster 4, with the youngest individuals who are overweight and have a low diabetes prevalence, should focus on promoting a healthy lifestyle. Encouraging a balanced diet and regular exercise will help maintain their current low risk of diabetes. Education on the importance of monitoring blood glucose levels and maintaining a healthy weight is vital to prevent future health issues. Supportive services, including counseling and community programs, can provide the necessary resources and motivation for individuals in this cluster to continue managing their weight effectively and maintain their overall health.
+
+## Conclusion
+
+This report provides a detailed analysis of four distinct clusters based on various health and demographic parameters, with a particular focus on diabetes prevalence and related factors. Cluster 1 is identified as a high-risk group with severe diabetes, necessitating intensive medical and lifestyle interventions. Cluster 2, characterized by older, moderately obese individuals with no diabetes, requires preventive measures to maintain their health. 
 
 
-## Strategic Interventions for Each Cluster
+Cluster 3 comprises younger individuals with severe obesity, highlighting the need for weight management programs. Cluster 4, the youngest group with low diabetes prevalence, benefits from interventions promoting a healthy lifestyle to prevent future health risks. Tailored strategies for each cluster ensure targeted and effective health management, addressing both current conditions and potential risks.
 
-**Cluster 1: Low Risk Young Adults**
 
-**Intervention Focus**: Prevention and Education
-
-For Cluster 1, comprising young adults with a low risk of diabetes, strategic interventions should focus on prevention and education. Promoting a healthy lifestyle through continued encouragement of balanced eating habits and regular physical activity is essential to maintaining their normal weight and low glucose levels. Educational campaigns on diabetes prevention, specifically targeting young adults, can reinforce the importance of these habits. Additionally, advocating for routine health screenings to monitor vital signs such as glucose and insulin levels can help in early detection and prevention of diabetes.
-
-**Cluster 2: High Risk Middle-Aged Adults**
-
-**Intervention Focus**: Intensive Management and Support
-
-Cluster 2 consists of middle-aged adults at high risk for diabetes, necessitating intensive management and support. Medical management, including insulin therapy and medications, is crucial to control high glucose and insulin levels. Specialized weight management programs should be implemented to address obesity and reduce related health risks. Given the high genetic predisposition to diabetes in this cluster, genetic counseling can provide valuable insights and management strategies. Regular health check-ups and increased monitoring frequency are imperative for early intervention and effective management of potential complications.
-
-**Cluster 3: Moderate Risk Young Adults**
-
-**Intervention Focus**: Risk Reduction and Monitoring
-
-Young adults in Cluster 3, who face a moderate risk of developing diabetes, require interventions aimed at risk reduction and monitoring. Targeted diet and exercise programs can help address obesity and manage glucose levels. Regular health monitoring of glucose and insulin levels is essential to manage and reduce the risk of diabetes. Establishing support groups can provide necessary lifestyle modification guidance and peer support to encourage healthy habits. Preventive healthcare services, including routine screenings and early detection strategies, should be emphasized to mitigate the risk of diabetes.
-
-**Cluster 4: Moderate Risk Older Adults**
-
-**Intervention Focus**: Comprehensive Care and Lifestyle Adjustments
-
-For older adults in Cluster 4 with a moderate risk of diabetes, a comprehensive care approach combining medical treatment and lifestyle adjustments is recommended. Chronic disease management programs tailored to older adults should focus on controlling BMI, blood pressure, and glucose levels. Encouraging participation in age-appropriate physical activity programs can improve overall health. These integrated care strategies aim to manage moderate risk factors effectively and improve health outcomes.
-
-# Conclusion
-
-This report analysed the characteristics of four distinct clusters within a dataset, each representing different levels of diabetes risk. Cluster 1, comprising young adults with low diabetes risk, benefits from preventive education and lifestyle maintenance. Cluster 2, with high-risk middle-aged adults, requires intensive management and support, including medical treatments and weight management. Cluster 3, featuring young adults with moderate risk, should focus on risk reduction and continuous monitoring through targeted diet and exercise programs. Cluster 4, consisting of older adults with moderate risk, demands comprehensive care and lifestyle adjustments tailored to their specific health needs.
-
-By identifying and understanding these clusters, we can implement strategic interventions that are tailored to the unique needs of each group. This targeted approach enhances the effectiveness of diabetes prevention and management efforts, ultimately leading to improved health outcomes and a reduction in the prevalence of diabetes.
