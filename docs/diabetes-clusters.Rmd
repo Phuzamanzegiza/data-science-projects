@@ -482,7 +482,7 @@ After imputation, columns suffixed with `_imp` are removed from the dataset. Thi
 The "Outcome" variable, which denotes the presence (1) or absence (0) of diabetes, is converted to a factor. This conversion allows for categorical analysis and ensures that the model interprets this variable correctly during predictive modeling and statistical analyses.
 
 
-```{r knn-impute, echo=FALSE}
+```{r knn-impute, echo=TRUE}
 # Replace zeros with NA for columns to be imputed
 columns_to_impute <- c("Glucose", "BloodPressure", "SkinThickness", "Insulin", "BMI")
 data[columns_to_impute] <- lapply(data[columns_to_impute], function(x) ifelse(x == 0, NA, x))
@@ -494,9 +494,6 @@ imputed_data <- kNN(data, variable = columns_to_impute, k = 5)
 # Remove columns with `_imp` suffix using dplyr::select explicitly
 clean_data <- imputed_data %>%
   dplyr::select(-dplyr::ends_with("_imp"))
-
-# Verify the clean dataframe
-print(clean_data)
 
 # Convert Outcome to factor
 clean_data$Outcome <- factor(clean_data$Outcome, levels = c(0, 1))
@@ -741,17 +738,19 @@ gap_statistics(pca_data, max_k = 10)
 
 
 
-# K-means Clustering with K = 4
+# K-means Clustering 
 
 
 ## K-Means Clustering
 K-means clustering is a method used to partition a dataset into distinct groups (clusters) based on similarity. By minimising the variance within each cluster, K-means aims to create groups where the data points within each group are more similar to each other than to those in other groups. This analysis applied K-means clustering to the results of Principal Component Analysis (PCA) to understand the underlying patterns in the data.
 
 ##  Clustering with K=4
+
 To explore the dataset's structure, we performed K-means clustering using the first three principal components (PC1 to PC3). We set the number of clusters (K) to 4. The PCA results provided a reduced dimensionality space, making it easier to visualise and interpret the clusters.
 
-## Cluster Visualization
+## Cluster Visualisation
 The clusters were visualised in two-dimensional and three-dimensional plots. The 2D plot displayed the data points along PC1 and PC2, colored according to their cluster assignments. A 3D scatter plot further illustrated the clustering in the PCA-reduced space, showing the separation and distribution of clusters across PC1, PC2, and PC3. 
+
 
 ```{r cluster-1, echo=TRUE}
 # Extract PC scores for PC1 to PC2
@@ -767,6 +766,7 @@ ggplot(pc_scores, aes(x = PC1, y = PC2, color = factor(kmeans_result$cluster))) 
   labs(title = "K-means Clustering Results (K = 4)", x = "Principal Component 1", y = "Principal Component 2")
 
 ```
+
 ## Observations from Visualisation (scatter plot)
 - **Cluster Distribution:** The visualisations revealed distinct groupings, indicating that the K-means algorithm effectively identified separate clusters within the data.
 - **Cluster Separation:**  Clusters exhibited overlapping boundaries, suggesting potential some dissimilarity between those groups.
