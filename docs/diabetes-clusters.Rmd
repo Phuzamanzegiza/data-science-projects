@@ -325,7 +325,7 @@ Blood pressure does not show strong correlations with other variables in the dat
 
 Skin thickness does not demonstrate significant correlations with other variables. The scatter plots suggest that skin thickness is relatively independent of other health metrics in this dataset, showing no strong linear patterns.
 
-### Insulin vs. Other Variables
+#### Insulin vs. Other Variables
 
 Insulin levels show strong positive correlation with glucose levels and have a weak positive correlation with BMI, suggesting that individuals with higher insulin levels may also have higher BMI values. However, no strong patterns are observed between insulin levels and other variables, indicating that insulin is not a strong predictor of other health metrics in this dataset.
 
