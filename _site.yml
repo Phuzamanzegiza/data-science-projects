@@ -23,6 +23,8 @@ navbar:
       href: random-forest.html
     - text: "Customer Segmentation"
       href: pca-kmeans-clustering.html
+    - text: "Diabetes Risk Factors"
+      href: diabetes-clusters.html  
 output:
   html_document:
     theme: cerulean
