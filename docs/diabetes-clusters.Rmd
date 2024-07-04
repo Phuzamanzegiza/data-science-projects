@@ -645,7 +645,7 @@ The sign and magnitude of loadings indicate the direction and strength of the re
 
 Visualising PCA results was crucial for interpreting the relationships between data points and understanding the distribution of variables across principal components. Scatter plots and variable representation plots (showing arrows indicating variable contributions) provided intuitive insights into how variables clustered and correlated in reduced-dimensional space.
 
-```{r final-df, echo=TRUE}
+```{r pcviz, echo=TRUE}
 # Extract PCA components for clustering
 pca_data <- pc$x  # Assuming pc is the result of your PCA analysis
 
@@ -679,7 +679,7 @@ and statistical techniques like the elbow method, silhouette method, and gap sta
 ### Elbow Method
 The Elbow method is a technique used in clustering algorithms, particularly K-means clustering, to determine the optimal number of clusters \( k \) in a dataset. It involves plotting the within-cluster sum of squares (WSS) against different values of \( k \). The "elbow" point on the plot represents the optimal \( k \) where the rate of decrease in WSS slows down, indicating that adding more clusters does not significantly improve the clustering performance. 
 
-```{r final-df, echo=TRUE}
+```{r elbow, echo=TRUE}
 # Elbow Method
 elbow_method <- function(pca_data, max_k) {
   wss <- numeric(max_k)
@@ -700,7 +700,7 @@ elbow_method(pca_data, max_k = 10)
 The Silhouette Method is a technique used to determine the optimal number of clusters \( k \) in a dataset for clustering algorithms like K-means. It evaluates how similar each point in one cluster is to points in its own cluster compared to points in other clusters. 
 
 
-```{r final-df, echo=TRUE}
+```{r silho, echo=TRUE}
 # Silhouette Method
 silhouette_method <- function(pca_data, max_k) {
   silhouette_scores <- numeric(max_k)
@@ -721,7 +721,7 @@ silhouette_method(pca_data, max_k = 10)
 Gap Statistics is a method used to determine the optimal number of clusters \( k \) in a dataset for clustering algorithms such as K-means. It compares the within-cluster variation (sum of squares) of the clustering algorithm's output with that of a reference null distribution that represents data with no obvious clustering structure.
 
 
-```{r final-df, echo=TRUE}
+```{r gap, echo=TRUE}
 gap_statistics <- function(pca_data, max_k, B = 10) {
   gap <- numeric(max_k - 1)  # Initialize with length max_k - 1
   for (i in 2:max_k) {  # Start from 2 instead of 1
@@ -752,7 +752,7 @@ To explore the dataset's structure, we performed K-means clustering using the fi
 ## Cluster Visualization
 The clusters were visualised in two-dimensional and three-dimensional plots. The 2D plot displayed the data points along PC1 and PC2, colored according to their cluster assignments. A 3D scatter plot further illustrated the clustering in the PCA-reduced space, showing the separation and distribution of clusters across PC1, PC2, and PC3. 
 
-```{r final-df, echo=TRUE}
+```{r cluster-1, echo=TRUE}
 # Extract PC scores for PC1 to PC2
 pc_scores <- as.data.frame(pc$x[, 1:3])
 
@@ -770,7 +770,7 @@ ggplot(pc_scores, aes(x = PC1, y = PC2, color = factor(kmeans_result$cluster))) 
 - **Cluster Distribution:** The visualisations revealed distinct groupings, indicating that the K-means algorithm effectively identified separate clusters within the data.
 - **Cluster Separation:**  Clusters exhibited overlapping boundaries, suggesting potential some dissimilarity between those groups.
 
-```{r final-df, echo=TRUE}
+```{r cluster-2, echo=TRUE}
 # Extract PC scores for PC1 to PC3
 pc_scores <- as.data.frame(pc$x[, 1:3])
 
@@ -791,7 +791,7 @@ fviz_cluster(kmeans_result, data = pc_scores, geom = "point",
 
 
 *3D Visualization of clusters*
-```{r final-df, echo=TRUE}
+```{r cluster-3D, echo=TRUE}
 # Visualize the clusters in 3D
 plot_ly(data = pc_scores, x = ~PC1, y = ~PC2, z = ~PC3, color = factor(kmeans_result$cluster), 
         type = "scatter3d", mode = "markers", marker = list(size = 6)) %>%
@@ -813,7 +813,7 @@ To gain deeper insights into the clusters, we computed various statistics:
 - **Isolation:** The isolation of each cluster was assessed by measuring the minimum distance between cluster centers, indicating how distinct each cluster is from others.
 
 
-```{r final-df, echo=TRUE}
+```{r clusterstats, echo=TRUE}
 # Perform K-means clustering with K=6 using PCA results
 set.seed(123)  # For reproducibility
 kmeans_result <- kmeans(pc_scores[, 1:3], centers = 4, nstart = 10)
@@ -877,7 +877,7 @@ Evaluating the performance and validity of the K-means clustering algorithm is e
    The silhouette coefficient measures how similar an object is to its own cluster compared to other clusters. It ranges from -1 to 1, where a value close to 1 indicates that the data point is well-matched to its own cluster and poorly matched to neighboring clusters. The silhouette coefficients for each data point were calculated, and a silhouette plot was generated to visually assess the clustering quality. The plot highlighted the cohesion within clusters and the separation between different clusters.
 
 
-```{r final-df, echo=TRUE}
+```{r evaluate, echo=TRUE}
 # Compute the distance matrix
 dist_matrix <- dist(pc_data)
 
@@ -896,7 +896,7 @@ print(paste("Dunn Index:", dunn_index))
 
 ```
 
-```{r final-df, echo=TRUE}
+```{r sihloplot, echo=TRUE}
 # Function to calculate Silhouette Coefficient
 calculate_silhouette <- function(data, clusters) {
   library(cluster)
@@ -927,7 +927,7 @@ fviz_silhouette(sil_scores, palette = "jco", main = "Silhouette Plot for K-means
 To further understand the characteristics of each cluster, the mean values of the original variables were computed for each cluster. This analysis provided insights into the distinguishing features of each cluster, revealing how different variables contributed to the clustering results. A bar plot was created to visualise the cluster profiles, showing the mean values of the variables for each cluster and highlighting the differences between them.
 
 
-```{r final-df, echo=TRUE}
+```{r profile, echo=TRUE}
 
 # Perform K-means clustering with K = 6
 set.seed(123)  # Set seed for reproducibility
@@ -958,7 +958,7 @@ ggplot(cluster_means_long, aes(x = Variable, y = Mean, fill = factor(Cluster))) 
 ```
 
 *Plotly Bar Chart*
-```{r final-df, echo=TRUE}
+```{r profile-2, echo=TRUE}
 # Create interactive plotly bar plot
 plot_ly(cluster_means_long, x = ~Variable, y = ~Mean, color = ~factor(Cluster), type = "bar") %>%
   layout(title = "Cluster Profiles",
