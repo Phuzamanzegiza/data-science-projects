@@ -137,6 +137,7 @@ p8 <- create_histogram(data, "Age", "Age", 1, "#7f7f7f") # Gray
 # Arrange plots in a grid layout with larger size
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
 ```
+
 ### Histogram Analysis
 
 #### Number of Pregnancies
