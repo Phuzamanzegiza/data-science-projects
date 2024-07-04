@@ -414,7 +414,7 @@ A correlation matrix was computed and visualised to quantify the strength and di
 cor_matrix <- cor(numeric_data, use = "complete.obs")
 corrplot(cor_matrix, method = "circle")
 ```
-### Correlation Plot Analysis
+###  Correlation Plot Analysis
 
 The correlation plot offers a comprehensive view of how various health-related variables interrelate, providing insights into their mutual influences. This analysis is crucial for understanding which factors might influence others and how they collectively contribute to health outcomes.
 
