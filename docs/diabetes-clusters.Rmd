@@ -208,6 +208,7 @@ p8 <- create_density_with_outcome(data, "Age", "Age vs Diabetes")
 # Arrange plots in a grid layout with larger size
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
 ```
+
 ### Density Plot Analysis
 
 #### Pregnancies vs. Diabetes Outcome
@@ -254,6 +255,7 @@ scatter_plot2 <- create_scatter_with_outcome(data, "Age", "BloodPressure", "Age"
 # Arrange plots in a grid layout
 grid.arrange(scatter_plot1, scatter_plot2, ncol = 2)
 ```
+
 ### Scatter Plot Analysis
 
 #### Glucose vs. BMI
@@ -302,6 +304,7 @@ ggpairs(data,
         title = "Pairwise Scatter Plots of Numeric Variables"
 )
 ```
+
 ### Pairwise Scatter Plot Analysis
 
 This analysis explores the relationships between different numerical variables related to diabetes through scatter plots. Each plot highlights the interaction between two variables, providing insights into potential correlations and patterns.
@@ -342,10 +345,6 @@ Age exhibits a weak positive correlation with blood pressure, aligning with the 
 These scatter plots provide a visual overview of the relationships between various health metrics related to diabetes. While some correlations and patterns are observable, many variables do not show strong linear relationships, highlighting the complexity of predicting diabetes and related health outcomes based on these metrics alone.
 
 
-
-
-
-
 ## Central Tendency Using Box Plots
 
 Box plots were generated to illustrate the distribution of numerical variables across different diabetes outcomes. Each plot depicts the spread and central tendency of variables within each outcome category, offering insights into potential differences between groups.
@@ -367,6 +366,7 @@ ggplot(data_long, aes(x = Outcome, y = value, fill = as.factor(Outcome))) +
   scale_fill_manual(values = my_colors) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels if needed
 ```
+
 ### Box Plot Analysis
 
 The box plots provide a comparative visualisation of numerical variables based on the diabetes outcome categories (labeled as ‘0’ for no diabetes and ‘1’ for diabetes). These plots help in understanding the distribution and spread of each variable within the two outcome groups.
@@ -415,6 +415,7 @@ A correlation matrix was computed and visualised to quantify the strength and di
 cor_matrix <- cor(numeric_data, use = "complete.obs")
 corrplot(cor_matrix, method = "circle")
 ```
+
 ###  Correlation Plot Analysis
 
 The correlation plot offers a comprehensive view of how various health-related variables interrelate, providing insights into their mutual influences. This analysis is crucial for understanding which factors might influence others and how they collectively contribute to health outcomes.
