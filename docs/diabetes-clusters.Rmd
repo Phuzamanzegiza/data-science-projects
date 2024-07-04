@@ -451,7 +451,7 @@ The correlation plot analysis provides an understanding of how various health-re
 
 Preprocessing the data is crucial to ensure that it is clean, consistent, and ready for further analysis. This section outlines the steps taken to prepare the dataset for modeling and analysis.
 
-## Checking and Handling Zero Values
+### Checking and Handling Zero Values
 
 Zero values in certain variables can sometimes indicate missing data or outliers. It is essential to identify and appropriately handle these values to avoid bias in subsequent analyses.
 
@@ -467,19 +467,19 @@ zero_counts <- sapply(numeric_data, function(x) sum(x == 0))
 print(zero_counts)
 
 ```
-## Imputation of Missing Values
+### Imputation of Missing Values
 
 Columns such as `Glucose`, `BloodPressure`, `SkinThickness`, `Insulin`, and `BMI` often contain zero values that are not plausible for these health-related metrics. These zeros are replaced with NA (Not Available) to signify missing data, enabling more accurate imputation.
 
-## KNN Imputation
+### KNN Imputation
 
 The K-nearest neighbors (KNN) imputation method is employed using the VIM package. This technique fills in missing values based on the values of neighboring data points, ensuring that imputed values are realistic and contextually appropriate for health-related metrics.
 
-## Removing Imputed Columns
+### Removing Imputed Columns
 
 After imputation, columns suffixed with `_imp` are removed from the dataset. This cleanup step ensures that only the original variables and their imputed values remain for further analysis, reducing redundancy and maintaining clarity in the dataset structure.
 
-## Conversion of Outcome Variable
+### Conversion of Outcome Variable
 
 The "Outcome" variable, which denotes the presence (1) or absence (0) of diabetes, is converted to a factor. This conversion allows for categorical analysis and ensures that the model interprets this variable correctly during predictive modeling and statistical analyses.
 
