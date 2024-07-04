@@ -699,7 +699,7 @@ prevalence and spread of each variable.</p>
 ## ℹ Please use `after_stat(count)` instead.
 ## This warning is displayed once every 8 hours.
 ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
-<p><img src="diabetes-clusters_files/figure-html/histo-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/histo-1.png" width="672" /></p>
 <div id="histogram-analysis" class="section level3">
 <h3>Histogram Analysis</h3>
 <div id="number-of-pregnancies" class="section level4">
@@ -812,7 +812,7 @@ these features.</p>
 <span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a></span>
 <span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co"># Arrange plots in a grid layout with larger size</span></span>
 <span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, p3, p4, p5, p6, p7, p8, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/denseplot-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/denseplot-1.png" width="672" /></p>
 <div id="density-plot-analysis" class="section level3">
 <h3>Density Plot Analysis</h3>
 <div id="pregnancies-vs.-diabetes-outcome" class="section level4">
@@ -885,7 +885,7 @@ of diabetes, with older individuals being more at risk.</p>
 <span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a></span>
 <span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="co"># Arrange plots in a grid layout</span></span>
 <span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a><span class="fu">grid.arrange</span>(scatter_plot1, scatter_plot2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/scatterplot-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/scatterplot-1.png" width="672" /></p>
 </div>
 </div>
 <div id="scatter-plot-analysis" class="section level3">
@@ -1022,7 +1022,7 @@ trends between variables.</p>
 ## plot: [8, 6] [=================================================================================================&gt;---] 97% est: 0s
 ## plot: [8, 7] [==================================================================================================&gt;--] 98% est: 0s
 ## plot: [8, 8] [=====================================================================================================]100% est: 0s</code></pre>
-<p><img src="diabetes-clusters_files/figure-html/scatterplot2-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/scatterplot2-1.png" width="672" /></p>
 <div id="pairwise-scatter-plot-analysis" class="section level3">
 <h3>Pairwise Scatter Plot Analysis</h3>
 <p>This analysis explores the relationships between different numerical
@@ -1125,7 +1125,7 @@ offering insights into potential differences between groups.</p>
 <span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> my_colors) <span class="sc">+</span></span>
 <span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))  <span class="co"># Rotate x-axis labels if needed</span></span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/boxplot-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/boxplot-1.png" width="672" /></p>
 <div id="box-plot-analysis" class="section level3">
 <h3>Box Plot Analysis</h3>
 <p>The box plots provide a comparative visualisation of numerical
@@ -1204,7 +1204,7 @@ risk factors and areas for further investigation.</p>
 strength and direction of relationships between numeric variables. This
 analysis provides insights into variables that may influence each other
 and helps prioritise features for further investigation.</p>
-<p><img src="diabetes-clusters_files/figure-html/corr%20plot-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/corr%20plot-1.png" width="672" /></p>
 <div id="correlation-plot-analysis" class="section level3">
 <h3>Correlation Plot Analysis</h3>
 <p>The correlation plot offers a comprehensive view of how various
@@ -1435,11 +1435,11 @@ variance explained.</p>
 <span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a><span class="co"># Plot the variance explained by each principal component</span></span>
 <span id="cb29-8"><a href="#cb29-8" tabindex="-1"></a><span class="fu">barplot</span>(pc_var, <span class="at">main =</span> <span class="st">&quot;Variance Explained by Principal Components&quot;</span>,</span>
 <span id="cb29-9"><a href="#cb29-9" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Principal Component&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Percentage of Variance Explained&quot;</span>)</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/pca-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/pca-1.png" width="672" /></p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="co"># Plot the cumulative variance explained by principal components</span></span>
 <span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a><span class="fu">plot</span>(pc_cumvar, <span class="at">type =</span> <span class="st">&quot;b&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Cumulative Variance Explained by Principal Components&quot;</span>,</span>
 <span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Number of Principal Components&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Cumulative Percentage of Variance Explained&quot;</span>)</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/pca-2.png" width="672" />
+<p><img src="./diabetes-clusters_files/figure-html/pca-2.png" width="672" />
 ### Cumulative Variance Plot Analysis</p>
 <div id="number-of-principal-components-pcs" class="section level4">
 <h4>Number of Principal Components (PCs)</h4>
@@ -1528,11 +1528,11 @@ which variables were most influential in each principal component.</p>
 <span id="cb35-20"><a href="#cb35-20" tabindex="-1"></a></span>
 <span id="cb35-21"><a href="#cb35-21" tabindex="-1"></a><span class="co"># Display the plots</span></span>
 <span id="cb35-22"><a href="#cb35-22" tabindex="-1"></a>bar_plot_pc1</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/loadings-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/loadings-1.png" width="672" /></p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>bar_plot_pc2</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/loadings-2.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/loadings-2.png" width="672" /></p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>bar_plot_pc3</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/loadings-3.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/loadings-3.png" width="672" /></p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="co">#bar_plot_pc4</span></span></code></pre></div>
 </div>
 <div id="pc-1-variable-loadings-analysis" class="section level3">
@@ -1596,7 +1596,7 @@ in reduced-dimensional space.</p>
 <span id="cb39-16"><a href="#cb39-16" tabindex="-1"></a></span>
 <span id="cb39-17"><a href="#cb39-17" tabindex="-1"></a><span class="co"># Combine plots</span></span>
 <span id="cb39-18"><a href="#cb39-18" tabindex="-1"></a>combined_plot <span class="ot">&lt;-</span> <span class="fu">grid.arrange</span>(pca_scatter, var_representation, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/pcviz-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/pcviz-1.png" width="672" /></p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="co"># Save PCA scatter plot as standalone image</span></span>
 <span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;pca_scatter_plot.png&quot;</span>, pca_scatter, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
 <span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a></span>
@@ -1634,7 +1634,7 @@ improve the clustering performance.</p>
 <span id="cb41-10"><a href="#cb41-10" tabindex="-1"></a></span>
 <span id="cb41-11"><a href="#cb41-11" tabindex="-1"></a><span class="co"># Call elbow_method function</span></span>
 <span id="cb41-12"><a href="#cb41-12" tabindex="-1"></a><span class="fu">elbow_method</span>(pca_data, <span class="at">max_k =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/elbow-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/elbow-1.png" width="672" /></p>
 </div>
 <div id="silhouette-method" class="section level4">
 <h4>Silhouette Method</h4>
@@ -1656,7 +1656,7 @@ in other clusters.</p>
 <span id="cb42-11"><a href="#cb42-11" tabindex="-1"></a></span>
 <span id="cb42-12"><a href="#cb42-12" tabindex="-1"></a><span class="co"># Call silhouette_method function</span></span>
 <span id="cb42-13"><a href="#cb42-13" tabindex="-1"></a><span class="fu">silhouette_method</span>(pca_data, <span class="at">max_k =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/silho-1.png" width="672" />
+<p><img src="./diabetes-clusters_files/figure-html/silho-1.png" width="672" />
 #### Gap Statistics</p>
 <p>Gap Statistics is a method used to determine the optimal number of
 clusters <span class="math inline">\(k\)</span> in a dataset for
@@ -1713,7 +1713,7 @@ obvious clustering structure.</p>
 ## Clustering k = 1,2,..., K.max (= 10): .. done
 ## Bootstrapping, b = 1,2,..., B (= 10)  [one &quot;.&quot; per sample]:
 ## .......... 10</code></pre>
-<p><img src="diabetes-clusters_files/figure-html/gap-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/gap-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -1752,7 +1752,7 @@ separation and distribution of clusters across PC1, PC2, and PC3.</p>
 <span id="cb45-9"><a href="#cb45-9" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb45-10"><a href="#cb45-10" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name =</span> <span class="st">&quot;Cluster&quot;</span>) <span class="sc">+</span></span>
 <span id="cb45-11"><a href="#cb45-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;K-means Clustering Results (K = 4)&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Principal Component 1&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Principal Component 2&quot;</span>)</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/cluster-1-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/cluster-1-1.png" width="672" /></p>
 </div>
 <div id="observations-from-visualisation-scatter-plot"
 class="section level3">
@@ -1780,7 +1780,7 @@ dissimilarity between those groups.</p>
 <span id="cb46-11"><a href="#cb46-11" tabindex="-1"></a>             <span class="at">palette =</span> <span class="st">&quot;jco&quot;</span>, </span>
 <span id="cb46-12"><a href="#cb46-12" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_minimal</span>(),</span>
 <span id="cb46-13"><a href="#cb46-13" tabindex="-1"></a>             <span class="at">main =</span> <span class="st">&quot;K-means Clustering Results (K = 4)&quot;</span>)</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/cluster-2-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/cluster-2-1.png" width="672" /></p>
 </div>
 </div>
 <div id="observations-from-visualisation-fviz_cluster"
@@ -1973,7 +1973,7 @@ different clusters.</p>
 ## 2       2  266          0.16
 ## 3       3  127          0.14
 ## 4       4  156          0.16</code></pre>
-<p><img src="diabetes-clusters_files/figure-html/sihloplot-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/sihloplot-1.png" width="672" /></p>
 </div>
 </div>
 <div id="cluster-profiles" class="section level3">
@@ -2007,7 +2007,7 @@ highlighting the differences between them.</p>
 <span id="cb56-20"><a href="#cb56-20" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Mean&quot;</span>,</span>
 <span id="cb56-21"><a href="#cb56-21" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Cluster&quot;</span>) <span class="sc">+</span></span>
 <span id="cb56-22"><a href="#cb56-22" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="diabetes-clusters_files/figure-html/profile-1.png" width="672" /></p>
+<p><img src="./diabetes-clusters_files/figure-html/profile-1.png" width="672" /></p>
 <p><em>Plotly Bar Chart</em></p>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a><span class="co"># Create interactive plotly bar plot</span></span>
 <span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a><span class="fu">plot_ly</span>(cluster_means_long, <span class="at">x =</span> <span class="sc">~</span>Variable, <span class="at">y =</span> <span class="sc">~</span>Mean, <span class="at">color =</span> <span class="sc">~</span><span class="fu">factor</span>(Cluster), <span class="at">type =</span> <span class="st">&quot;bar&quot;</span>) <span class="sc">%&gt;%</span></span>
