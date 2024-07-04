@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Francis Ngema" />
+
+<meta name="date" content="2024-06-07" />
+
+<title>Hierarchical Clustering for Organic Products Store</title>
+
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<!-- header.html -->
+<style>
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #333;
+}
+
+p {
+  color: #555;
+}
+
+.container-fluid {
+  margin-top: 10px; /* Adjust based on the navbar height */
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Projects</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="diabetes-clusters.html">Diabetes Risk Factors</a>
+</li>
+<li>
+  <a href="hierarchical-clustering.html">Hierarchical Clustering</a>
+</li>
+<li>
+  <a href="random-forest.html">Consumer Behaviour</a>
+</li>
+<li>
+  <a href="pca-kmeans-clustering.html">Customer Segmentation</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .navbar {
+      background-color: #2c3e50;
+      border: none;
+    }
+
+    .navbar-header .navbar-brand {
+      font-weight: bold;
+      font-size: 24px;
+      color: #ecf0f1 !important;
+    }
+
+    .navbar-nav > li > a {
+      color: #ecf0f1 !important;
+      padding: 15px 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar-nav > li > a:hover, 
+    .navbar-nav > li > a:focus {
+      background-color: #34495e;
+      color: #ecf0f1 !important;
+    }
+
+    .navbar-toggle {
+      border-color: transparent;
+    }
+
+    .navbar-toggle .icon-bar {
+      background-color: #ecf0f1;
+    }
+
+    main {
+      padding-top: 70px; /* Adjust based on the navbar height */
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">Projects</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="hierarchical-clustering.html">Hierarchical Clustering</a></li>
+        <li><a href="random-forest.html">Consumer Behaviour</a></li>
+        <li><a href="pca-kmeans-clustering.html">Customer Segmentation</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- Main content goes here -->
+</main>
+
+</body>
+</html>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Hierarchical Clustering for Organic
+Products Store</h1>
+<h4 class="author">Francis Ngema</h4>
+<h4 class="date">2024-06-07</h4>
+
+</div>
+
+
+<style type="text/css">
+  body {font-family: Montserrat, sans-serif;}
+h1 {font-size: 33px;}
+h1.title {font-size: 36px;}
+h2 {font-size: 30px;}
+h3 {font-size: 24px;}
+h4 {font-size: 18px;}
+h5 {font-size: 16px;}
+h6 {font-size: 12px;}
+ p {font-size: 16px;}
+}
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Customer segmentation, the practice of grouping customers with
+similar characteristics, is crucial for success in today’s competitive
+market. Understanding customer behaviour and preferences allows
+businesses to tailor their marketing strategies for maximum
+effectiveness. Clustering, a machine learning technique, plays a vital
+role in customer segmentation. It helps identify distinct customer
+segments based on shared attributes related to demographics, purchasing
+behaviour, and promotional engagement.</p>
+<p>This study utilises a clustering algorithm to segment customers
+within a dataset containing these relevant features. The analysis
+follows a sequential approach. First, a clustering algorithm is applied
+to identify distinct customer segments based on their attributes.
+Second, the quality and distinctiveness of the identified segments are
+assessed using appropriate metrics and visualisations. Third, the
+findings are summarised by providing detailed insights into the
+characteristics of each customer segment.</p>
+<p>Finally, the study examines the potential business applications and
+offers actionable recommendations based on the segmentation analysis.
+The study aims to leverage data-driven insights to empower businesses
+with targeted marketing strategies and improved customer engagement by
+following these steps: data description, data exploration and
+visualisation, feature engineering and scaling, clustering analysis,
+conclusion and business implications.</p>
+</div>
+<div id="data-description" class="section level1">
+<h1>Data Description</h1>
+<p>The dataset “organics_cleaned.csv”(<a
+href="https://raw.githubusercontent.com/amusasuxes/DATASETS/master/organics.csv"
+class="uri">https://raw.githubusercontent.com/amusasuxes/DATASETS/master/organics.csv</a>
+)contains various features related to customer demographics, purchasing
+behavior, and promotional engagement (Table 1.). This data is used for
+segmenting customers and understanding their behavior. The dataset
+includes both numerical and categorical variables.</p>
+<div id="table-1.-variables-for-customer-data" class="section level2">
+<h2>Table 1. Variables for customer data</h2>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="16%" />
+<col width="66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Affl</td>
+<td>Numerical</td>
+<td>Indicates the wealth status of the customers.</td>
+</tr>
+<tr class="even">
+<td>Age</td>
+<td>Numerical</td>
+<td>Represents the age of the customers.</td>
+</tr>
+<tr class="odd">
+<td>LTime</td>
+<td>Numerical</td>
+<td>Indicates the length of time customers have been loyal to the
+brand.</td>
+</tr>
+<tr class="even">
+<td>Spend</td>
+<td>Numerical</td>
+<td>Represents the amount of money spent by the customers.</td>
+</tr>
+<tr class="odd">
+<td>Gender</td>
+<td>Categorical</td>
+<td>Represents the gender of the customers.</td>
+</tr>
+<tr class="even">
+<td>PromClass</td>
+<td>Categorical</td>
+<td>Indicates the class of promotions targeted at customers.</td>
+</tr>
+<tr class="odd">
+<td>Gender_code</td>
+<td>Categorical</td>
+<td>Numerical encoding of the Gender variable.</td>
+</tr>
+<tr class="even">
+<td>PromSilver</td>
+<td>Categorical</td>
+<td>Indicates whether customers received silver level promotions.</td>
+</tr>
+<tr class="odd">
+<td>PromTin</td>
+<td>Categorical</td>
+<td>Indicates whether customers received tin level promotions.</td>
+</tr>
+<tr class="even">
+<td>PromGold</td>
+<td>Categorical</td>
+<td>Indicates whether customers received gold level promotions.</td>
+</tr>
+<tr class="odd">
+<td>TargetBuy</td>
+<td>Categorical</td>
+<td>Indicates whether the customer is targeted for buying.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="summary-statistics-of-key-numerical-variables"
+class="section level2">
+<h2>Summary Statistics of Key Numerical Variables</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;organics_cleaned.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## Rows: 15401 Columns: 11
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): Gender, PromClass
+## dbl (9): Gender_code, PromSilver, PromTin, PromGold, Affl, Age, LTime, Spend, TargetBuy
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Select key numerical variables</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>selected_data <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(data, Affl, Age, LTime, Spend)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># Calculate and display summary statistics</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>summary_stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(selected_data)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">print</span>(summary_stats)</span></code></pre></div>
+<pre><code>##       Affl             Age            LTime            Spend          
+##  Min.   : 0.000   Min.   :18.00   Min.   : 0.000   Min.   :     0.01  
+##  1st Qu.: 6.000   1st Qu.:43.00   1st Qu.: 4.000   1st Qu.:     0.01  
+##  Median : 8.000   Median :53.00   Median : 5.000   Median :  2000.00  
+##  Mean   : 8.826   Mean   :53.47   Mean   : 6.557   Mean   :  4412.23  
+##  3rd Qu.:11.000   3rd Qu.:64.00   3rd Qu.: 8.000   3rd Qu.:  6000.00  
+##  Max.   :34.000   Max.   :79.00   Max.   :38.000   Max.   :296313.85</code></pre>
+</div>
+<div id="table-2-summary-statistics-of-numerical-variables"
+class="section level2">
+<h2>Table 2: Summary Statistics of Numerical Variables</h2>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="11%" />
+<col width="18%" />
+<col width="11%" />
+<col width="11%" />
+<col width="18%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Minimum</th>
+<th>1st Quartile</th>
+<th>Median</th>
+<th>Mean</th>
+<th>3rd Quartile</th>
+<th>Maximum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Affl</td>
+<td>0.000</td>
+<td>6.000</td>
+<td>8.000</td>
+<td>8.826</td>
+<td>11.000</td>
+<td>34.000</td>
+</tr>
+<tr class="even">
+<td>Age</td>
+<td>18.00</td>
+<td>43.00</td>
+<td>53.00</td>
+<td>53.47</td>
+<td>64.00</td>
+<td>79.00</td>
+</tr>
+<tr class="odd">
+<td>LTime</td>
+<td>0.000</td>
+<td>4.000</td>
+<td>5.000</td>
+<td>6.557</td>
+<td>8.000</td>
+<td>38.000</td>
+</tr>
+<tr class="even">
+<td>Spend</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>2000.00</td>
+<td>4412.23</td>
+<td>6000.00</td>
+<td>296313.85</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="interpretation-of-summary-statistics" class="section level2">
+<h2>Interpretation of Summary Statistics</h2>
+<p>Table 2 summarises the key numerical variables used for customer
+segmentation. Affluence (Affl), which measures customer wealth status,
+ranges from 0 to 34, with a mean of 8.826. This indicates a spread of
+customer income levels. The Age variable spans from 18 to 79 years old,
+with a mean age of 53.47. Loyalty Time (LTime) captures the duration of
+customer loyalty and varies considerably, ranging from 0 to 38 years,
+with a mean of 6.557 years.</p>
+<p>Finally, Spend reflects the amount of money customers have spent,
+exhibiting a significant spread from 0.01 to 296,313.85, with a mean
+spend of 4,412.23. These summary statistics offer insights into the
+central tendencies and dispersion of these key customer attributes,
+laying the groundwork for the subsequent clustering analysis.</p>
+</div>
+</div>
+<div id="data-exploration-and-visualization" class="section level1">
+<h1>Data Exploration and Visualization</h1>
+<p>The analysis began with data preparation and exploration. Initial
+steps involved loading the data and inspecting its structure through
+techniques such as displaying initial rows, generating summary
+statistics, and identifying missing values.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Display the structure of the dataset</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">str</span>(data)</span></code></pre></div>
+<pre><code>## spc_tbl_ [15,401 × 11] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ Gender     : chr [1:15401] &quot;F&quot; &quot;M&quot; &quot;F&quot; &quot;F&quot; ...
+##  $ PromClass  : chr [1:15401] &quot;Silver&quot; &quot;Tin&quot; &quot;Tin&quot; &quot;Tin&quot; ...
+##  $ Gender_code: num [1:15401] 1 0 1 1 0 0 1 1 1 1 ...
+##  $ PromSilver : num [1:15401] 1 0 0 0 0 1 0 1 0 0 ...
+##  $ PromTin    : num [1:15401] 0 1 1 1 1 0 0 0 1 1 ...
+##  $ PromGold   : num [1:15401] 0 0 0 0 0 0 1 0 0 0 ...
+##  $ Affl       : num [1:15401] 5 10 11 11 13 10 7 9 6 16 ...
+##  $ Age        : num [1:15401] 70 65 68 74 62 62 60 51 64 37 ...
+##  $ LTime      : num [1:15401] 8 7 8 8 5 3 2 11 9 4 ...
+##  $ Spend      : num [1:15401] 0.02 0.01 0.01 0.01 0.01 ...
+##  $ TargetBuy  : num [1:15401] 1 1 0 0 0 0 0 0 0 1 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   Gender = col_character(),
+##   ..   PromClass = col_character(),
+##   ..   Gender_code = col_double(),
+##   ..   PromSilver = col_double(),
+##   ..   PromTin = col_double(),
+##   ..   PromGold = col_double(),
+##   ..   Affl = col_double(),
+##   ..   Age = col_double(),
+##   ..   LTime = col_double(),
+##   ..   Spend = col_double(),
+##   ..   TargetBuy = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Glimpse of the dataset</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">glimpse</span>(data)</span></code></pre></div>
+<pre><code>## Rows: 15,401
+## Columns: 11
+## $ Gender      [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;F&quot;, &quot;M&quot;, &quot;F&quot;, &quot;F&quot;, &quot;M&quot;, &quot;M&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;M&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;M&quot;, &quot;F&quot;, &quot;M&quot;, &quot;M&quot;, &quot;M&quot;, &quot;F&quot;, &quot;M&quot;, &quot;F&quot;, …
+## $ PromClass   [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Silver&quot;, &quot;Tin&quot;, &quot;Tin&quot;, &quot;Tin&quot;, &quot;Tin&quot;, &quot;Silver&quot;, &quot;Gold&quot;, &quot;Silver&quot;, &quot;Tin&quot;, &quot;Tin&quot;, &quot;Silver&quot;, &quot;Gold&quot;, &quot;Silver&quot;, &quot;G…
+## $ Gender_code [3m[38;5;246m&lt;dbl&gt;[39m[23m 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1,…
+## $ PromSilver  [3m[38;5;246m&lt;dbl&gt;[39m[23m 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,…
+## $ PromTin     [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0,…
+## $ PromGold    [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0,…
+## $ Affl        [3m[38;5;246m&lt;dbl&gt;[39m[23m 5, 10, 11, 11, 13, 10, 7, 9, 6, 16, 8, 5, 9, 9, 7, 6, 10, 7, 7, 7, 8, 9, 3, 15, 10, 7, 8, 9, 9, 8, 7, 12, 9, 8…
+## $ Age         [3m[38;5;246m&lt;dbl&gt;[39m[23m 70, 65, 68, 74, 62, 62, 60, 51, 64, 37, 54, 70, 66, 74, 66, 46, 39, 75, 43, 62, 37, 49, 50, 35, 71, 44, 42, 68…
+## $ LTime       [3m[38;5;246m&lt;dbl&gt;[39m[23m 8, 7, 8, 8, 5, 3, 2, 11, 9, 4, 1, 8, 12, 2, 5, 8, 5, 7, 5, 4, 9, 8, 3, 5, 5, 1, 5, 5, 4, 15, 3, 9, 1, 7, 5, 6,…
+## $ Spend       [3m[38;5;246m&lt;dbl&gt;[39m[23m 0.02, 0.01, 0.01, 0.01, 0.01, 2038.76, 11000.00, 300.00, 0.01, 0.01, 1420.00, 6104.66, 500.00, 6000.00, 1000.0…
+## $ TargetBuy   [3m[38;5;246m&lt;dbl&gt;[39m[23m 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1,…</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Display summary statistics</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code></pre></div>
+<pre><code>##     Gender           PromClass          Gender_code       PromSilver        PromTin          PromGold           Affl       
+##  Length:15401       Length:15401       Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   : 0.000  
+##  Class :character   Class :character   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.: 6.000  
+##  Mode  :character   Mode  :character   Median :1.0000   Median :0.0000   Median :0.0000   Median :0.0000   Median : 8.000  
+##                                        Mean   :0.6776   Mean   :0.3837   Mean   :0.2952   Mean   :0.2829   Mean   : 8.826  
+##                                        3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:11.000  
+##                                        Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :34.000  
+##       Age            LTime            Spend             TargetBuy     
+##  Min.   :18.00   Min.   : 0.000   Min.   :     0.01   Min.   :0.0000  
+##  1st Qu.:43.00   1st Qu.: 4.000   1st Qu.:     0.01   1st Qu.:0.0000  
+##  Median :53.00   Median : 5.000   Median :  2000.00   Median :0.0000  
+##  Mean   :53.47   Mean   : 6.557   Mean   :  4412.23   Mean   :0.2846  
+##  3rd Qu.:64.00   3rd Qu.: 8.000   3rd Qu.:  6000.00   3rd Qu.:1.0000  
+##  Max.   :79.00   Max.   :38.000   Max.   :296313.85   Max.   :1.0000</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Check for missing values in each column</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(data))</span></code></pre></div>
+<pre><code>##      Gender   PromClass Gender_code  PromSilver     PromTin    PromGold        Affl         Age       LTime       Spend   TargetBuy 
+##           0           0           0           0           0           0           0           0           0           0           0</code></pre>
+<p>Furthermore, data distribution was explored using histograms for
+numerical variables (Affluence, Age, Loyalty Time, Spend) and bar charts
+for categorical variables (Gender, Promotion Class, Promotion Levels,
+Target Buy). These visualisations provided insights into central
+tendencies, the spread of numerical data, and frequency distributions of
+categorical data. To understand potential relationships and dependencies
+between numerical variables, a scatter plot matrix was generated. This
+step was crucial for subsequent clustering analysis as it helped
+identify patterns and correlations within the data. Furthermore, box
+plots were employed to examine the relationship between categorical
+variables (e.g., Promotion Class) and numerical variables. This
+visualisation helped us understand how numerical variables like “Spend”
+were distributed within each category of the categorical variables.</p>
+<div id="distribution-of-numerical-variables" class="section level2">
+<h2>Distribution of Numerical Variables</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># Plot histograms for numerical variables</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>data <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Affl, Age, LTime, Spend) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">gather</span>(<span class="at">key =</span> <span class="st">&quot;variable&quot;</span>, <span class="at">value =</span> <span class="st">&quot;value&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> value)) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of Numerical Variables&quot;</span>)</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div id="affluence-distribution" class="section level3">
+<h3>Affluence Distribution</h3>
+<p>The distribution of affluence scores among customers is right-skewed.
+This skewness indicates that the majority of customers have relatively
+low affluence scores, with a small number of outliers exhibiting
+significantly higher scores. This pattern suggests a concentration of
+lower-affluence individuals, with only a few high-affluence
+customers.</p>
+<p>To effectively engage with this diverse customer base, marketing
+strategies should be dichotomised. For high-affluence customers, premium
+offerings and personalised services can be very attractive, enhancing
+their engagement and loyalty. Conversely, for the majority with lower
+affluence scores, providing affordable and appealing products will
+likely increase their satisfaction and retention.</p>
+</div>
+<div id="age-distribution" class="section level3">
+<h3>Age Distribution</h3>
+<p>The age distribution within the customer base is approximately
+normal, exhibiting a bell-shaped curve. This indicates that the ages are
+symmetrically distributed around a central peak, which is around 40-50
+years old. The normal distribution suggests that middle-aged individuals
+constitute a significant portion of the customer base.</p>
+<p>Given this significant representation, marketing campaigns and
+product developments should be tailored to the needs and preferences of
+the 40-50 age group. By aligning products and marketing messages with
+the interests and lifestyles of this demographic, businesses can drive
+higher engagement and sales.</p>
+</div>
+<div id="loyalty-time-ltime-distribution" class="section level3">
+<h3>Loyalty Time (LTime) Distribution</h3>
+<p>The distribution of loyalty time (LTime) shows a bimodal pattern,
+with two distinct peaks. This indicates that there are two common values
+or clusters around which customer loyalty times are centered. The
+presence of these two peaks suggests the existence of two subpopulations
+with different loyalty characteristics.</p>
+<p>To maximise customer retention, it is crucial to understand the
+factors driving these two loyalty peaks. Designing loyalty programs that
+cater specifically to both short-term and long-term customers can
+address their unique needs and motivations. Tailored incentives and
+rewards for each group can enhance overall customer loyalty and
+retention rates.</p>
+</div>
+<div id="spend-distribution" class="section level3">
+<h3>Spend Distribution</h3>
+<p>The spend distribution among customers is left-skewed. This means
+that most data points represent higher spend values, while there are a
+few outliers with significantly lower spend values. The skewness towards
+higher spending indicates that a considerable number of customers are
+high spenders, despite the presence of low-spending outliers.</p>
+<p>By analysing spending behavior, businesses can identify high-spending
+customers for targeted promotions and loyalty rewards. These high-value
+customers can be incentivised with exclusive offers and benefits,
+encouraging them to maintain or increase their spending. Additionally,
+understanding the reasons behind lower spending can help in formulating
+strategies to engage low-spending customers and boost their spending
+levels.</p>
+</div>
+</div>
+<div id="distribution-of-categorical-variables" class="section level2">
+<h2>Distribution of Categorical Variables</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Plot bar charts for categorical variables</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>data <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="fu">select</span>(Gender, PromClass, PromSilver, PromTin, PromGold, TargetBuy) <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key =</span> <span class="st">&quot;variable&quot;</span>, <span class="at">value =</span> <span class="st">&quot;value&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> value)) <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of Categorical Variables&quot;</span>)</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div id="gender-distribution" class="section level3">
+<h3>Gender Distribution</h3>
+<p>The gender distribution among customers is balanced between males and
+females. Understanding gender preferences is crucial for guiding
+targeted marketing efforts. For instance, product recommendations can be
+tailored based on gender-specific interests, such as promoting cosmetics
+to female customers and electronics to male customers.</p>
+</div>
+<div id="promotion-class-promclass" class="section level3">
+<h3>Promotion Class (PromClass)</h3>
+<p>The promotion class distribution illustrates customer engagement with
+various promotion tiers (e.g., Gold, Silver, Platinum). High engagement
+levels in specific promotion classes can help identify high-value
+customers, such as those in the Platinum tier, who can be targeted with
+personalized offers to enhance loyalty and spending.</p>
+</div>
+<div id="promotion-levels-promsilver-promtin-promgold"
+class="section level3">
+<h3>Promotion Levels (PromSilver, PromTin, PromGold)</h3>
+<p>The distribution of different promotion levels (Silver, Tin, Gold)
+highlights customer preferences and engagement. The varying counts
+indicate which promotions resonate most with customers. Businesses can
+adjust their promotional strategies based on the popularity and
+effectiveness of each level, focusing resources on the most impactful
+promotions.</p>
+<p>Purchase Behavior (TargetBuy) The purchase behavior chart shows
+whether customers made a purchase after being exposed to promotions. A
+higher proportion of customers in the “Yes” category suggests successful
+promotional conversions. Segmenting customers based on their purchase
+behavior can inform retention strategies and loyalty programs, focusing
+on those who responded positively to promotions.</p>
+</div>
+<div id="contextual-implications" class="section level3">
+<h3>Contextual Implications</h3>
+<p>These categorical variables provide valuable insights into customer
+preferences, behaviors, and responsiveness to promotions. Segmentation
+strategies can be customized based on these distributions:</p>
+<p><em>Gender-Specific Campaigns:</em> Tailoring campaigns to
+gender-specific interests to increase engagement and conversion rates.
+<em>Promotion Class Targeting:</em> Identifying high-value customers in
+premium promotion classes (e.g., Platinum) for personalised offers and
+exclusive deals. <em>Effective Promotion Strategies:</em> Adjusting
+promotional strategies based on the popularity of each promotion level
+to maximize impact. <em>Behavior-Based Retargeting:</em> Focusing on
+customers who have previously responded positively to promotions
+(TargetBuy = Yes) for retention and loyalty programs.</p>
+</div>
+</div>
+<div id="scatter-plot-matrix-for-numerical-variables"
+class="section level2">
+<h2>Scatter plot matrix for numerical variables</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>numerical_vars <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="fu">select</span>(Affl, Age, LTime, Spend)</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="fu">ggpairs</span>(numerical_vars, </span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">&quot;Scatter Plot Matrix of Numerical Variables&quot;</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>        <span class="at">upper =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">&quot;cor&quot;</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>)),</span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>        <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">&quot;points&quot;</span>, <span class="at">color =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>)),</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>        <span class="at">diag =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">&quot;barDiag&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>)),</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>        <span class="at">axisLabels =</span> <span class="st">&#39;show&#39;</span>) <span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## plot: [1, 1] [=====&gt;-----------------------------------------------------------------------------------------------] 6% est: 0s
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`. plot: [1, 2]
+## [============&gt;----------------------------------------------------------------------------------------] 12% est: 1s plot: [1, 3]
+## [==================&gt;----------------------------------------------------------------------------------] 19% est: 1s plot: [1, 4]
+## [========================&gt;----------------------------------------------------------------------------] 25% est: 1s plot: [2, 1]
+## [===============================&gt;---------------------------------------------------------------------] 31% est: 1s plot: [2, 2]
+## [=====================================&gt;---------------------------------------------------------------] 38% est: 1s `stat_bin()`
+## using `bins = 30`. Pick better value with `binwidth`. plot: [2, 3]
+## [===========================================&gt;---------------------------------------------------------] 44% est: 1s plot: [2, 4]
+## [=================================================&gt;---------------------------------------------------] 50% est: 1s plot: [3, 1]
+## [========================================================&gt;--------------------------------------------] 56% est: 1s plot: [3, 2]
+## [==============================================================&gt;--------------------------------------] 62% est: 1s plot: [3, 3]
+## [====================================================================&gt;--------------------------------] 69% est: 1s `stat_bin()`
+## using `bins = 30`. Pick better value with `binwidth`. plot: [3, 4]
+## [===========================================================================&gt;-------------------------] 75% est: 1s plot: [4, 1]
+## [=================================================================================&gt;-------------------] 81% est: 0s plot: [4, 2]
+## [=======================================================================================&gt;-------------] 88% est: 0s plot: [4, 3]
+## [==============================================================================================&gt;------] 94% est: 0s plot: [4, 4]
+## [=====================================================================================================]100% est: 0s `stat_bin()`
+## using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Our analysis revealed key relationships between customer demographics
+and behavior. A weak negative linear relationship between affluence and
+age (correlation coefficient: -0.15) suggested that younger customers
+tended to have higher affluence levels. Additionally, age was positively
+correlated with both loyalty time (correlation coefficient: 0.216) and
+spending (correlation coefficient: 0.275), indicating that older
+individuals were likely to be more loyal and spend more. Although
+loyalty time showed only a slight positive trend with spending
+(correlation coefficient: 0.040), it remained an important factor to
+consider in conjunction with other metrics.</p>
+<p>These insights had significant business implications. Tailoring
+marketing strategies to target younger affluent customers with premium
+products, while focusing loyalty programs on older customers to enhance
+retention, could optimise engagement and sales. Personalised promotions
+aimed at older demographics were likely to drive higher revenue, given
+their tendency to spend more. By leveraging these relationships,
+businesses could develop more effective and targeted approaches,
+improving customer satisfaction and profitability.</p>
+</div>
+<div
+id="box-plots-to-examine-the-relationship-between-categorical-and-numerical-variables"
+class="section level2">
+<h2>Box plots to examine the relationship between categorical and
+numerical variables</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>data <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key =</span> <span class="st">&quot;variable&quot;</span>, <span class="at">value =</span> <span class="st">&quot;value&quot;</span>, <span class="sc">-</span>Gender, <span class="sc">-</span>PromClass, <span class="sc">-</span>Gender_code, <span class="sc">-</span>PromSilver, <span class="sc">-</span>PromTin, <span class="sc">-</span>PromGold, <span class="sc">-</span>TargetBuy) <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PromClass, <span class="at">y =</span> value, <span class="at">fill =</span> PromClass)) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Box Plots of Numerical Variables by Promotion Class&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set3&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))  <span class="co"># Add this line for rotated x-axis labels</span></span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Our analysis utilised box plots to gain insights into customer
+affluence levels and spending behaviors across different promotion
+classes. The left group of box plots represented affluence levels
+(“Affl”), while the right group depicted spending behaviors (“Spend”).
+Each group was further divided by promotion classes: Gold, Platinum,
+Silver, and Tin.</p>
+<p>For affluence levels, variations were observed across promotion
+classes. The “Gold” class exhibited the highest median affluence level,
+indicating a potential target for premium products. In contrast, the
+“Tin” class generally had the lowest median affluence level. In terms of
+spending behaviors, outliers were prominent across all classes,
+particularly in the “Gold” and “Platinum” categories. Understanding
+these patterns can inform marketing strategies, such as targeting
+high-affluence customers for premium offerings and addressing spending
+behavior differences across promotion classes. Additionally, considering
+outliers for personalized offers presents an opportunity to capture
+potential high spenders and enhance customer engagement.</p>
+</div>
+<div id="correlation-matrix-for-numerical-variables"
+class="section level2">
+<h2>Correlation matrix for numerical variables</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># Correlation matrix for numerical variables</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(numerical_vars)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="fu">print</span>(cor_matrix)</span></code></pre></div>
+<pre><code>##              Affl        Age       LTime       Spend
+## Affl   1.00000000 -0.1504758 -0.03053491 -0.03501427
+## Age   -0.15047583  1.0000000  0.21577973  0.27544015
+## LTime -0.03053491  0.2157797  1.00000000  0.03993943
+## Spend -0.03501427  0.2754402  0.03993943  1.00000000</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># Visualize the correlation matrix</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>corrplot<span class="sc">::</span><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">&quot;circle&quot;</span>, <span class="at">type =</span> <span class="st">&quot;upper&quot;</span>, </span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>                   <span class="at">tl.col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">tl.srt =</span> <span class="dv">45</span>, <span class="at">addCoef.col =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>                   <span class="at">col =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;blue&quot;</span>))(<span class="dv">200</span>))</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>The correlation matrix explored the relationships among four key
+numerical variables: “Affi” (affluence level), “Age,” “LTime” (loyalty
+time), and “Spend” (spending behavior). The diagonal line showcased
+perfect positive correlations (correlation coefficient = 1), as each
+variable was compared to itself. Off-diagonal elements highlighted
+correlations between different pairs of variables.</p>
+<p>Analysis revealed several noteworthy correlations: “Affl” and “Age”
+exhibited a small negative correlation of approximately -0.15,
+indicating that as affluence level increased, age tended to decrease
+slightly. Similarly, “Affl” and “Spend” displayed a small negative
+correlation of approximately -0.04. Conversely, “Age” and “Spend”
+demonstrated a slightly larger positive correlation of approximately
+0.28, suggesting that older individuals tended to spend slightly
+more.</p>
+<p>Furthermore, “LTime” and “Spend” showed a very weak positive
+correlation of approximately 0.04. These correlations, though modest,
+offered valuable insights for businesses. Leveraging this information,
+businesses could tailor marketing strategies, craft personalised offers,
+and optimise loyalty program initiatives to enhance customer engagement
+and satisfaction.</p>
+</div>
+</div>
+<div id="feature-engineering-and-scaling" class="section level1">
+<h1>Feature Engineering and Scaling</h1>
+<p>Following data exploration, feature engineering was performed. Age
+groups were created by binning the Age variable into ranges (e.g.,
+18-30, 30-40) and then encoded numerically. This allowed the inclusion
+of Age as a categorical feature in the clustering analysis.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AgeGroup =</span> <span class="fu">cut</span>(Age, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">17</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">70</span>, <span class="dv">80</span>), </span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;18-30&quot;</span>, <span class="st">&quot;30-40&quot;</span>, <span class="st">&quot;40-50&quot;</span>, <span class="st">&quot;50-60&quot;</span>, <span class="st">&quot;60-70&quot;</span>, <span class="st">&quot;70-80&quot;</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>                        <span class="at">right =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="co"># Ensure there are no NA values in the Age column</span></span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data<span class="sc">$</span>Age))</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># Drop unnecessary columns</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Gender, <span class="sc">-</span>PromClass)</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="co"># Display the head of the updated dataset</span></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="fu">head</span>(data)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 10
+##   Gender_code PromSilver PromTin PromGold  Affl   Age LTime   Spend TargetBuy AgeGroup
+##         &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;   
+## 1           1          1       0        0     5    70     8    0.02         1 70-80   
+## 2           0          0       1        0    10    65     7    0.01         1 60-70   
+## 3           1          0       1        0    11    68     8    0.01         0 60-70   
+## 4           1          0       1        0    11    74     8    0.01         0 70-80   
+## 5           0          0       1        0    13    62     5    0.01         0 60-70   
+## 6           0          1       0        0    10    62     3 2039.           0 60-70</code></pre>
+<div id="spend-distribution-by-age-group-insights"
+class="section level2">
+<h2>Spend Distribution by Age Group insights</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="co"># Create the box plot</span></span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>box_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> AgeGroup, <span class="at">y =</span> Spend)) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#0073C2FF&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span>  <span class="co"># Box plot fill and border color</span></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Box Plot: Spend Distribution by Age Group&quot;</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Age Group&quot;</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Spend &quot;</span>) <span class="sc">+</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>  <span class="co">#theme_minimal() +  # Minimal theme</span></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),  <span class="co"># Center and style title</span></span>
+<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),  <span class="co"># Style x-axis title</span></span>
+<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>)  <span class="co"># Style y-axis title</span></span>
+<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a>  )</span>
+<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" tabindex="-1"></a><span class="co"># Print the box plot</span></span>
+<span id="cb25-15"><a href="#cb25-15" tabindex="-1"></a><span class="fu">print</span>(box_plot)</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Interpretation of the box plots revealed insights into age-specific
+spending behavior. The ‘&lt;18’ group exhibited the lowest median
+spending, while the ‘&gt;65’ group demonstrated the highest. In
+contrast, the ‘18-34’ and ‘35-50’ groups showcased moderate spending
+levels with similar interquartile ranges. Notably, the ‘&gt;65’ group
+displayed a wider spread of spending behavior, suggesting greater
+variability within this demographic.</p>
+<p>Understanding these spending patterns across age groups was
+imperative for targeted marketing strategies. Businesses could leverage
+these insights to tailor promotions, identify high-value customers, and
+address differences in spending behavior based on various life stages,
+ultimately enhancing customer engagement and satisfaction.</p>
+</div>
+<div id="max-min-scaling" class="section level2">
+<h2>Max-Min scaling</h2>
+<p>Additionally, Max-Min scaling was applied to ensure all numerical
+features (Affluence, Loyalty Time, Spend) were on a comparable scale.
+This normalisation step transformed the data into a 0-1 range, which was
+crucial for distance-based clustering algorithms to function
+effectively.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="co"># Select numerical features for scaling</span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>numerical_features <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>  <span class="fu">select</span>(Affl, LTime, Spend)</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a><span class="co"># Function to perform Max-Min scaling</span></span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a>max_min_scaling <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a>  (x <span class="sc">-</span> <span class="fu">min</span>(x)) <span class="sc">/</span> (<span class="fu">max</span>(x) <span class="sc">-</span> <span class="fu">min</span>(x))</span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a>}</span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="co"># Apply Max-Min scaling to numerical features</span></span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a>scaled_features <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">lapply</span>(numerical_features, max_min_scaling))</span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a><span class="co"># Rename columns</span></span>
+<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a><span class="fu">colnames</span>(scaled_features) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Affl_scaled&quot;</span>, <span class="st">&quot;LTime_scaled&quot;</span>, <span class="st">&quot;Spend_scaled&quot;</span>)</span>
+<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a><span class="co"># Combine scaled features with the rest of the dataset</span></span>
+<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a>scaled_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data, scaled_features)</span>
+<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a><span class="co"># Display the head of the updated dataset</span></span>
+<span id="cb26-20"><a href="#cb26-20" tabindex="-1"></a><span class="fu">head</span>(scaled_data)</span></code></pre></div>
+<pre><code>##   Gender_code PromSilver PromTin PromGold Affl Age LTime   Spend TargetBuy AgeGroup Affl_scaled LTime_scaled Spend_scaled
+## 1           1          1       0        0    5  70     8    0.02         1    70-80   0.1470588   0.21052632 3.374800e-08
+## 2           0          0       1        0   10  65     7    0.01         1    60-70   0.2941176   0.18421053 0.000000e+00
+## 3           1          0       1        0   11  68     8    0.01         0    60-70   0.3235294   0.21052632 0.000000e+00
+## 4           1          0       1        0   11  74     8    0.01         0    70-80   0.3235294   0.21052632 0.000000e+00
+## 5           0          0       1        0   13  62     5    0.01         0    60-70   0.3823529   0.13157895 0.000000e+00
+## 6           0          1       0        0   10  62     3 2038.76         0    60-70   0.2941176   0.07894737 6.880374e-03</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="co"># Drop original columns and AgeGroup</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>scaled_data <span class="ot">&lt;-</span> scaled_data <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Affl, <span class="sc">-</span>LTime, <span class="sc">-</span>Spend, <span class="sc">-</span>AgeGroup)</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="co"># Display the head of the updated dataset</span></span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="fu">head</span>(scaled_data)</span></code></pre></div>
+<pre><code>##   Gender_code PromSilver PromTin PromGold Age TargetBuy Affl_scaled LTime_scaled Spend_scaled
+## 1           1          1       0        0  70         1   0.1470588   0.21052632 3.374800e-08
+## 2           0          0       1        0  65         1   0.2941176   0.18421053 0.000000e+00
+## 3           1          0       1        0  68         0   0.3235294   0.21052632 0.000000e+00
+## 4           1          0       1        0  74         0   0.3235294   0.21052632 0.000000e+00
+## 5           0          0       1        0  62         0   0.3823529   0.13157895 0.000000e+00
+## 6           0          1       0        0  62         0   0.2941176   0.07894737 6.880374e-03</code></pre>
+</div>
+</div>
+<div id="clustering-analysis" class="section level1">
+<h1>Clustering Analysis</h1>
+<div id="assessing-clustering-tendency" class="section level2">
+<h2>Assessing Clustering Tendency</h2>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="co"># Take a random sample of the data to reduce memory usage</span></span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># for reproducibility</span></span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>sampled_data <span class="ot">&lt;-</span> scaled_data <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">1000</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="co"># Compute the dissimilarity matrix on the sampled data</span></span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a>dissimilarity_matrix <span class="ot">&lt;-</span> <span class="fu">dist</span>(sampled_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(Affl_scaled, LTime_scaled, Spend_scaled))</span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a><span class="co"># Visualize the dissimilarity matrix</span></span>
+<span id="cb30-9"><a href="#cb30-9" tabindex="-1"></a><span class="fu">fviz_dist</span>(dissimilarity_matrix)</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>In the preclustering process, the dissimilarity matrix played an
+important role by quantifying the differences between data points. Each
+cell represented the dissimilarity between two points, guiding
+subsequent clustering steps. The color scale, ranging from red to blue,
+visually represented dissimilarity levels, confirming the dataset’s
+clusterability.</p>
+</div>
+<div id="determining-the-optimal-number-of-clusters"
+class="section level2">
+<h2>Determining the Optimal Number of Clusters</h2>
+<p>A crucial stage in the cluster analysis process is determining the
+ideal number of clusters, or k. This decision is based on three
+well-established techniques: the gap statistic approach, the average
+silhouette method, and the elbow method.</p>
+<p>The within-cluster sum of squares (WSS) for different values of k is
+analyzed using the elbow approach. WSS usually reduces as k increases.
+The ideal k is thought to be at the elbow point, when this drop
+plateaus. Although this strategy is easy to use, interpretations of it
+can be subjective.</p>
+<p>The methodologies of silhouette and gap statistics provide more
+objective standards. Each data point is given a silhouette coefficient
+using the silhouette method, which determines how well it fits into the
+designated cluster. Next, to find the optimal k, the average silhouette
+coefficient across all points is maximised.</p>
+<p>The within-cluster variation of the actual clustering is compared to
+a null distribution with random cluster assignments using the gap
+statistic approach. The most unique clustering solution is indicated by
+the k with the largest gap statistic.</p>
+<div id="elbow-method" class="section level3">
+<h3>Elbow Method</h3>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="co"># Apply Elbow method</span></span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># for reproducibility</span></span>
+<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>elbow_plot <span class="ot">&lt;-</span> <span class="fu">fviz_nbclust</span>(scaled_data, kmeans, <span class="at">method =</span> <span class="st">&quot;wss&quot;</span>) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="co"># Add x-axis intercept line for guidance</span></span>
+<span id="cb31-5"><a href="#cb31-5" tabindex="-1"></a>elbow_plot</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+The Elbow Method revealed that the optimal number of clusters is at K=2.
+The plot of Within-Cluster Sum of Squares (WCSS) starts high when the
+number of clusters is low and drops sharply as the number of clusters
+increases. Beyond K=2, the decrease in WCSS becomes less significant,
+indicating that additional clusters do not provide substantial
+improvements in compactness. The “elbow point” at K=2 forms a distinct
+‘elbow’ shape on the plot, suggesting that this is the most appropriate
+number of clusters for the dataset. This finding helps in identifying a
+balance between cluster compactness and simplicity, ensuring meaningful
+segmentation.</p>
+</div>
+<div id="average-silhouette-method" class="section level3">
+<h3>Average silhouette method</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="co"># Apply Average silhouette method</span></span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># for reproducibility</span></span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>avg_silhouette_plot <span class="ot">&lt;-</span> <span class="fu">fviz_nbclust</span>(scaled_data, kmeans, <span class="at">method =</span> <span class="st">&quot;silhouette&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="co"># Add x-axis intercept line for guidance</span></span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>avg_silhouette_plot</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>The average silhouette method plot indicates that the optimal number
+of clusters is at <span class="math inline">\(K = 2\)</span>. The curve
+shows a sharp increase from <span class="math inline">\(K = 1\)</span>
+to <span class="math inline">\(K = 2\)</span>, with the average
+silhouette width peaking at this point. Beyond <span
+class="math inline">\(K = 2\)</span>, the silhouette width gradually
+decreases, suggesting that additional clusters do not improve the
+clustering quality significantly. The silhouette method thus supports
+the conclusion that two clusters provide the best balance of cohesion
+and separation within the data. This finding can guide the segmentation
+process, ensuring that the data points are grouped in a manner that
+maximizes intra-cluster similarity and inter-cluster dissimilarity.</p>
+</div>
+<div id="gap-statistic-method" class="section level3">
+<h3>Gap statistic method</h3>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="co"># Apply Gap statistic method</span></span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># for reproducibility</span></span>
+<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a>gap_statistic_plot <span class="ot">&lt;-</span> <span class="fu">fviz_nbclust</span>(scaled_data, kmeans, <span class="at">method =</span> <span class="st">&quot;gap_stat&quot;</span>, <span class="at">nboot =</span> <span class="dv">50</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="co"># Add x-axis intercept line for guidance</span></span></code></pre></div>
+<pre><code>## Clustering k = 1,2,..., K.max (= 10): .. done
+## Bootstrapping, b = 1,2,..., B (= 50)  [one &quot;.&quot; per sample]:
+## .................................................. 50</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>gap_statistic_plot</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+The Gap Statistic method plot shows the optimal number of clusters at
+<span class="math inline">\(K = 2\)</span>. The curve depicts a
+substantial decrease in the Gap Statistic value from <span
+class="math inline">\(K = 1\)</span> to <span class="math inline">\(K =
+2\)</span>. Beyond <span class="math inline">\(K = 2\)</span>, the Gap
+Statistic continues to decrease but at a much slower rate, indicating
+diminishing returns with the addition of more clusters. The optimal
+number of clusters is where the Gap Statistic value starts to level off,
+signifying that the structure of the data is best captured with two
+clusters.</p>
+<p>Furthermore, silhouette analysis indicated a preference for two
+clusters compared to three.</p>
+</div>
+<div id="dendrogram" class="section level3">
+<h3>Dendrogram</h3>
+<p>The core clustering analysis utilised Ward’s method of hierarchical
+clustering. This method was chosen for its ability to minimise variance
+within clusters, resulting in well-separated groups. The distance matrix
+was computed using the scaled data, followed by the application of
+hierarchical clustering.</p>
+<p>A dendrogram was then plotted to visualise the hierarchical
+clustering process. This graphical representation depicted how data
+points were grouped into clusters at various similarity levels.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="co"># Perform Hierarchical Clustering using Ward&#39;s method</span></span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a>dist_matrix <span class="ot">&lt;-</span> <span class="fu">dist</span>(scaled_data)</span>
+<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a>hc_ward <span class="ot">&lt;-</span> <span class="fu">hclust</span>(dist_matrix, <span class="at">method =</span> <span class="st">&quot;ward.D2&quot;</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" tabindex="-1"></a><span class="co"># Cut the dendrogram to create clusters</span></span>
+<span id="cb36-6"><a href="#cb36-6" tabindex="-1"></a>num_clusters <span class="ot">&lt;-</span> <span class="dv">2</span>  <span class="co"># Define the number of clusters</span></span>
+<span id="cb36-7"><a href="#cb36-7" tabindex="-1"></a>hcut <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hc_ward, <span class="at">k =</span> num_clusters)</span>
+<span id="cb36-8"><a href="#cb36-8" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" tabindex="-1"></a><span class="co"># Define colors for clusters</span></span>
+<span id="cb36-10"><a href="#cb36-10" tabindex="-1"></a>cluster_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#FF9999&quot;</span>, <span class="st">&quot;#66CCCC&quot;</span>, <span class="st">&quot;#99FF99&quot;</span>)</span>
+<span id="cb36-11"><a href="#cb36-11" tabindex="-1"></a></span>
+<span id="cb36-12"><a href="#cb36-12" tabindex="-1"></a><span class="co"># Define a custom plot function to color the clusters</span></span>
+<span id="cb36-13"><a href="#cb36-13" tabindex="-1"></a>plot_dendrogram <span class="ot">&lt;-</span> <span class="cf">function</span>(hc, title, cluster_colors) {</span>
+<span id="cb36-14"><a href="#cb36-14" tabindex="-1"></a>  dend <span class="ot">&lt;-</span> <span class="fu">as.dendrogram</span>(hc)</span>
+<span id="cb36-15"><a href="#cb36-15" tabindex="-1"></a>  dend_colored <span class="ot">&lt;-</span> <span class="fu">color_branches</span>(dend, <span class="at">k =</span> num_clusters, <span class="at">groupLabels =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> cluster_colors)</span>
+<span id="cb36-16"><a href="#cb36-16" tabindex="-1"></a>  <span class="fu">plot</span>(dend_colored, <span class="at">main =</span> title)</span>
+<span id="cb36-17"><a href="#cb36-17" tabindex="-1"></a>}</span>
+<span id="cb36-18"><a href="#cb36-18" tabindex="-1"></a></span>
+<span id="cb36-19"><a href="#cb36-19" tabindex="-1"></a><span class="fu">plot_dendrogram</span>(hc_ward, <span class="st">&quot;Hierarchical Clustering Dendrogram (Ward&#39;s Method)&quot;</span>, cluster_colors)</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+The provided dendrogram depicts a hierarchical clustering of the data.
+Two main clusters emerge at a relatively high distance on the vertical
+axis, signifying a strong distinction between their constituent data
+points.</p>
+<p>Further substructure is evident within these main clusters. The left
+cluster exhibits a clearer division into two subclusters at a lower
+distance, suggesting a weaker but noticeable difference in their data
+points. While the right cluster also shows some substructure, the
+separation is less pronounced compared to the left side.</p>
+</div>
+</div>
+<div id="cluster-evaluation-metrics" class="section level2">
+<h2>Cluster Evaluation Metrics</h2>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="co"># Cut the dendrogram to obtain clusters</span></span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hc_ward, <span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a><span class="co"># Compute Silhouette Score</span></span>
+<span id="cb37-5"><a href="#cb37-5" tabindex="-1"></a>silhouette <span class="ot">&lt;-</span> <span class="fu">silhouette</span>(clusters, dist_matrix)</span>
+<span id="cb37-6"><a href="#cb37-6" tabindex="-1"></a>silhouette_score <span class="ot">&lt;-</span> <span class="fu">mean</span>(silhouette[, <span class="st">&quot;sil_width&quot;</span>])</span>
+<span id="cb37-7"><a href="#cb37-7" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" tabindex="-1"></a><span class="co"># Compute Calinski-Harabasz Index</span></span>
+<span id="cb37-9"><a href="#cb37-9" tabindex="-1"></a>calinski_harabasz <span class="ot">&lt;-</span> <span class="fu">cluster.stats</span>(dist_matrix, clusters)<span class="sc">$</span>ch</span>
+<span id="cb37-10"><a href="#cb37-10" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="#cb37-11" tabindex="-1"></a><span class="co"># Compute Dunn Index</span></span>
+<span id="cb37-12"><a href="#cb37-12" tabindex="-1"></a>dunn_index <span class="ot">&lt;-</span> <span class="fu">cluster.stats</span>(dist_matrix, clusters)<span class="sc">$</span>dunn</span>
+<span id="cb37-13"><a href="#cb37-13" tabindex="-1"></a></span>
+<span id="cb37-14"><a href="#cb37-14" tabindex="-1"></a><span class="co"># Print Evaluation Metrics</span></span>
+<span id="cb37-15"><a href="#cb37-15" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Silhouette Score:&quot;</span>, silhouette_score))</span></code></pre></div>
+<pre><code>## [1] &quot;Silhouette Score: 0.576552220210891&quot;</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Calinski-Harabasz Index:&quot;</span>, calinski_harabasz))</span></code></pre></div>
+<pre><code>## [1] &quot;Calinski-Harabasz Index: 35572.7266122145&quot;</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Dunn Index:&quot;</span>, dunn_index))</span></code></pre></div>
+<pre><code>## [1] &quot;Dunn Index: 0.0293590202720429&quot;</code></pre>
+<p>The Silhouette score assessed the cohesion and separation of
+clusters, with higher scores indicating better-defined clusters. It
+measured the similarity of data points within clusters compared to those
+in other clusters. The computed Silhouette Score of 0.577 indicated
+well-defined clusters with substantial internal cohesion and clear
+boundaries between clusters.</p>
+<p>The Calinski-Harabasz Index, also known as the Variance Ratio
+Criterion, evaluated the dispersion and compactness of clusters. A
+higher index value signified dense and well-separated clusters. The
+obtained Calinski-Harabasz Index of 35,573 affirmed the presence of
+compact and distinct clusters within the dataset.</p>
+<p>Furthermore, the Dunn Index measured the compactness and separation
+of clusters, providing additional insights into cluster validity. While
+the Dunn Index value of 0.029 indicated moderate compactness and
+separation, it complemented the Silhouette Score and Calinski-Harabasz
+Index in confirming the effectiveness of the clustering algorithm.</p>
+<p>Overall, the combined analysis of these three metrics validates the
+clustering solution, highlighting its ability to partition the dataset
+into cohesive and distinct clusters. These findings support the utility
+of the clustering algorithm in uncovering meaningful patterns and
+structures within the data.</p>
+</div>
+<div id="cluster-visualisation" class="section level2">
+<h2>Cluster Visualisation</h2>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="co"># Create Scatter Plot Matrix (SPLOM) for specified variables</span></span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a><span class="fu">pairs</span>(</span>
+<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a>  scaled_data[, <span class="fu">c</span>(<span class="st">&quot;Affl_scaled&quot;</span>, <span class="st">&quot;LTime_scaled&quot;</span>, <span class="st">&quot;Spend_scaled&quot;</span>, <span class="st">&quot;Age&quot;</span>)],</span>
+<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a>  <span class="at">col =</span> cluster_colors[hcut], <span class="co"># Set color for points based on cluster</span></span>
+<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">20</span>,     <span class="co"># Set point character</span></span>
+<span id="cb43-6"><a href="#cb43-6" tabindex="-1"></a>  <span class="at">lower.panel =</span> <span class="cn">NULL</span>  <span class="co"># Remove lower panel to leave room for annotations</span></span>
+<span id="cb43-7"><a href="#cb43-7" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+The scatterplot matrix suggests that there are relationships and
+clustering in the dataset. It indicates that ‘Age’ has a positive
+relationship with both ‘Spending Behavior’ and ‘Loyalty Time’ and weak
+negative relationship wit ‘Affluence’, with possible clustering within
+these relationships. These insights can guide further analysis, such as
+targeted marketing strategies or customer segmentation based on
+age-related spending patterns, affluence and loyalty behavior.</p>
+</div>
+<div id="basic-statistics-of-clusters" class="section level2">
+<h2>Basic Statistics of Clusters</h2>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="co"># Add cluster labels to the original data</span></span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a>data_with_clusters <span class="ot">&lt;-</span> scaled_data <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cluster =</span> <span class="fu">factor</span>(clusters))</span>
+<span id="cb44-4"><a href="#cb44-4" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" tabindex="-1"></a><span class="co"># Compute basic statistics for each cluster</span></span>
+<span id="cb44-6"><a href="#cb44-6" tabindex="-1"></a>basic_stats <span class="ot">&lt;-</span> data_with_clusters <span class="sc">%&gt;%</span></span>
+<span id="cb44-7"><a href="#cb44-7" tabindex="-1"></a>  <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb44-8"><a href="#cb44-8" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb44-9"><a href="#cb44-9" tabindex="-1"></a>    <span class="at">Affl_scaled_mean =</span> <span class="fu">mean</span>(Affl_scaled),</span>
+<span id="cb44-10"><a href="#cb44-10" tabindex="-1"></a>    <span class="at">Affl_scaled_median =</span> <span class="fu">median</span>(Affl_scaled),</span>
+<span id="cb44-11"><a href="#cb44-11" tabindex="-1"></a>    <span class="at">LTime_scaled_mean =</span> <span class="fu">mean</span>(LTime_scaled),</span>
+<span id="cb44-12"><a href="#cb44-12" tabindex="-1"></a>    <span class="at">LTime_scaled_median =</span> <span class="fu">median</span>(LTime_scaled),</span>
+<span id="cb44-13"><a href="#cb44-13" tabindex="-1"></a>    <span class="at">Spend_scaled_mean =</span> <span class="fu">mean</span>(Spend_scaled),</span>
+<span id="cb44-14"><a href="#cb44-14" tabindex="-1"></a>    <span class="at">Spend_scaled_median =</span> <span class="fu">median</span>(Spend_scaled),</span>
+<span id="cb44-15"><a href="#cb44-15" tabindex="-1"></a>    <span class="at">Age_mean =</span> <span class="fu">mean</span>(Age),</span>
+<span id="cb44-16"><a href="#cb44-16" tabindex="-1"></a>    <span class="at">Age_median =</span> <span class="fu">median</span>(Age)</span>
+<span id="cb44-17"><a href="#cb44-17" tabindex="-1"></a>  )</span>
+<span id="cb44-18"><a href="#cb44-18" tabindex="-1"></a></span>
+<span id="cb44-19"><a href="#cb44-19" tabindex="-1"></a><span class="fu">print</span>(basic_stats)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 9
+##   cluster Affl_scaled_mean Affl_scaled_median LTime_scaled_mean LTime_scaled_median Spend_scaled_mean Spend_scaled_median Age_mean
+##   &lt;fct&gt;              &lt;dbl&gt;              &lt;dbl&gt;             &lt;dbl&gt;               &lt;dbl&gt;             &lt;dbl&gt;               &lt;dbl&gt;    &lt;dbl&gt;
+## 1 1                  0.248              0.235             0.191               0.158           0.0209             0.0144       63.8
+## 2 2                  0.273              0.265             0.151               0.132           0.00793            0.000337     41.4
+## # ℹ 1 more variable: Age_median &lt;dbl&gt;</code></pre>
+<p>The analysis revealed 2 distinct clusters within the dataset based on
+key customer attributes. Cluster 1 represents customers with a moderate
+wealth status, with a mean Affluence scaled value of 0.248 and a median
+of 0.235. These customers exhibit moderate loyalty to the brand, with a
+mean Loyalty Time scaled value of 0.191. However, their spending habits
+are relatively low, with a mean Spend scaled value of 0.021. The average
+age of customers in Cluster 1 is approximately 63.82 years.</p>
+<p>In contrast, Cluster 2 comprises customers with slightly higher
+wealth status, as indicated by a mean Affluence scaled value of 0.273
+and a median of 0.265. These customers show shorter loyalty to the
+brand, with a mean Loyalty Time scaled value of 0.151. Their spending
+behavior is notably lower, with a mean Spend scaled value of 0.008. The
+average age of customers in Cluster 2 is around 41.44 years.</p>
+<p>These findings provide valuable insights for targeted marketing
+strategies, with Cluster 1 representing an older demographic with
+moderate spending potential and loyalty, while Cluster 2 comprises a
+younger segment with slightly higher affluence but lower loyalty and
+spending propensity.</p>
+</div>
+<div id="visualisation-of-basic-statistics" class="section level2">
+<h2>Visualisation of Basic Statistics</h2>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="co"># Scale the Age variable</span></span>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a>scaled_age <span class="ot">&lt;-</span> <span class="fu">scale</span>(basic_stats<span class="sc">$</span>Age_mean)</span>
+<span id="cb46-3"><a href="#cb46-3" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="#cb46-4" tabindex="-1"></a><span class="co"># Combine scaled Age with other mean values</span></span>
+<span id="cb46-5"><a href="#cb46-5" tabindex="-1"></a>basic_stats_scaled <span class="ot">&lt;-</span> basic_stats <span class="sc">%&gt;%</span></span>
+<span id="cb46-6"><a href="#cb46-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Age_scaled =</span> scaled_age)</span>
+<span id="cb46-7"><a href="#cb46-7" tabindex="-1"></a></span>
+<span id="cb46-8"><a href="#cb46-8" tabindex="-1"></a><span class="co"># Convert basic_stats_scaled to long format for plotting</span></span>
+<span id="cb46-9"><a href="#cb46-9" tabindex="-1"></a>basic_stats_long <span class="ot">&lt;-</span> basic_stats_scaled <span class="sc">%&gt;%</span></span>
+<span id="cb46-10"><a href="#cb46-10" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Affl_scaled_mean, LTime_scaled_mean, Spend_scaled_mean, Age_scaled),</span>
+<span id="cb46-11"><a href="#cb46-11" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;Attribute&quot;</span>,</span>
+<span id="cb46-12"><a href="#cb46-12" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;Mean_Value&quot;</span>)</span>
+<span id="cb46-13"><a href="#cb46-13" tabindex="-1"></a></span>
+<span id="cb46-14"><a href="#cb46-14" tabindex="-1"></a><span class="co"># Plot the bar chart</span></span>
+<span id="cb46-15"><a href="#cb46-15" tabindex="-1"></a><span class="fu">ggplot</span>(basic_stats_long, <span class="fu">aes</span>(<span class="at">x =</span> Attribute, <span class="at">y =</span> Mean_Value, <span class="at">fill =</span> cluster)) <span class="sc">+</span></span>
+<span id="cb46-16"><a href="#cb46-16" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb46-17"><a href="#cb46-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Mean Values of Key Attributes by Cluster&quot;</span>,</span>
+<span id="cb46-18"><a href="#cb46-18" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Attribute&quot;</span>,</span>
+<span id="cb46-19"><a href="#cb46-19" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Mean Value&quot;</span>) <span class="sc">+</span></span>
+<span id="cb46-20"><a href="#cb46-20" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb46-21"><a href="#cb46-21" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>) <span class="sc">+</span></span>
+<span id="cb46-22"><a href="#cb46-22" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cluster_colors) <span class="co"># Use the cluster colors defined earlier</span></span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="superconsumer-analysis" class="section level2">
+<h2>Superconsumer Analysis</h2>
+<p>Superconsumers, defined as those spending above the 75th percentile
+within each cluster, were analyzed and compared to other consumers. Key
+metrics such as spending, affluence, and loyalty time were summarised
+for both groups.</p>
+<p>The comparative analysis, visualized through bar plots, revealed
+distinct behavioural patterns between superconsumers and other
+consumers.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="co"># Step 1: Define superconsumers within each cluster</span></span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a>data_with_clusters <span class="ot">&lt;-</span> data_with_clusters <span class="sc">%&gt;%</span></span>
+<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a>  <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb47-4"><a href="#cb47-4" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb47-5"><a href="#cb47-5" tabindex="-1"></a>    <span class="at">superconsumer =</span> <span class="fu">if_else</span>(Spend_scaled <span class="sc">&gt;</span> <span class="fu">quantile</span>(Spend_scaled, <span class="fl">0.75</span>), <span class="st">&quot;Superconsumer&quot;</span>, <span class="st">&quot;Other&quot;</span>)</span>
+<span id="cb47-6"><a href="#cb47-6" tabindex="-1"></a>  )</span>
+<span id="cb47-7"><a href="#cb47-7" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" tabindex="-1"></a><span class="co"># Step 2: Summarize the characteristics of superconsumers within each cluster</span></span>
+<span id="cb47-9"><a href="#cb47-9" tabindex="-1"></a>superconsumer_summary <span class="ot">&lt;-</span> data_with_clusters <span class="sc">%&gt;%</span></span>
+<span id="cb47-10"><a href="#cb47-10" tabindex="-1"></a>  <span class="fu">filter</span>(superconsumer <span class="sc">==</span> <span class="st">&quot;Superconsumer&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-11"><a href="#cb47-11" tabindex="-1"></a>  <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb47-12"><a href="#cb47-12" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb47-13"><a href="#cb47-13" tabindex="-1"></a>    <span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb47-14"><a href="#cb47-14" tabindex="-1"></a>    <span class="at">mean_spend =</span> <span class="fu">mean</span>(Spend_scaled),</span>
+<span id="cb47-15"><a href="#cb47-15" tabindex="-1"></a>    <span class="at">median_spend =</span> <span class="fu">median</span>(Spend_scaled),</span>
+<span id="cb47-16"><a href="#cb47-16" tabindex="-1"></a>    <span class="at">mean_affluence =</span> <span class="fu">mean</span>(Affl_scaled),</span>
+<span id="cb47-17"><a href="#cb47-17" tabindex="-1"></a>    <span class="at">median_affluence =</span> <span class="fu">median</span>(Affl_scaled),</span>
+<span id="cb47-18"><a href="#cb47-18" tabindex="-1"></a>    <span class="at">mean_loyalty_time =</span> <span class="fu">mean</span>(LTime_scaled),</span>
+<span id="cb47-19"><a href="#cb47-19" tabindex="-1"></a>    <span class="at">median_loyalty_time =</span> <span class="fu">median</span>(LTime_scaled)</span>
+<span id="cb47-20"><a href="#cb47-20" tabindex="-1"></a>  )</span>
+<span id="cb47-21"><a href="#cb47-21" tabindex="-1"></a></span>
+<span id="cb47-22"><a href="#cb47-22" tabindex="-1"></a><span class="co"># Step 3: Summarize the characteristics of other consumers within each cluster</span></span>
+<span id="cb47-23"><a href="#cb47-23" tabindex="-1"></a>other_consumer_summary <span class="ot">&lt;-</span> data_with_clusters <span class="sc">%&gt;%</span></span>
+<span id="cb47-24"><a href="#cb47-24" tabindex="-1"></a>  <span class="fu">filter</span>(superconsumer <span class="sc">==</span> <span class="st">&quot;Other&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-25"><a href="#cb47-25" tabindex="-1"></a>  <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb47-26"><a href="#cb47-26" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb47-27"><a href="#cb47-27" tabindex="-1"></a>    <span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb47-28"><a href="#cb47-28" tabindex="-1"></a>    <span class="at">mean_spend =</span> <span class="fu">mean</span>(Spend_scaled),</span>
+<span id="cb47-29"><a href="#cb47-29" tabindex="-1"></a>    <span class="at">median_spend =</span> <span class="fu">median</span>(Spend_scaled),</span>
+<span id="cb47-30"><a href="#cb47-30" tabindex="-1"></a>    <span class="at">mean_affluence =</span> <span class="fu">mean</span>(Affl_scaled),</span>
+<span id="cb47-31"><a href="#cb47-31" tabindex="-1"></a>    <span class="at">median_affluence =</span> <span class="fu">median</span>(Affl_scaled),</span>
+<span id="cb47-32"><a href="#cb47-32" tabindex="-1"></a>    <span class="at">mean_loyalty_time =</span> <span class="fu">mean</span>(LTime_scaled),</span>
+<span id="cb47-33"><a href="#cb47-33" tabindex="-1"></a>    <span class="at">median_loyalty_time =</span> <span class="fu">median</span>(LTime_scaled)</span>
+<span id="cb47-34"><a href="#cb47-34" tabindex="-1"></a>  )</span>
+<span id="cb47-35"><a href="#cb47-35" tabindex="-1"></a></span>
+<span id="cb47-36"><a href="#cb47-36" tabindex="-1"></a><span class="co"># Combine summaries for plotting</span></span>
+<span id="cb47-37"><a href="#cb47-37" tabindex="-1"></a>combined_summary <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb47-38"><a href="#cb47-38" tabindex="-1"></a>  <span class="at">superconsumers =</span> superconsumer_summary,</span>
+<span id="cb47-39"><a href="#cb47-39" tabindex="-1"></a>  <span class="at">other_consumers =</span> other_consumer_summary,</span>
+<span id="cb47-40"><a href="#cb47-40" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">&quot;group&quot;</span></span>
+<span id="cb47-41"><a href="#cb47-41" tabindex="-1"></a>)</span>
+<span id="cb47-42"><a href="#cb47-42" tabindex="-1"></a></span>
+<span id="cb47-43"><a href="#cb47-43" tabindex="-1"></a><span class="co"># Melt the summary data for plotting</span></span>
+<span id="cb47-44"><a href="#cb47-44" tabindex="-1"></a>combined_summary_long <span class="ot">&lt;-</span> combined_summary <span class="sc">%&gt;%</span></span>
+<span id="cb47-45"><a href="#cb47-45" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(cluster, group), <span class="at">names_to =</span> <span class="st">&quot;metric&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;value&quot;</span>)</span>
+<span id="cb47-46"><a href="#cb47-46" tabindex="-1"></a></span>
+<span id="cb47-47"><a href="#cb47-47" tabindex="-1"></a><span class="co"># Plot the comparison</span></span>
+<span id="cb47-48"><a href="#cb47-48" tabindex="-1"></a><span class="fu">ggplot</span>(combined_summary_long, <span class="fu">aes</span>(<span class="at">x =</span> cluster, <span class="at">y =</span> value, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb47-49"><a href="#cb47-49" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb47-50"><a href="#cb47-50" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> metric, <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>) <span class="sc">+</span></span>
+<span id="cb47-51"><a href="#cb47-51" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb47-52"><a href="#cb47-52" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Comparison of Superconsumers and Other Consumers by Cluster&quot;</span>,</span>
+<span id="cb47-53"><a href="#cb47-53" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Cluster&quot;</span>,</span>
+<span id="cb47-54"><a href="#cb47-54" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Value&quot;</span>,</span>
+<span id="cb47-55"><a href="#cb47-55" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Group&quot;</span>)</span></code></pre></div>
+<p><img src="hierarchical-clustering_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+The bar chart analysis revealed distinct patterns between superconsumers
+and other customers. Superconsumers consistently outspent others across
+all customer clusters, highlighting their significant contribution to
+overall revenue. Furthermore, superconsumers displayed relatively
+similar average and median affluence levelsand loyalty for both
+clusters.</p>
+<p>This analysis successfully identified and profiled superconsumers
+within each cluster, providing valuable insights into their spending
+habits, affluence, and loyalty. These findings can be used to develop
+targeted marketing campaigns and customer relationship management
+strategies tailored to attract and retain these high-value customers,
+leading to improved business performance.</p>
+</div>
+</div>
+<div
+id="conclusion-and-business-implications-tailored-strategies-for-organic-consumers"
+class="section level1">
+<h1>Conclusion and Business Implications: Tailored Strategies for
+Organic Consumers</h1>
+<p>Our customer segmentation analysis, based on key attributes, revealed
+two distinct customer clusters. These insights offer valuable guidance
+for the organic company to develop targeted marketing strategies.</p>
+<p><strong>Cluster 1: Moderate Affluence, Loyalty, and Spending (Older
+Demographic)</strong></p>
+<p>This cluster represents an older customer base with moderate wealth,
+average loyalty to the brand, and relatively low spending habits. Here,
+the focus should be on building stronger relationships and fostering
+loyalty to convert them into higher-value customers. Personalised email
+campaigns highlighting past purchases and loyalty rewards can be
+effective in this regard. Additionally, offering exclusive discounts and
+promotions specifically tailored to this segment can incentivise them to
+spend more.</p>
+<p><strong>Cluster 2: Higher Affluence, Lower Loyalty and Spending
+(Younger Demographic)</strong></p>
+<p>Cluster 2 comprises a younger demographic with slightly higher wealth
+but lower loyalty and spending propensity. To attract and convert them
+into loyal customers, the organic company should emphasise the quality
+and unique offerings of its products. Social media marketing, a perfect
+platform to reach this tech-savvy audience, can be utilized to showcase
+the benefits of organic products. Introductory discounts and targeted
+promotions can further incentivise them to try the products for the
+first time.</p>
+<p><strong>Superconsumers Across Clusters</strong></p>
+<p>The analysis also identified superconsumers, high-value customers who
+consistently outspend others across all clusters. Retaining these
+valuable customers requires a dedicated approach. Implementing loyalty
+programs with tiered benefits and exclusive offers specifically targeted
+towards superconsumers can be a successful strategy.</p>
+<p>By implementing these targeted marketing approaches based on customer
+segmentation, the organic company can create a more engaging and
+personalized customer experience. This, in turn, can lead to increased
+customer loyalty, improved brand perception, and ultimately, drive sales
+growth.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

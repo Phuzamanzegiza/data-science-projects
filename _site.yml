@@ -17,14 +17,15 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Diabetes Risk Factors"
+      href: diabetes-clusters.html 
     - text: "Hierarchical Clustering"
       href: hierarchical-clustering.html
     - text: "Consumer Behaviour"
       href: random-forest.html
     - text: "Customer Segmentation"
       href: pca-kmeans-clustering.html
-    - text: "Diabetes Risk Factors"
-      href: diabetes-clusters.html  
+     
 output:
   html_document:
     theme: cerulean
