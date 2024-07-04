@@ -1,5 +1,5 @@
 ---
-title: "diabetes-clusters"
+title: "Clustering Insights into Diabetes Risk Factors"
 author: "Franco"
 date: "2024-07-02"
 output: 
@@ -52,6 +52,7 @@ library(clusterSim)
 library(GGally)
 library(openxlsx)
 library(plotly)
+library(fpc)
 library(VIM)
 
 ```
@@ -647,7 +648,7 @@ Visualising PCA results was crucial for interpreting the relationships between d
 
 ```{r pcviz, echo=TRUE}
 # Extract PCA components for clustering
-pca_data <- pc$x  # Assuming pc is the result of your PCA analysis
+pca_data <- pc$x  
 
 # Visualize PCA results (scatter plot)
 pca_scatter <- fviz_pca_ind(pc, geom.ind = "point", 
@@ -756,7 +757,7 @@ The clusters were visualised in two-dimensional and three-dimensional plots. The
 # Extract PC scores for PC1 to PC2
 pc_scores <- as.data.frame(pc$x[, 1:3])
 
-# Perform K-means clustering with K = 5 using PCA results
+# Perform K-means clustering with K = 4 using PCA results
 kmeans_result <- kmeans(pc_scores, centers = 4, nstart = 10)
 
 # Visualize the clusters
@@ -878,21 +879,29 @@ Evaluating the performance and validity of the K-means clustering algorithm is e
 
 
 ```{r metrics, echo=TRUE}
+# Assuming clusters contains the cluster assignments from clustering algorithm
+
 # Compute the distance matrix
-dist_matrix <- dist(pc_data)
+dist_matrix <- dist(pca_data)
 
-
+# From kmeans clustering
+clusters <- kmeans_result$cluster
 
 # Compute Calinski-Harabasz Index
-calinski_harabasz <- cluster.stats(dist_matrix, clusters)$ch
+calinski_harabasz <- fpc::cluster.stats(dist_matrix, clusters)$ch
 
 # Compute Dunn Index
-dunn_index <- cluster.stats(dist_matrix, clusters)$dunn
+dunn_index <- fpc::cluster.stats(dist_matrix, clusters)$dunn
 
 # Print Evaluation Metrics
-
 print(paste("Calinski-Harabasz Index:", calinski_harabasz))
 print(paste("Dunn Index:", dunn_index))
+
+class(dist_matrix)  # Should be 'dist'
+class(clusters)     # Should be 'integer' or 'factor'
+dim(dist_matrix)
+length(clusters)
+
 
 ```
 
@@ -900,27 +909,17 @@ print(paste("Dunn Index:", dunn_index))
 # Function to calculate Silhouette Coefficient
 calculate_silhouette <- function(data, clusters) {
   library(cluster)
-  sil <- silhouette(clusters, dist(data))
+  sil <- silhouette(clusters, dist(pca_data))
   return(sil)
 }
 
-# Perform PCA on clean_data
-
-
-# Perform K-means clustering with K = 6
-set.seed(123)  # Set seed for reproducibility
-kmeans_result <- kmeans(pc_data, centers = 4, nstart = 25)
-clusters <- kmeans_result$cluster
 
 # Calculate silhouette coefficients
-sil_scores <- calculate_silhouette(pc_data, clusters)
+sil_scores <- calculate_silhouette(pca_data, clusters)
 
 # Plot silhouette plot
 fviz_silhouette(sil_scores, palette = "jco", main = "Silhouette Plot for K-means Clustering")
 ```
-
-
-
 
 ## Cluster Profiles
 
@@ -929,9 +928,9 @@ To further understand the characteristics of each cluster, the mean values of th
 
 ```{r profile, echo=TRUE}
 
-# Perform K-means clustering with K = 6
+# Perform K-means clustering with K = 4
 set.seed(123)  # Set seed for reproducibility
-kmeans_result <- kmeans(pc_data, centers = 4, nstart = 25)
+kmeans_result <- kmeans(pca_data, centers = 4, nstart = 25)
 clusters <- kmeans_result$cluster
 
 # Assign cluster labels to clean_data
@@ -939,10 +938,6 @@ clean_data_with_clusters <- cbind(clean_data, Cluster = kmeans_result$cluster)
 
 # Calculate mean of original variables by cluster
 cluster_means <- aggregate(. ~ Cluster, data = clean_data_with_clusters, FUN = mean)
-
-# Visualize cluster profiles (bar plots)
-library(ggplot2)
-library(tidyr)
 
 # Reshape data for plotting (assuming clean_data has appropriate column names)
 cluster_means_long <- pivot_longer(cluster_means, cols = -Cluster, names_to = "Variable", values_to = "Mean")
