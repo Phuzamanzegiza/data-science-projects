@@ -398,7 +398,7 @@ To uncover underlying patterns and reduce the dimensionality of our dataset, we 
 This PCA analysis serves to condense complex data while preserving its essential information, facilitating better understanding of the dataset's structure and potentially uncovering meaningful clusters or patterns that can inform further statistical modeling or decision-making processes.
 
 ```{r}
-# Perform PCA on your data
+
 # Perform PCA on your data
 pc <- prcomp(data_final_scaled, center = FALSE, scale = FALSE)
 

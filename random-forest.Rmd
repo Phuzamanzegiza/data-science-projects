@@ -165,7 +165,7 @@ colSums(is.na(data))
 ```{r}
 # Plot histograms for numeric variables
 numeric_vars <- c("Age", "Hhsz")
-data %>% select(numeric_vars) %>% 
+data %>% dplyr::select(numeric_vars) %>% 
   gather(key = "variable", value = "value") %>%
   ggplot(aes(x = value)) +
   geom_histogram(bins = 30, fill = "blue", color = "black", alpha = 0.7) +

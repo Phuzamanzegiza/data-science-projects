@@ -165,12 +165,13 @@ By analysing spending behavior, businesses can identify high-spending customers 
 ```{r}
 # Plot bar charts for categorical variables
 data %>%
-  select(Gender, PromClass, PromSilver, PromTin, PromGold, TargetBuy) %>%
-  gather(key = "variable", value = "value") %>%
+  dplyr::select(Gender, PromClass, PromSilver, PromTin, PromGold, TargetBuy) %>%
+  tidyr::gather(key = "variable", value = "value") %>%
   ggplot(aes(x = value)) +
   geom_bar(fill = "blue", color = "black") +
   facet_wrap(~ variable, scales = "free") +
   labs(title = "Distribution of Categorical Variables")
+
 ```
 
 ### Gender Distribution
@@ -197,7 +198,7 @@ These categorical variables provide valuable insights into customer preferences,
 ```{r}
 
 numerical_vars <- data %>%
-  select(Affl, Age, LTime, Spend)
+  dplyr::select(Affl, Age, LTime, Spend)
 
 ggpairs(numerical_vars, 
         title = "Scatter Plot Matrix of Numerical Variables",
@@ -270,7 +271,7 @@ sum(is.na(data$Age))
 
 # Drop unnecessary columns
 data <- data %>%
-  select(-Gender, -PromClass)
+ dplyr::select(-Gender, -PromClass)
 
 # Display the head of the updated dataset
 head(data)
@@ -310,7 +311,7 @@ Additionally, Max-Min scaling was applied to ensure all numerical features (Affl
 
 # Select numerical features for scaling
 numerical_features <- data %>%
-  select(Affl, LTime, Spend)
+ dplyr::select(Affl, LTime, Spend)
 
 # Function to perform Max-Min scaling
 max_min_scaling <- function(x) {
